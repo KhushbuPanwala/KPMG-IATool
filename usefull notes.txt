@@ -1,0 +1,133 @@
+KPMG – IA Tool – Roadblock/Problem faced during Project Life Cycle  
+
+ 
+
+Roadblock: Pagination, searching in Server Side with ngx-bootstrap 
+
+Solution: State here solution 
+
+Reference link:  
+
+https://valor-software.com/ngx-bootstrap/#/pagination 
+
+https://www.npmjs.com/package/ngx-pagination#quick-start 
+
+https://www.c-sharpcorner.com/article/searching-and-pagination-using-angular-7/ 
+
+ 
+
+Roadblock: Binding checkbox, icon with AG-Grid 
+
+Solution: To bind any event or any html component with ag-grid create separate component for html component and partially load it into ag-grid. 
+
+Reference Link: 
+
+https://stackblitz.com/edit/ag-grid-checkbox?file=app%2Fapp.component.ts 
+
+https://stackblitz.com/edit/angular-ag-grid-button-renderer?file=src%2Fapp%2Fapp.component.ts 
+
+Roadblock: Manage Drag and Drop functionality with server-side data and based on available order of data will be again show after as per last ordering of data. 
+
+Solution:  
+
+Reference Link: 
+
+https://www.ag-grid.com/javascript-grid-row-dragging/ 
+
+ 
+
+Roadblock: Export data for multiple tables 
+
+Solution: Create generic dictionary with multiple key value. Pass dictionary to generate excel sheet data. 
+
+Reference Link: 
+
+https://www.codeproject.com/Articles/692092/A-free-Export-to-Excel-Csharp-class-using-OpenXML 
+
+https://www.codeproject.com/Articles/692121/Csharp-Export-data-to-Excel-using-OpenXML-librarie#:~:text=Adding%20the%20library%20to%20your%20ASP.NET%20Core%202%2B%20application&text=Next%2C%20you%20need%20to%20open,to%20call%20the%20StreamExcelDocument%20function. 
+
+Links To create dynamic dictionary 
+
+http://reyrahadian.com/2012/02/01/creating-a-dynamic-dictionary-with-c-4-dynamic/ 
+
+https://www.aaron-powell.com/posts/2010-06-28-dynamic-dictionaries-with-csharp-4/ 
+
+https://stackoverflow.com/questions/41944755/c-sharp-dictionary-of-generic-classes 
+
+https://www.c-sharpcorner.com/UploadFile/mahesh/how-to-get-all-keys-of-a-dictionary-with-C-Sharp/ 
+
+Generate Excel sheet 
+
+http://howtodomssqlcsharpexcelaccess.blogspot.com/2014/06/openxml-aspnet-how-to-create-excel.html 
+
+https://stackoverflow.com/questions/58649004/generate-excel-sheet-using-openxml-from-database 
+
+ 
+
+Roadblock: Call parent component function from child component 
+
+https://stackblitz.com/edit/angular-fo4gyh?file=src%2Fapp%2Fparent%2Fparent.component.ts-- 
+
+https://stackblitz.com/edit/angular-simple-input-output?file=app%2Fhello.component.ts 
+
+ Roadblock: Set tab active based on click with ngx-bootstrap tabs 
+
+Reference Link: 
+
+https://www.codingexercises.com/guides/working-with-ngx-bootstrap-tabs-in-angular-8 
+
+ 
+
+Learning new things  
+
+Lazy loading and modularity in angular 
+
+Reference Link: 
+
+ https://angular.io/guide/lazy-loading-ngmodules 
+
+https://stackblitz.com/angular/drlvebnvprk?file=src%2Fapp%2Fapp-routing.module.ts 
+
+ 
+
+HTML Editor with model binding 
+
+Reference Link: 
+
+https://www.npmjs.com/package/@kolkov/angular-editor 
+
+https://openbase.io/js/@kolkov/angular-editor 
+
+ 
+
+Document viewer 
+
+Reference Link: 
+
+https://www.npmjs.com/package/ngx-doc-viewer 
+
+https://stackblitz.com/edit/ngx-doc-viewer-example?file=src%2Fapp%2Fapp.component.html 
+
+ 
+
+Callback from NGX-BOOTSTRAP/MODAL 
+
+Reference link: 
+
+ http://effita.com/confirmation-modal-based-on-ngx-bootstrap-modal 
+
+ 
+
+Convert Enum to key value pair 
+
+Reference Link: 
+
+https://bytutorial.com/blogs/aspnet/convert-enum-to-list-of-key-pairs-value-in-aspnet 
+
+ 
+
+Remove HTML tag from String Content 
+
+Reference Link: 
+
+https://www.c-sharpcorner.com/blogs/remove-html-tags-from-string-in-c-sharp1 

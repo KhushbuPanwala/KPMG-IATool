@@ -1,0 +1,103 @@
+<!--Observation management comments contents-->
+<div class="observation-comments-page observation-tab-contents clearfix">
+  <form #observationManagementTabForm="ngForm">
+    <!--Tab left side contents-->
+    <div class="tab-left-contents">
+
+      <div class="observation-controls">
+        <label class="form-label d-inline-block align-top w-15 mr-20 text-right">{{managementResponseTitle}}</label>
+        <div class="form-group d-inline-block align-top w-82 textarea-group hide-editor-header ">
+
+          <angular-editor class="background-txt-area divided-txt-area  h-120"
+                          [config]="config" [(ngModel)]="observationAC.managementResponse"
+                          name="managementResponse" #managementResponse="ngModel">
+          </angular-editor>
+          <a class="view-more-button" (click)="openManagementResponseModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+        </div>
+      </div>
+      <div class="observation-controls">
+        <label class="form-label d-inline-block align-top w-15 mr-20 text-right">{{conclusionTitle}}</label>
+        <div class="form-group d-inline-block align-top w-82 textarea-group hide-editor-header ">
+
+          <angular-editor class="background-txt-area divided-txt-area h-179"
+                          [(ngModel)]="observationAC.conclusion"
+                          [config]="config" name="conclusion" #conclusion="ngModel">
+          </angular-editor>
+          <a class="view-more-button" (click)="openConclusionModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+        </div>
+      </div>
+      <div class="w-15 d-inline-block mr-20"></div>
+      <div class="w-82 d-inline-block responsive-save">
+        <button class="btn form-btn min-width-180 mt-10 mr-20" (click)="saveObservation(true)">
+          <img src="../assets/images/save.png" class="align-top" />
+          {{saveDraft}}
+        </button>
+        <button class="btn form-btn border-form-btn mt-10 min-width-180" (click)="saveObservation(false)">
+          {{saveButtonText}}
+        </button>
+      </div>
+
+    </div>
+    <!--Tab right side contents-->
+    <div class="tab-right-contents responsive-space">
+      <div class="form-group mb-10">
+        <label class="form-label">
+          {{personResponsibleLabel}}
+        </label>
+        <ng-select #selectPerson [items]="observationAC.personResponsibleList" class="page-select align-middle" [searchable]="false"
+                   name="responsiblePerson" #responsiblePerson="ngModel"
+                   [(ngModel)]="observationAC.personResponsible" bindLabel="name" bindValue="id">
+          <ng-template ng-header-tmp>
+            <input type="text" class="w-100" (input)="selectPerson.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="form-group mb-10  date-picker">
+        <label class="form-label">
+          {{targetDateTitle}}
+        </label>
+        <div class="form-icon-group">
+          <input type="text"
+                 placeholder="Datepicker"
+                 class="form-control"
+                 bsDatepicker name="targetDate" #targetDate="ngModel" [(ngModel)]="observationAC.targetDate"
+                 [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }">
+
+          <i class="zmdi zmdi-calendar calender-icon"></i>
+        </div>
+      </div>
+      <div class="form-group mb-10">
+        <label class="form-label">
+          {{linkedObservationTitle}}
+        </label>
+        <ng-select #selectLinkedObservation [items]="observationAC.linkedObservationACList" class="page-select" [searchable]="false"
+                   name="linkedObs" #linkedObs="ngModel"
+                   [placeholder]="dropdownDefaultValue"
+                   [(ngModel)]="observationAC.linkedObservation" bindLabel="heading" bindValue="id">
+          <ng-template ng-header-tmp>
+            <input type="text" class="w-100" (input)="selectLinkedObservation.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="form-group mb-10">
+        <label class="form-label required">
+          {{statusTitle}}
+        </label>
+        <ng-select #select [items]="observationStatusList" class="page-select" [searchable]="false"
+                   [(ngModel)]="observationAC.observationStatusToString"
+                   name="observationStatusToString" #observationStatusToString="ngModel" bindLabel="label" bindValue="label" required>
+        </ng-select>
+      </div>
+      <div class="form-group mb-10">
+        <label class="form-label required">
+          {{dispositionTitle}}
+        </label>
+        <ng-select #select [items]="dispositionList" class="page-select" [searchable]="false" [(ngModel)]="observationAC.dispositionToString"
+                   name="disposition" #disposition="ngModel" bindLabel="label" bindValue="label" required>
+        </ng-select>
+      </div>
+    </div>
+  </form>
+</div>
+<!--Loader component-->
+<app-loader></app-loader>

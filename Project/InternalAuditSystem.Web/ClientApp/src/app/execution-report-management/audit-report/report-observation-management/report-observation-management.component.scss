@@ -1,0 +1,65 @@
+/*Imported common style to get common elements styles*/
+@import '../../../../styles.scss';
+
+/*Observation data page design*/
+.observation-page {
+  .download-options {
+    .btn-download {
+      width: 30px;
+      height: 30px;
+      line-height: 20px;
+    }
+  }
+}
+
+.d-inline-flex {
+  display: inline-flex;
+  vertical-align: top;
+}
+
+.pagination {
+  li {
+    display: inline-block;
+    color: $light-theme-color;
+    float: left;
+    text-decoration: none;
+    background: $white;
+    transition: background-color .3s;
+    border: 1px solid $select-border-color;
+    width: 36px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+
+    i {
+      color: $text-color;
+    }
+
+    a {
+      height: 100%;
+      display: block;
+      cursor: pointer;
+
+      &.active, &:hover:not(.active) {
+        background-color: $light-theme-color;
+        color: $white;
+      }
+
+      &.active, &:hover:not(.active) {
+        i {
+          color: $white;
+        }
+      }
+    }
+
+    &:first-child {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  }
+}

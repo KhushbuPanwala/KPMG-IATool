@@ -1,0 +1,25 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Auditable entity relationship type add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{relationshipTypeLabel}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="audit-team-form modal-form" #relationshipTypeAddEditForm="ngForm" *ngIf="relationshipTypeObject !== undefined">
+    <div class="form-group  mb-15">
+      <label class="form-label required mb-10">{{relationshipTypeLabel}}</label>
+      <input type="text" class="form-control" [(ngModel)]="relationshipTypeObject.name" name="relationshipTypeName" #relationshipTypeName="ngModel" required appValidateMaxLength="256"/>
+      <div class="feedback-box" *ngIf="relationshipTypeName.errors  && relationshipTypeObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="relationshipTypeName.touched && !relationshipTypeName.valid && relationshipTypeName.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="relationshipTypeName.touched && !relationshipTypeName.errors.required">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <button class="btn form-btn mt-20" (click)="saveRelationshipTypes()" [disabled]="relationshipTypeAddEditForm.invalid">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>

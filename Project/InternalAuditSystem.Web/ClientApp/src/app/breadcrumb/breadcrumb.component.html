@@ -1,0 +1,16 @@
+
+    <nav aria-label="breadcrumb" class="header-breadcrumb ml-10">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item" *ngFor="let bcData of breadCrumData; let last = last">
+          <span class="d-inline-block breadcrumb-item-name" *ngIf="!last">
+            {{bcData}}
+          </span>
+          <span class="d-inline-block breadcrumb-item-name active" *ngIf="last">
+            {{bcData}}
+          </span>
+        </li>
+      </ol>
+    </nav>
+
+
+

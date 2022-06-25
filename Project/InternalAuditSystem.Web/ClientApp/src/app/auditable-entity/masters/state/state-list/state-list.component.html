@@ -1,0 +1,78 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!-- Auditable entity state list page contents -->
+<div class="sector-list-page">
+  <h4 class="page-title mb-25 ml-20">{{stateText}}</h4>
+  <div class="page-container">
+    <div class="top-contents mb-10">
+      <div class="search-box">
+        <input class="form-control search-control pl-30" placeholder="{{searchText}}" [(ngModel)]="searchValue"
+               (keydown.Tab)="searchState($event,pageNumber, itemsPerPage, searchValue)"
+               (keypress)="searchState($event,pageNumber, itemsPerPage, searchValue)">
+        <i class="zmdi zmdi-search"></i>
+      </div>
+      <div class="right-contents">
+        <button class="btn btn-icon  p-0" tooltip="{{excelToolTip}}" (click)="exportToExcel()">
+          <img src="../assets/images/excel.png" alt="{{excelToolTip}}" />
+        </button>
+        <button class="btn btn-icon dark-bg-btn p-0 ml-10" tooltip="{{addToolTip}}" (click)="openStateAdd()"  *ngIf="currentUserDetails.userRole !== 2" >
+          <i class="zmdi zmdi-plus-circle"></i>
+        </button>
+      </div>
+    </div>
+    <!--Table contents-->
+    <div class="table-container table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="w-20">{{stateText}}</th>
+            <th class="w-20">{{countryText}}</th>
+            <th class="w-80" colspan="2">{{regionText}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="stateList.length===0">
+            <td colspan="4"><p class="no-record">{{showNoDataText}}</p></td>
+          </tr>
+          <tr *ngFor="let i=index;let state of stateList| paginate: { itemsPerPage: itemsPerPage, currentPage: pageNumber, totalItems:totalRecords}">
+            <td class="w-20" title="{{state.state}}"><p class="desc-text mb-0">{{state.stateName}}</p></td>
+            <td class="w-20" title="{{state.country}}"><p class="desc-text mb-0">{{state.countryName}}</p></td>
+            <td class="w-75" title="{{state.region}}"><p class="desc-text mb-0">{{state.regionName}}</p></td>
+            <td class="w-5">
+              <div class="table-action-btn">
+                <a class="d-inline-block align-middle mr-10 action-icon" (click)="openStateEditModal(state.id,i)" tooltip="{{editToolTip}}" *ngIf="currentUserDetails !== undefined && currentUserDetails.userRole !== 2">
+                  <i class="zmdi zmdi-edit"></i>
+                </a>
+                <a class="d-inline-block align-middle action-icon" (click)="openStateDeleteModal(state.id,i)" tooltip="{{deleteToolTip}}" *ngIf="currentUserDetails !== undefined && currentUserDetails.userRole !== 2">
+                  <i class="zmdi zmdi-delete"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--Table footer contens-->
+    <div class="table-footer row clearfix" *ngIf="stateList.length !== 0">
+      <div class="col-sm-7">
+        <pagination-controls [responsive]="responsive"
+                             [previousLabel]="labels.previousLabel"
+                             [nextLabel]="labels.nextLabel"
+                             (pageChange)="onPageChange($event)"></pagination-controls>
+      </div>
+      <div class="right-contents col-sm-5 text-right">
+        <div class="d-inline-block selectbox-content">
+          <ng-select #select [items]="pageItems" [searchable]="false" [(ngModel)]="itemsPerPage"
+                     bindLabel="item" bindValue="noOfItems" (change)="onItemPerPageChange($event)">
+          </ng-select>
+        </div>
+        <div class="d-inline-block ml-10">
+          <p class="mb-0 showing-results-text mt-5 align-middle">{{showingResults}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

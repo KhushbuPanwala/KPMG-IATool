@@ -1,0 +1,336 @@
+<!--Minutes of meeting add page contents-->
+<div class="mom-add-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">{{momAddPageTitle}}</h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" tooltip="{{backToolTip}}" *ngIf="addedWorkProgramId===undefined" (click)="onBackClick()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <form #momAddForm="ngForm" id="momForm" name="momForm" novalidate>
+    <div class="page-container mb-20">
+      <div class="form-area">
+        <div class="form-group mb-30">
+          <label class="form-label d-block mb-10 required">{{workProgramTitle}}</label>
+          <ng-select #select class="page-select" [items]="workProgramListByAuditableEntityId" [disabled]="isWorkProgramDisabled" [searchable]="false" name="name" #name="ngModel" [(ngModel)]="workProgram.id" bindLabel="name" bindValue="id" required>
+            <ng-template ng-header-tmp let-item="item">
+              <input type="text" class="w-100" (input)="select.filter($event.target.value)" name="workProgram" />
+            </ng-template>
+          </ng-select>
+          <div *ngIf="name.errors" class="feedback-box">
+            <p *ngIf="name.touched && !name.valid && name.errors.required" class="invalid-feedback">{{workProgramRequiredMessage}}</p>
+          </div>
+        </div>
+        <div class="row auditable-enitity-selection">
+          <div class="col-xs-12 col-12 col-sm-4 form-group mb-20 date-picker">
+            <label class="form-label">{{dateLabel}}</label>
+            <div class="form-icon-group">
+              <input type="text"
+                     placeholder="Datepicker"
+                     class="form-control"
+                     bsDatepicker
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'  ,adaptivePosition: true}"  name="momDate"
+                     #momDate="ngModel" [(ngModel)]="mom.momDate"  min="{{mom.momDate}}" (change)="isInvalidDate($event)">
+              <i class="zmdi zmdi-calendar calender-icon"></i>
+            </div>
+
+          </div>
+          <div class="col-xs-12 col-sm-3 form-group mb-20 time-picker">
+            <label class="form-label">{{timeLabel}}</label>
+            <div class="form-icon-group">
+              <ng-template #popTemplate>
+                <timepicker id="timePicker" [showMeridian]="false" [min]="minTime" [max]="maxTime" name="momStartTime" #momStartTime="ngModel" [(ngModel)]="mom.momStartTime" (ngModelChange)="compareTwoTimes()" required></timepicker>
+              </ng-template>
+              <input [outsideClick]="true" class="form-control" [popover]="popTemplate" placement="{{bottomPlacement}}" name="momStartTimeValue" value="{{ mom.momStartTime | date: 'HH:mm' }}" readonly />
+              <i class="zmdi zmdi-time"></i>
+            </div>
+          </div>
+          <div class="to-text">
+            <span>{{toText}}</span>
+          </div>
+          <div class="col-xs-12 col-sm-3 form-group mb-20 time-picker">
+            <label class="form-label hidden-label">{{timeLabel}}</label>
+            <div class="form-icon-group">
+              <ng-template #popTemplateEndTime>
+                <timepicker id="timePicker2" [showMeridian]="false" [min]="minEndTime" [max]="maxEndTime" name="momEndTime" #momEndTime="ngModel" [(ngModel)]="mom.momEndTime" (ngModelChange)="compareTwoTimes()" required></timepicker>
+              </ng-template>
+              <input [outsideClick]="true" class="form-control" [popover]="popTemplateEndTime" placement="{{bottomPlacement}}" name="momEndTimeValue" value="{{ mom.momEndTime | date: 'HH:mm' }}" readonly />
+              <i class="zmdi zmdi-time"></i>
+            </div>
+            <div *ngIf="error.isError" class="invalid-feedback">
+              {{ error.errorMessage }}
+            </div>
+
+          </div>
+          <div class="col-xs-12 col-sm-4 form-group mb-20 mt-5 text-right time-picker">
+            <label class="form-label d-block  text-left">{{closureMeetingLabel}}</label>
+            <div class="form-icon-group">
+              <input type="text"
+                     placeholder="Datepicker"
+                     class="form-control"
+                     bsDatepicker
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'  ,adaptivePosition: true}" name="closureMeeting"
+                     #closureMeeting="ngModel" [(ngModel)]="mom.closureMeetingDate" (change)="isInvalidDate($event)" required>
+              <i class="zmdi zmdi-calendar"></i>
+            </div>
+          </div>
+        </div>
+        <div class="form-group mb-20">
+          <label class="form-label required">{{agendaTitle}}</label>
+          <textarea class="form-control" rows="3" name="agenda" #agenda="ngModel" [(ngModel)]="mom.agenda" appValidateMaxLength="256" required></textarea>
+          <div *ngIf="agenda.errors" class="feedback-box">
+            <p *ngIf="agenda.touched && !agenda.valid && agenda.errors.required" class="invalid-feedback">{{agendaRequiredMessage}}</p>
+            <p class="invalid-feedback mb-0" appValidateMaxLength *ngIf="agenda.touched && !agenda.errors.required">{{maxLengthExceedMessage}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Team Section-->
+    <div class="page-container team-section mb-20">
+      <div class="form-area">
+        <div class="mb-20 team-divider-section">
+          <label class="form-label required">
+            {{teamLabel}}
+          </label>
+          <table class="table form-table">
+            <thead>
+              <tr>
+                <th class="w-50">
+                  {{nameLabel}}
+                </th>
+                <th class="w-50">
+                  {{designationLabel}}
+                </th>
+                <th class="w-5"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let internalUser of selectedInternalUsers; let index = index;">
+                <td class="w-50">
+                  <ng-select #select class="page-select" [items]="internalUserList"
+                             [name]="selectedInternalUsers[index].name" [searchable]="false"
+                             [(ngModel)]="selectedInternalUsers[index].userId" bindLabel="name" bindValue="id" required disabled>
+                    <ng-template ng-header-tmp>
+                      <input type="text" (input)="select.filter($event.target.value)" class="w-100" />
+                    </ng-template>
+                  </ng-select>
+                </td>
+                <td class="w-50 designation-input">
+                  <input class="form-control" type="text" (input)="select.filter($event.target.value)" [(ngModel)]="internalUser.designation"
+                         [ngModelOptions]="{standalone: true}" [name]="internalUser.userId" disabled required />
+                </td>
+                <td class="text-center w-5">
+                  <a class="action-btn mt-3 d-block" tooltip="{{removeToolTip}}" (click)="removeInternalUser(internalUser.userId)">
+                    <i class="zmdi zmdi-delete"></i>
+                  </a>
+                </td>
+
+              </tr>
+              <tr>
+                <td class="w-50">
+                  <ng-select #selectInternalUser disable class="page-select" [items]="internalUserAddList" name="internaluser" #internaluser="ngModel" (change)="onInternalUserSelection($event)"
+                             [searchable]="false" [(ngModel)]="selectedInternalUser" bindLabel="name" bindValue="id">
+                    <ng-template ng-header-tmp>
+                      <input type="text" (input)="selectInternalUser.filter($event.target.value)" class="w-100" />
+                    </ng-template>
+                  </ng-select>
+
+                </td>
+                <td class="w-50">
+                  <input class="form-control" type="text" (input)="select.filter($event.target.value)"
+                         [(ngModel)]="selectedInternalUserDesignation" name="designationadd" #designationadd="ngModel" disabled />
+                </td>
+                <td class="w-5 text-center">
+                  <a class="action-btn mt-3 d-block" (click)="addInternalUser()" tooltip="{{addToolTip}}">
+                    <i class="zmdi zmdi-plus-circle"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="team-divider-section">
+          <label class="form-label required">
+            {{clientParticipantsText}}
+          </label>
+          <table class="table form-table">
+            <thead>
+              <tr>
+                <th class="w-50">
+                  {{nameLabel}}
+                </th>
+                <th class="w-50">
+                  {{designationLabel}}
+                </th>
+                <th class="w-5"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let externalUser of selectedExternalUsers; let index = index;">
+                <td class="w-50">
+                  <ng-select #select disable class="page-select" [items]="externalUserList" [searchable]="false"
+                             [(ngModel)]="selectedExternalUsers[index].userId" [ngModelOptions]="{standalone: true}"
+                             [name]="selectedExternalUsers[index].name"
+                             bindLabel="name" bindValue="id" disabled required>
+                    <ng-template ng-header-tmp>
+                      <input type="text" (input)="select.filter($event.target.value)" class="w-100" />
+                    </ng-template>
+                  </ng-select>
+
+                </td>
+                <td class="w-50 designation-input">
+                  <input class="form-control" type="text" (input)="select.filter($event.target.value)" [(ngModel)]="externalUser.designation"
+                         [ngModelOptions]="{standalone: true}" [name]="externalUser.userId" disabled required />
+                </td>
+                <td class="text-center w-5">
+                  <a class="action-btn  mt-3 d-block" tooltip="{{removeToolTip}}" (click)="removeExternalUser(externalUser.userId)">
+                    <i class="zmdi zmdi-delete"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td class="w-50">
+                  <ng-select #selectExternalUser class="page-select" [items]="externalUserAddList" [searchable]="false"
+                             (change)="onExternalUserSelection($event)" name="client" #client="ngModel" [(ngModel)]="selectedExternalUser"
+                             bindLabel="name" bindValue="id">
+                    <ng-template ng-header-tmp>
+                      <input type="text" (input)="selectExternalUser.filter($event.target.value)" class="w-100" />
+                    </ng-template>
+                  </ng-select>
+                </td>
+                <td class="w-50">
+                  <input class="form-control" type="text" (input)="select.filter($event.target.value)" name="clientDesignation"
+                         #clientDesignation="ngModel" [(ngModel)]="selectedExternalUserDesignation" disabled />
+                </td>
+                <td class="w-5 text-center">
+                  <a class="action-btn  mt-3 d-block" tooltip="{{addToolTip}}" (click)="addExternalUser()">
+                    <i class="zmdi zmdi-plus-circle"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-container point-discussion-section">
+      <div class="table-responsive">
+        <table class="table form-table">
+          <thead>
+            <tr>
+              <th class="w-10 text-center"><label class="form-label mb-0">{{srNo}}</label></th>
+              <th class="w-50 pl-0"><label class="form-label mb-0 required ml-10">{{pointOfDiscussionTitle}}</label> </th>
+              <th class="w-40" colspan="2"><span class="w-50 d-inline-block mlm-10"><label class="form-label mb-0 required">{{statusTargetDateTitle}}</label></span><span class="w-50 d-inline-block"><label class="form-label mb-0 required">{{personResponsibleTitle}}</label></span></th>
+
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let mainPoint of mainPointDiscussionList;let index=index;">
+              <td class="w-10 text-center">
+                {{index+1}}
+              </td>
+              <td class="w-90" colspan="5">
+                <div class="main-section">
+                  <a class="d-inline-block action-btn w-5" (click)="addMainPoints(index,true)" *ngIf="mainPointDiscussionList[index]===mainPointDiscussionList[mainPointDiscussionList.length-1]">
+                    <i class="zmdi zmdi-plus-circle"></i>
+                  </a>
+
+                  <div class="d-inline-block w-95">
+                    <input type="text" class="form-control  w-45"
+                           [(ngModel)]="mainPoint.mainPoint" [ngModelOptions]="{standalone: true}" #mainPointData="ngModel"
+                           [name]="mainPoint.mainPoint" appValidateMaxLength="256" (change)="onTextChangeMainPoint($event)" required />
+                  </div>
+                </div>
+                <table class="w-100 sub-table table">
+                  <tr *ngFor="let subPoint of mainPoint.subPointDiscussionACCollection;let subIndex=index;">
+                    <td>
+
+                      <div class="sub-sections">
+                        <span class="d-inline-block  section-no w-5" id="subPointNumber">{{subIndex+1}}</span>
+                        <div class="d-inline-block w-5 text-center mr-3">
+                          <a class="action-btn " tooltip="{{addToolTip}}" *ngIf="mainPoint.subPointDiscussionACCollection[subIndex]===mainPoint.subPointDiscussionACCollection[mainPoint.subPointDiscussionACCollection.length-1]" (click)="addSubPoints(index,subIndex,true)">
+                            <i class="zmdi zmdi-plus-circle"></i>
+                          </a>
+                          <a class="action-btn" tooltip="{{removeToolTip}}" (click)="removeSubPoint(index,subIndex)">
+                            <i class="zmdi zmdi-delete"></i>
+                          </a>
+                        </div>
+                        <div class="w-89 d-inline-block">
+                          <textarea class="form-control d-inline-block "
+                                    [(ngModel)]="subPoint.subPoint" [ngModelOptions]="{standalone: true}" [name]="subPoint.subPoint"
+                                    #subPointData="ngModel" appValidateMaxLength="256" (change)="onTextChangeSubPoint($event)" required></textarea>
+                        </div>
+
+                      </div>
+                    </td>
+                    <td class="w-20 relative-position">
+                      <div class="select-box">
+                        <ng-select class="page-select required" [items]="statusList"
+                                   [(ngModel)]="subPoint.statusString" [ngModelOptions]="{standalone: true}"
+                                   [name]="subPoint.statusString" bindLabel="label" bindValue="label" (change)="isStatusBlank($event)" required>
+                        </ng-select>
+                      </div>
+
+                      <div class="time-picker-box form-group time-picker mb-0 mt-5">
+                        <input type="text"
+                               placeholder="Datepicker"
+                               class="form-control required"
+                               bsDatepicker
+                               [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' ,adaptivePosition: true }"
+                               [(ngModel)]="subPoint.targetDate" [name]="subPoint.targetDate" (ngModelChange)="isInvalidDate($event)" [ngModelOptions]="{standalone: true}"
+                               required>
+                        <i class="zmdi zmdi-calendar"></i>
+                      </div>
+                    </td>
+                    <td class="w-20 relative-position">
+                      <table class="sub-table table">
+                        <tr *ngFor="let personResposible of subPoint.personResponsibleACCollection;let userIndex=index;">
+                          <td>
+                            <ng-select #selectPersonResposible class="page-select person-responsible-dropdown mtm-5 required" [items]="userList" [searchable]="false"
+                                       [(ngModel)]="personResposible.userId" [name]="personResposible.name" (change)="onPersonSelection($event,index,subIndex,userIndex)"
+                                       bindLabel="name" bindValue="id" [placeholder]="dropdownDefaultValue" [ngModelOptions]="{standalone: true}" required>
+                              <ng-template ng-header-tmp let-item="item">
+                                <input type="text" (input)="selectPersonResposible.filter($event.target.value)" name="userValue" class="w-100" />
+                              </ng-template>
+                            </ng-select>
+
+                          </td>
+                          <td class="text-center">
+                            <a class="d-inline-block action-btn" tooltip="{{addToolTip}}" *ngIf="subPoint.personResponsibleACCollection[userIndex]===subPoint.personResponsibleACCollection[subPoint.personResponsibleACCollection.length-1]" (click)="addPersonResposible(index,subIndex,userIndex,0,true)">
+                              <i class="zmdi zmdi-plus-circle"></i>
+                            </a>
+                            <a class=" action-btn delete-action-button" tooltip="{{removeToolTip}}" *ngIf="subPoint.personResponsibleACCollection.length==2"
+                               (click)="removePersonResposible(index,subIndex,personResposible.userId)">
+                              <i class="zmdi zmdi-delete"></i>
+                            </a>
+
+                          </td>
+                        </tr>
+                      </table>
+
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td class="w-5 text-center">
+                <a class="action-btn" tooltip="{{removeToolTip}}" (click)="removeMainPoint(index)">
+                  <i class="zmdi zmdi-delete"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="btn form-btn mt-30" (click)="saveMom()" [disabled]="momAddForm.invalid || (selectedInternalUsers.length === 0 || selectedExternalUsers.length === 0 ||  !isValid)  ">
+        <img src="../assets/images/save.png" class="align-top" />
+        {{saveButtonText}}
+      </button>
+    </div>
+  </form>
+</div>
+<!--Loader component-->
+<app-loader></app-loader>

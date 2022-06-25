@@ -1,0 +1,29 @@
+/*Imported common style to get common elements styles*/
+@import '../../styles.scss';
+
+/*Observation data page design*/
+.observation-page {
+  .download-options {
+    .btn-download {
+      width: 30px;
+      height: 30px;
+      line-height: 20px;
+    }
+  }
+}
+
+.download-options {
+  .btn-download {
+    &:hover {
+      background: darken($button-bg-color, 10%)
+    }
+  }
+
+  .download-opt-img {
+    max-width: 22px;
+
+    &.pdf-img {
+      max-width: 18px;
+    }
+  }
+}

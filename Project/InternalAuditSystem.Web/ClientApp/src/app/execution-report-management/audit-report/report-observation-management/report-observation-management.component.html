@@ -1,0 +1,43 @@
+<!--observation management main page with tabs title and components-->
+<div class="observation-page">
+  <div class="top-contents mb-15 ml-20">
+    <h4 class="page-title">{{observationManagementTitle}}</h4>
+    <div class="right-contents download-options w-60 text-right">
+      <div class="d-inline-block" *ngIf="isShowPaging">
+        <pagination [totalItems]="totalRecord" [rotate]="rotate" [maxSize]="maxSize" [(ngModel)]="currentPage"
+                    *ngIf="isShowPaging" previousText="&lsaquo;" nextText="&rsaquo;" (pageChanged)="pageChanged($event)">
+        </pagination>
+      </div>
+      <button type="button" class="btn btn-icon ml-10  btn-outline-primary p-0" [outsideClick]="true" [popover]="popTemplate" placement="bottom" ><i class="zmdi zmdi-download" tooltip="{{downloadToolTip}}" placement="top"> </i></button>
+      <ng-template #popTemplate>
+        <button class="btn btn-icon btn-download d-inline-block p-0" (click)="createPPTReport()">
+          <img class="download-opt-img" src="../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+        </button>
+      </ng-template>
+      <button type="button" class="btn btn-icon  ml-10  btn-outline-primary back-btn p-0" tooltip="{{backToolTip}}" (click)="onBackButton()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <!--observation tabs components-->
+  <tabset class="page-tabs observation-tabs" #staticTabs>
+    <tab heading="{{observationTabTitle}}">
+      <div *ngIf="isShowObservationTab">
+        <app-report-observation-tab></app-report-observation-tab>
+      </div>
+    </tab>
+    <tab heading="{{managementCommentsTitle}}" (selectTab)="onSelect($event)">
+      <div *ngIf="isShowManagementTab">
+        <app-report-management-comments></app-report-management-comments>
+      </div>
+    </tab>
+    <tab heading="{{reviewerCommentsTitle}}" (selectTab)="onSelect($event)">
+      <div *ngIf="isShowReviewerTab">
+        <app-report-reveiwer-comments (pagingToEmit)="setPaging()"> </app-report-reveiwer-comments>
+      </div>
+
+    </tab>
+  </tabset>
+</div>
+<!--Loader component-->
+<app-loader></app-loader>

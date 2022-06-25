@@ -1,0 +1,41 @@
+<!--Loader component-->
+<app-loader></app-loader>
+
+<!--Process add page elements-->
+<div class="process-add-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">
+      {{rcmProcessTitle}}
+    </h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" tooltip="{{backToolTip}}" (click)="onBackClick()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container fixed-height-container p-35">
+    <form #rcmProcessAddForm="ngForm">
+      <div class="Process-form">
+        <div class="mb-20">
+          <div class="d-inline-block align-middle w-40 mb-20 form-group mr-20">
+            <label class="form-label required">
+              {{rcmProcessTitle}}
+            </label>
+            <textarea class="form-control small-txt-area" [(ngModel)]="rcmProcess.process"
+                      name="process" #processes="ngModel" required appValidateAlphanumeric appValidateMaxLength="70"></textarea>
+            <div *ngIf="processes.errors" class="feedback-box">
+              <p *ngIf="processes.touched && !processes.valid && processes.errors.required" class="invalid-feedback">{{requiredMessage}}</p>
+              <p *ngIf="processes.touched && !processes.valid && processes.errors.appValidateAlphanumeric" class="invalid-feedback">{{invalidMessage}}</p>
+              <p *ngIf="processes.touched && !processes.errors.required && !processes.errors.appValidateAlphanumeric" class="invalid-feedback" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+            </div>
+          </div>
+        </div>
+        <button class="btn form-btn mt-20" (click)="saveRcmProcess()" [disabled]="rcmProcessAddForm.invalid">
+          <img src="../assets/images/save.png" class="align-top" />
+          {{saveButtonText}}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

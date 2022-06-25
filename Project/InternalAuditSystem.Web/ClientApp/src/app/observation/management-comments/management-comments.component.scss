@@ -1,0 +1,12 @@
+/*Imported common style to get common elements styles*/
+@import '../../../styles.scss';
+
+/*observation comments page scss*/
+.observation-comments-page {
+  .form-group {
+    &.date-picker {
+      i { bottom: 11px; right: 15px;}
+    }
+  }
+}
+

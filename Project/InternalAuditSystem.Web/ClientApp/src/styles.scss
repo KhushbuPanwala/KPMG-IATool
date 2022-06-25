@@ -1,0 +1,2222 @@
+/* You can add global styles to this file, and also import other style files */
+/*********************************************************************
+**********************************************************************
+  @author: Nidhi BHatt
+  @date: 02/04/2020
+  @TO-DO: Bootstrap Framework and ng-select for dropdown.
+  @description: Style scss for the project common component, classes and layouts.
+  Note: To override all the library scss and css to our custom UI
+        "!important" is required whenevr it is needed
+**********************************************************************
+*********************************************************************/
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import '~ngx-toastr/toastr.css';
+@import "../node_modules/ag-grid-community/src/styles/ag-grid.scss";
+@import "../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";
+
+/*Mixins*/
+@mixin flexstyle($value,$justify-content,$align-content) {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-$value;
+  display: -webkit-$value;
+  display: $value;
+  -webkit-justify-content: $justify-content;
+  -moz-justify-content: $justify-content;
+  -ms-justify-content: $justify-content;
+  justify-content: $justify-content;
+  -webkit-align-items: $align-content;
+  -moz-align-items: $align-content;
+  -o-align-items: $align-content;
+  align-items: $align-content;
+}
+
+/*
+@Variable : For Colors
+*/
+$white: #ffffff;
+$off-white: #efefef;
+$light-grey: #FAFBFE;
+$black: #000000;
+$grey: #999999;
+$text-color: #333333;
+$light-text-color: #666666;
+$theme-color: #00338D;
+$blue-border-color: #003087;
+$light-theme-color: #0091DA;
+$border-color: #F9F9F9;
+$body-bg-color: #F4F7FC;
+$table-bg-color: #F7FAFC;
+$search-icon-color: #b2b2b2;
+$red-color: #D80000;
+$legend-red: #FF0000;
+$legend-green: #32BF00;
+$legend-yellow: #E6C800;
+$scrollbar-thumb-color: #B0B8BF;
+$table-border-color: #dee2e6;
+$button-bg-color: #D2F0FF;
+$select-border-color: #ced4da;
+$list-hover-bg: #E6F4FF;
+$grey-btn-color: #bbb;
+$legend-btn-bg: #D80000;
+$loader-bg: rgba(0,0,0,0.5);
+$grey-border: #DFDFDF;
+$border-field: #CED4DA; //Author Shipra
+$slider-color: #ccc; //Author Shipra,
+$dark-blue: #2699FB; //Author Shipra
+$link-color: #03A9F4;
+$grey-light: #f1f1f1;
+$grey-dark: #888;
+
+/*
+@Variable : For font-family
+*/
+$font-family: 'Roboto', sans-serif;
+
+/*
+@Variable : For font-size
+*/
+$regular-font: 14px;
+$small-font: 12px;
+$small-regular-font: 13px;
+$regular-font-inc: 15px;
+$regular-large-font: 16px;
+$regular-medium-font: 18px;
+$medium-regular-font: 20px;
+$medium-font: 22px;
+$large-font: 24px;
+$medium-large-font: 26px;
+$x-large-font: 36px;
+$x-small-font: 11px;
+
+/*Override body background color from bootstrap css*/
+body {
+  background-color: $body-bg-color !important;
+  overflow: hidden;
+  font-family: $font-family !important;
+}
+  /*Override button css*/
+  button {
+    &:focus { outline: none !important; }
+  }
+  /*override date picker theme color css*/
+  .bs-datepicker-body table td.week span { color: $light-theme-color !important; }
+
+  .bs-datepicker-body table td span.selected,
+  .bs-datepicker-head,
+  .bs-datepicker-head, .bs-datepicker button:active,
+  .bs-datepicker-body table td.selected span,
+  .bs-datepicker-body table td span[class*="select-"]:after,
+  .bs-datepicker-body table td[class*="select-"] span:after,
+  .bs-datepicker-body table td.active-week span:hover { background-color: $light-theme-color !important; }
+
+  /*bootstrap dropdown common design css*/
+  .dropdown-toggle { min-width: 180px !important; font-size: $regular-font;
+
+    &:after { position: absolute; right: 10px; top: 15px; }
+  }
+
+  .dropdown-menu { width: 100%; padding: 5px 2px;
+
+    .dropdown-item { white-space: normal; word-break: break-word; font-size: $small-font; text-align: left; color: $text-color;
+
+      &:hover { background-color: $list-hover-bg; }
+    }
+  }
+
+  /*Icon button common style*/
+  .btn { font-family: $font-family;
+
+    &.btn-icon { background: $button-bg-color; border-radius: 5px; width: 40px; height: 40px; line-height: 30px; transition: 0.5s all; text-align: center; font-size: $large-font;
+
+      i { color: $light-theme-color; }
+
+      &:hover { background-color: darken($button-bg-color, 10%);
+
+        i { color: $light-theme-color; }
+      }
+
+      &:focus, &:not(:disabled):not(.disabled):active, &:hover { box-shadow: none; border: 1px solid transparent; }
+    }
+
+    &.dark-bg-btn { background: $light-theme-color; border: 1px solid transparent; width: 40px; height: 40px; line-height: 30px;
+
+      &:hover, &:focus, &:not(:disabled):not(.disabled):active { border: none; background: lighten($light-theme-color,10%); border: 1px solid transparent;
+
+        i { color: $white; }
+      }
+
+      img { width: 24px; height: 24px; }
+
+      i { font-size: $large-font; color: $white; line-height: 40px; transition: 0.5s all; }
+    }
+
+    &.btn-outline-primary { border-width: 2px; border-color: $light-theme-color; transition: 0.5s;
+      &:not(:disabled):not(.disabled):active { background-color: $button-bg-color !important; }
+    }
+
+    &:focus, &:not(:disabled):not(.disabled):active, &:hover { box-shadow: none; border: 1px solid transparent;
+
+      i { color: $light-theme-color; }
+    }
+
+    &.form-btn { background-color: $light-theme-color !important; color: $white; min-width: 140px;
+
+      &.border-form-btn { background-color: $white !important; color: $light-theme-color; border: 1px solid $light-theme-color !important; }
+    }
+
+    &.color-btn { min-width: 100px; color: $text-color; font-size: $regular-font-inc; border-color: $select-border-color; height: 38px; margin: 0 20px; border-radius: 5px !important;
+
+      &.active, &:hover, &:focus { color: $text-color;
+
+        i { color: $light-theme-color; }
+      }
+    }
+
+    &.confirm-btn { margin-right: 10px; }
+
+    &.small-btn { min-width: 90px; background-color: $light-theme-color !important; color: $white;
+
+      &.btn-default { background-color: $grey-btn-color !important; }
+    }
+
+    &.large-button { min-width: 185px; }
+
+
+    &.upload-excel-btn { min-width: 110px; text-align: left; padding: 0 5px !important;
+
+      i, span { color: $text-color; }
+
+      span { font-size: $regular-font-inc; }
+
+      i { font-size: $regular-medium-font; }
+    }
+  }
+
+  .checkbox { position: relative; cursor: pointer; }
+  /*Radio button common style*/
+  /* The container */
+  .form-check-label { display: block; position: relative; cursor: pointer; font-size: $regular-font-inc; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+
+    input { position: absolute; opacity: 0; cursor: pointer;
+
+      &:checked ~ .checkmark {
+        &:after { display: block; }
+      }
+
+      &:hover input ~ .checkmark { background-color: $light-text-color; }
+    }
+  }
+
+  .wp-rcm-name { font-size: $regular-font-inc; color: $text-color; display: block; text-transform: capitalize; }
+  /* Create the indicator (the dot/circle - hidden when not checked) */
+  .checkmark { position: absolute; top: 0; left: 0; height: 24px; width: 24px; background-color: $white; border: 1px solid $text-color; border-radius: 50%;
+
+    &:after { content: ""; position: absolute; display: none; }
+  }
+
+  .checkmark {
+    &:after { top: 4px; left: 4px; width: 14px; height: 14px; border-radius: 50%; background: $text-color; }
+  }
+
+
+  .pull-right { float: right; }
+
+  .d-inline-block { display: inline-block !important; }
+  /*Common height classes*/
+  /*editor height classes*/
+  .h-120 {
+    .angular-editor-textarea { min-height: 120px !important; }
+  }
+
+  .h-95 {
+    .angular-editor-textarea { min-height: 95px !important; }
+  }
+
+  .h-179 {
+    .angular-editor-textarea { min-height: 179px !important; }
+  }
+
+  .h-300 {
+    .angular-editor-textarea { min-height: 300px !important; }
+  }
+
+  .h-148 {
+    .angular-editor-textarea, textarea { min-height: 148px; }
+  }
+  /*Common width classes*/
+  .width-30 { width: 30px; }
+
+  .min-width-180 { min-width: 180px !important; }
+
+  .w-5 { width: 5%; }
+
+  .w-10 { width: 10%; }
+
+  .w-15 { width: 15% !important; }
+
+  .w-20 { width: 20%; }
+
+  .w-25 { width: 25%; }
+
+  .w-30 { width: 30% !important; }
+
+  .w-35 { width: 35%; }
+
+  .w-38 { width: 38%; }
+
+  .w-40 { width: 40%; }
+
+  .w-3 { width: 3%; }
+
+  .w-4 { width: 4%; }
+
+  .w-45 { width: 45%; }
+
+  .w-42 { width: 42%; }
+
+  .w-50 { width: 50%; }
+
+  .w-55 { width: 55%; }
+
+  .w-59 { width: 59% }
+
+  .w-82 { width: 82%; }
+
+  .w-60 { width: 60%; }
+
+  .w-65 { width: 65%; }
+
+  .w-70 { width: 70%; }
+
+  .w-80 { width: 80% !important; }
+
+  .w-85 { width: 85%; }
+
+  .w-89 { width: 89%; }
+
+  .w-90 { width: 90% !important; }
+
+  .w-95 { width: 95%; }
+
+  .w-100 { width: 100%; }
+
+  .w-104 { min-width: 104px !important; }
+
+  .min-width-140 { min-width: 140px; }
+  /*Common css for margin*/
+  .ml-5 { margin-left: 5px !important; }
+
+  .ml-6 { margin-left: 6px; }
+
+  .ml-10 { margin-left: 10px !important; }
+
+  .ml-15 { margin-left: 15px; }
+
+  .ml-20 { margin-left: 20px; }
+
+  .ml-25 { margin-left: 25px; }
+  // Author Shipra
+  .ml-30 { margin-left: 30px; }
+
+  .ml-40 { margin-left: 40px; }
+
+  .ml-50 { margin-left: 50px; }
+
+  .ml-60 { margin-left: 60px; }
+
+  .ml-70 { margin-left: 70px; }
+
+  .ml-80 { margin-left: 80px; }
+
+  .ml-90 { margin-left: 90px; }
+
+  .mr-5px { margin-right: 5px; }
+  // Author Shipra
+  .mr-10 { margin-right: 10px; }
+  //Author Shipra
+  .mr-5 { margin-right: 5px !important; }
+
+  .mr-30 { margin-right: 30px; }
+  //Author Shipra
+  .mr-3 { margin-right: 3px !important; }
+
+  .mr-35 { margin-right: 35px; }
+  //Author Shipra
+  .mr-35 { margin-right: 35px; }
+  //Author Shipra
+  .mr-40 { margin-right: 40px; }
+
+  .mr-20 { margin-right: 20px; }
+  .mb-5 { margin-bottom: 5px !important; }
+  .mb-0 { margin-bottom: 0; }
+
+  .mb-10 { margin-bottom: 10px; }
+
+  .mb-15 { margin-bottom: 15px; }
+
+  .mb-20 { margin-bottom: 20px !important; }
+
+  .mb-25 { margin-bottom: 25px !important; }
+
+  .mb-35 { margin-bottom: 35px; }
+
+  .mb-30 { margin-bottom: 30px; }
+
+  .mb-40 { margin-bottom: 40px; }
+
+  .mb-50 { margin-bottom: 50px; }
+  //Author Shipra
+  .mb-95 { margin-bottom: 95px; }
+
+  .mb-20 { margin-bottom: 20px; }
+
+  .mt-3 { margin-top: 3px !important; }
+
+  .mt-5 { margin-top: 5px !important; }
+
+  .mt-6 { margin-top: 6px; }
+
+  .mt-10 { margin-top: 10px; }
+
+  .mt-40 { margin-top: 40px; }
+
+  .mt-15 { margin-top: 15px; }
+  //Author Shipra
+  .mt-20 { margin-top: 20px; }
+
+  .mt-30 { margin-top: 30px; }
+
+  .mt-33 { margin-top: 33px; }
+
+  .mt-60 { margin-top: 60px; }
+
+  .mt-160 { margin-top: 160px; }
+
+  .mt-90 { margin-top: 90px; }
+  /*Common css for padding*/
+  .p-0 { padding: 0 !important; }
+
+  .p-30 { padding: 30px !important; }
+
+  .p-35 { padding: 35px !important; }
+
+  .pl-0 { padding-left: 0; }
+
+  .pl-15 { padding-left: 15px; }
+
+  .pl-25 { padding-left: 25px; }
+
+  .pl-35 { padding-left: 35px; }
+
+  .pl-30 { padding-left: 30px; }
+
+  .no-wrap { white-space: nowrap; }
+  .word-wrap {word-break: break-word;}
+  .team-master-label { color: $link-color !important; font-size: $regular-font; }
+  /*Common css for vertical-align [Author Shipra]*/
+  .align-middle { vertical-align: middle; }
+
+  .slign-top { vertical-align: top; }
+  /*Overrid bootstrap grid css*/
+  .row { margin-left: -10px; margin-right: -10px; }
+
+  [class*="col-"] { padding-left: 10px !important; padding-right: 10px !important; }
+  /*Header common css*/
+  .header { background: $white; padding: 6px 30px; z-index: 2;
+
+    .header-breadcrumb { background: none; display: inline-block !important; }
+
+    .breadcrumb { background-color: transparent; padding: 0 !important; margin-bottom: 0 !important; margin-left: 0; }
+  }
+  /*Override breadcrumb css*/
+  .breadcrumb-item + .breadcrumb-item {
+    &::before { display: inline-block; padding-right: 0.5rem; color: $text-color; content: ">" !important; }
+  }
+
+  .breadcrumb-item {
+    .breadcrumb-item-name { font-size: $regular-font-inc; color: $grey;
+
+      &.active { color: $text-color; }
+    }
+  }
+  /*override ngx-pagination css*/
+  .table-footer {
+    .ngx-pagination { padding-left: 0;
+
+      li { width: 36px; height: 36px; line-height: 25px; border: 1px solid $select-border-color; margin: 0; margin-left: -1px; vertical-align: middle; text-align: center;
+
+        span { color: $light-theme-color; font-size: $regular-font-inc; }
+
+        &.current {
+          span { color: $white; }
+        }
+      }
+      a {
+        &:hover { background: none; text-decoration: none; }
+
+        &:focus { outline: none; }
+      }
+    }
+
+    .pagination-previous { border-top-left-radius: 5px; border-bottom-left-radius: 5px; margin-left: 0 !important;
+
+      a {
+        &:before { content: '\f2fa' !important; margin-right: 0 !important; font-family: 'Material-Design-Iconic-Font'; font-size: $regular-font-inc; }
+      }
+
+      span { display: none; }
+
+      &.disabled {
+        &:before { content: '\f2fa' !important; margin-right: 0 !important; font-family: 'Material-Design-Iconic-Font'; font-size: $regular-font-inc; }
+      }
+    }
+
+    .pagination-next { border-top-right-radius: 5px; border-bottom-right-radius: 5px;
+
+      a {
+        &:after { content: '\f2fb' !important; margin-left: 0 !important; font-family: 'Material-Design-Iconic-Font'; font-size: $regular-font-inc; }
+      }
+
+      &.disabled {
+        &:after { content: '\f2fb' !important; margin-left: 0 !important; font-family: 'Material-Design-Iconic-Font'; font-size: $regular-font-inc; }
+      }
+    }
+    .selectbox-content { max-width: 100%; }
+  }
+  /*Sidemenu layout design*/
+  .sidebar { position: fixed; width: 245px; height: 100%; overflow: hidden; z-index: 2; transition: 0.1s; top: 0; left: 0; background-color: $white; overflow-x: hidden;
+
+  /*Sidepanel logo section design css*/
+   .sidebar-top-section {
+      background: $theme-color;
+      border-color: $blue-border-color;
+      height: 60px;
+      @include flexstyle(flex,space-between,center);
+      cursor: pointer;
+      transition: 0.1s;
+
+      img { margin-left: 30px; }
+   }
+    /*Sidebar menus section css*/
+    .navigation-section { width: 245px; height: calc(100% - 120px); overflow: auto; transition: 0.5s;
+
+      &::-webkit-scrollbar { width: 8px; }
+
+      &::-webkit-scrollbar-track { background: $border-color; }
+
+      &::-webkit-scrollbar-thumb { background: $scrollbar-thumb-color; }
+      /* Firefox supported css*/ scrollbar-color: $scrollbar-thumb-color $border-color; /* thumb and track color */ scrollbar-width: thin; }
+
+    &.active { background: none; transition: 0.1s;
+
+      .sidebar-top-section {
+        img { max-height: 18px; margin-left: 2px; }
+      }
+
+      .sidebar-top-section { width: 50px; }
+
+      .navigation-section { width: 0; display: none; }
+
+      .sidebar-bottom-section { display: none; }
+    }
+
+    .sidebar-bottom-section { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: $white;
+
+      .copyright-section { font-size: $regular-font-inc; color: $grey; position: absolute; left: 30px; bottom: 30px; }
+    }
+  }
+  /* The sidebar menu active class css */
+  .menu-list-item { display: block; cursor: pointer; height: 48px; text-decoration: none; font-size: $regular-font; color: $text-color; display: block; transition: 0.3s; align-self: stretch; flex-direction: row; flex-grow: 1; text-align: center; /*&.expanded {
+    .main-menus { background: $light-theme-color; border-bottom: none; border-radius: 0 5px 5px 0; }
+    span, i { color: $white; }
+  }*/
+                 .zmdi { font-size: $medium-font; color: $text-color; }
+  }
+  /*Css for multilevel menu design*/
+  .list-items-parent { width: 100%; display: block; position: relative;
+
+    .main-menus {
+      padding: 0 20px 0 10px;
+      border-bottom: 2px solid $border-color;
+      margin-right: 15px;
+      @include flexstyle(flex,center,center);
+      flex-direction: row;
+      flex: 1 1 100%;
+      height: 100%;
+
+      .menu-name { text-align: left; margin-left: 12px; color: $text-color; font-size: $regular-font; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-grow: 1; }
+    }
+
+    .submenu-items {
+
+      .main-menus { padding-left: 25px !important; border-bottom: none !important;
+
+        .menu-name { margin-left: 0 !important; }
+      }
+
+      .menu-rotate-icon { position: absolute; right: 35px;
+
+        i { font-size: $regular-medium-font !important; color: $text-color !important;
+
+          &:before { content: '\f2f2'; }
+        }
+      }
+    }
+
+    .submenu-items { display: none; }
+
+    .zmdi-chevron-down { transform: none !important; }
+
+    &.active {
+      .expanded {
+        .main-menus { background: $light-theme-color; border-bottom: none; border-radius: 0 5px 5px 0; }
+
+        span, .zmdi { color: $white; }
+
+        .zmdi { color: $white !important; }
+
+        .zmdi-chevron-down { transform: rotate(180deg) !important; }
+      }
+
+      .submenu-items { display: block; }
+    }
+  }
+
+
+  .submenu-items {
+    .list-items-parent {
+      &.active {
+        .expanded {
+          .zmdi { color: $text-color !important; }
+        }
+      }
+    }
+
+    .menu-list-item {
+      &.expanded {
+        .main-menus { background: none !important; }
+
+        span, i { color: $theme-color; }
+      }
+
+      &.active {
+        .menu-name { color: $light-theme-color; font-size: $regular-font; font-weight: bold; }
+      }
+    }
+  }
+  /*Style page content - use this if you want to push the page content to the right when you open the side navigation */
+  .main-container { position: relative; -webkit-transition: 0.5s; transition: 0.5s; margin-left: 245px; padding: 30px 25px 0 25px; overflow-y: auto; height: calc(100vh - 60px); margin-top: 60px;
+
+    .header {
+      height: 60px;
+      @include flexstyle(flex,space-beetween,center);
+      position: fixed;
+      left: 245px;
+      right: 0;
+      top: 0;
+      transition: 0.5s;
+      justify-content: space-between !important;
+    }
+
+    &.active { margin-left: 0; transition: 0.5s;
+
+      .header { left: 50px; }
+    }
+  }
+  /***************************
+These are the styles for the page title
+***************************/
+  .page-title { font-size: $medium-large-font; color: $text-color; margin-bottom: 0; }
+  /***************************
+These are the styles for the page container
+***************************/
+  .page-container { background: $white; padding: 30px 35px; border-radius: 5px;
+
+    .to-text { display: inline-block !important; vertical-align: middle; margin-top: 34px; }
+
+    &.fixed-height-container { min-height: 267px; }
+  }
+  /*Form common scss*/
+  .form-label { font-size: $small-regular-font; color: $text-color; line-height: 1; position: relative; width: fit-content; vertical-align: top;
+
+    &.bold { font-weight: bold; }
+
+    &.required {
+      &:after { content: '*'; position: absolute; right: -6px; top: 0; color: $red-color; font-size: $small-font; }
+    }
+
+    &.hidden-label { visibility: hidden; }
+  }
+
+  .form-small-label { font-size: $regular-font; color: $text-color; vertical-align: top; }
+
+  .form-area { width: calc(100% - 260px);
+
+    &.small-from-area { width: calc(100% - 536px); }
+
+    &.acm-area { width: calc(100% - 308px); }
+
+    &.border-area { margin-top: 25px; padding-top: 20px; border-top: 1px solid $select-border-color; }
+  }
+
+  .toast-message { font-size: $small-font; }
+  /*Table common scss*/
+  .table-responsive { overflow: inherit; }
+
+  .table-container {
+    .page-link {
+      &:focus { box-shadow: none; }
+    }
+  }
+
+  .table { width: 100%; //observation number design scss
+           .observation-num { display: inline-block; border-bottom: 1px solid $text-color; cursor: pointer; }
+
+    &.form-table { border: 1px solid $select-border-color;
+
+      td, th { padding: 5px 10px; font-size: $regular-font-inc; }
+    }
+
+    tr {
+      &:last-child {
+        td { border-bottom: 1px solid $select-border-color; }
+      }
+    }
+
+    &.sub-table {
+      tr {
+        &:last-child {
+          td { border-bottom: none !important; }
+        }
+      }
+    }
+
+    thead, tbody {
+      th, td { border-color: $table-border-color; color: $text-color; font-size: $small-font; }
+    }
+
+    th { white-space: nowrap; }
+
+    td { word-break: break-word;
+
+      .desc-text { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; }
+    }
+
+    .action-icon { transition: 0.5s; cursor: pointer;
+
+      i { color: $text-color; font-size: $regular-large-font;
+
+        &.zmdi-download { font-size: $regular-medium-font; display: inline-block; vertical-align: middle; }
+      }
+
+      &:hover {
+        i { color: $light-theme-color; transition: 0.5s; }
+      }
+    }
+
+    .table-action-btn { white-space: nowrap; }
+  }
+
+  .showing-results-text { color: $light-text-color; font-size: $regular-font; }
+
+  .table-striped {
+    tbody {
+      tr {
+        &:nth-of-type(odd) { background: $table-bg-color; }
+      }
+    }
+  }
+
+  .table-footer {
+    .ng-select {
+      &.ng-select-container { font-size: $regular-font; }
+    }
+
+    .ng-dropdown-panel {
+      .ng-dropdown-panel-items {
+        .ng-option { text-align: center; }
+      }
+    }
+  }
+
+  .view-files-col { cursor: pointer;
+
+    i { font-size: $regular-font; }
+
+    p { color: $text-color; font-size: $regular-font; margin: 0 5px; }
+  }
+  /*Date and timepicker common css with icon*/
+  .form-group { position: relative;
+
+    &.time-picker, &.date-picker {
+      i { position: absolute; right: 0; bottom: 8px; right: 15px; pointer-events: none; cursor: pointer;
+
+        &.closure-icon { bottom: 15px; }
+      }
+
+      .form-icon-group { position: relative;
+
+        .calender-icn { position: absolute; bottom: 8px; }
+      }
+    }
+  }
+
+  .point-discussion-section {
+    .form-group {
+      &.time-picker, &.date-picker {
+        i { position: absolute; right: 0; bottom: 7px; right: 10px; }
+      }
+    }
+  }
+
+  .form-control, .ng-value-label { font-size: $small-font; }
+
+  .form-control { border-color: $select-border-color; color: $text-color; width: 100%; height: 36px;
+    &:focus { box-shadow: none; }
+
+    &.number-control { width: 60px; }
+  }
+  /*Card design common css*/
+  .card {
+    &.form-card { border-radius: 0;
+
+      .card-header { margin: 0; background: none; border-color: $select-border-color; border-bottom-width: 2px; padding: 7px 10px; color: $text-color; font-size: $regular-font-inc; font-weight: bold;
+
+        .col-sm-6 { padding: 0; }
+      }
+    }
+  }
+  /*Override ng-select dropdown  css*/
+  .ng-clear-wrapper { display: none !important; }
+
+  .ng-select {
+    .ng-select-container {
+      .ng-value-container {
+        .ng-placeholder { font-size: $small-regular-font; }
+      }
+    }
+  }
+
+  .ng-dropdown-panel {
+    .ng-dropdown-panel-items {
+      .ng-option { font-size: $small-regular-font; }
+    }
+  }
+
+  .page-select {
+    &.ng-select {
+
+      &.ng-select-single {
+        .ng-select-container { height: 32px; min-height: 32px; }
+      }
+
+      .ng-select-container { border-color: $select-border-color; border-radius: 5px; color: $text-color; font-size: $regular-font-inc; }
+
+      .ng-arrow-wrapper {
+        .ng-arrow { color: $light-text-color; }
+      }
+
+      .ng-option-label { font-size: $small-font; }
+    }
+
+    &.ng-select-focused {
+      &:not(.not-ng-select-open) > .ng-select-container { border-color: $select-border-color; box-shadow: none; }
+    }
+  }
+
+  .team-section, .point-discussion-section {
+
+    input {
+      &.form-control { height: 30px; }
+    }
+  }
+  .ng-option-label { font-size: $small-font !important; }
+
+
+
+  .ng-select {
+    &.ng-select-single {
+      .ng-select-container {
+        .ng-value-container {
+          .ng-value { font-size: $small-regular-font; }
+        }
+      }
+    }
+  }
+
+  .team-section {
+    .action-btn { cursor: pointer;
+
+      i { font-size: $medium-font; color: $text-color; }
+    }
+
+    input, .btn-attachment { height: 30px; }
+
+    .btn-attachment { width: 100%; background: $button-bg-color; color: $text-color; font-size: $regular-font; line-height: 15px;
+
+      i { margin-right: 10px; font-size: $medium-font; line-height: 15px; vertical-align: middle; }
+    }
+
+    .ng-select {
+      .ng-select-container { height: 30px !important; min-height: 30px !important; }
+
+      .ng-value { height: 30px; margin-top: 8px; line-height: 37px; }
+
+      .ng-value-label { line-height: 30px; display: inline-block; }
+    }
+    &.report-team-section {
+      .ng-select {
+        .ng-arrow-wrapper {
+          .ng-arrow { margin-top: 20px !important; }
+        }
+        &.ng-untouched {
+          .ng-value { height: 30px; margin-top: 0px !important; line-height: 33px; }
+          .ng-arrow-wrapper {
+            .ng-arrow { margin-top: 0 !important; }
+          }
+        }
+      }
+    }
+  }
+
+.mom-add-page, .audit-add-page {
+  .team-section {
+    .ng-select { width: 340px;
+
+      .ng-value-label { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 100%; }
+
+      &.person-responsible-dropdown { width: 150px;
+
+        .ng-value-label { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 100%; }
+      }
+    }
+  }
+
+  .ng-select {
+    &.person-responsible-dropdown { width: 150px;
+
+      .ng-value-label { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 100%; }
+    }
+  }
+}
+  .survey-user-create {
+    .team-section {
+      .ng-select { width: 311px;
+        .ng-value-label { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 100%; }
+      }
+    }
+  }
+  //override ng-select css for documents page dropdown design
+  /*.ng-select {
+  &.btn-select { width: 180px;
+    .ng-value-label { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 100%; }
+    .ng-select-container { background: inherit; border: none; height: 24px !important; min-height: 24px !important; color: $white; }
+    .ng-value { height: 30px; margin-top: 8px; line-height: 37px; }
+
+    .ng-value-label { line-height: 30px; display: inline-block;font-size: $regular-font-inc; }
+
+    &.ng-untouched {
+      .ng-value { height: 30px; margin-top: 0px !important; line-height: 37px; }
+    }
+  
+  }
+}*/
+  .action-btn { cursor: pointer;
+
+    i { font-size: $medium-regular-font; color: $text-color; }
+  }
+  /*Textarea slim scroll css*/
+  textarea {
+    &::-webkit-scrollbar { width: 5px; }
+
+    &::-webkit-scrollbar-track { background: $select-border-color; }
+
+    &::-webkit-scrollbar-thumb { background: $scrollbar-thumb-color; }
+    /* Firefox supported css*/ scrollbar-color: $scrollbar-thumb-color $border-color; /* thumb and track color */ scrollbar-width: thin;
+
+    &.big-txt-area { height: 300px; }
+
+    &.page-txt-area { height: 120px; }
+
+    &.medium-txt-area { height: 87px; }
+
+    &.small-txt-area { height: 65px; }
+
+    &.wp-text-area { height: 138px !important; }
+
+    &.implication-txt-area { height: 118px; }
+  }
+  /*Common topcontents css with icon and title*/
+  .top-contents {
+    @include flexstyle(flex,space-between,center);
+  }
+  /*Searchbox common design form tabular format*/
+  .search-box { position: relative; max-width: 100%; width: 320px;
+
+    .search-control { border-color: $select-border-color; border-radius: 5px; color: $grey; font-size: $regular-font-inc; }
+
+    i { position: absolute; left: 10px; top: 9px; color: $search-icon-color; font-size: $medium-regular-font; }
+  }
+  /* Override tabs css*/
+  .page-tabs {
+    .tab-label { font-size: $regular-font; }
+
+    .nav-tabs {
+      .nav-item { padding-right: 15px; }
+
+      .nav-link { border-color: $select-border-color; background: $light-grey; color: $text-color; font-size: $regular-large-font; font-weight: bold; min-width: 160px; text-align: center;
+
+        &.active { color: $light-theme-color; border-bottom: 1px solid transparent !important; background: $white; }
+      }
+    }
+
+    .tab-content { background: $white; border: 1px solid $select-border-color; border-top: none; padding: 30px 40px 30px 60px; }
+
+    &.work-program-tabs {
+      .tab-content { padding: 50px; }
+    }
+  }
+  /* Observation management fieldset common design*/
+  .recommendation-section {
+    textarea { height: 199px !important; }
+  }
+  /* Observation management tab scss*/
+  .observation-tab-contents {
+    .tab-left-contents { width: calc(100% - 200px); float: left; margin-right: 20px; }
+
+    .tab-right-contents { width: 180px; float: left; }
+
+    .legand-tag { width: 20px; height: 20px; border-radius: 5px; display: inline-block; vertical-align: middle;
+
+      &.rating-red { background: $legend-red; }
+
+      &.rating-yellow { background: $legend-yellow; }
+
+      &.rating-green { background: $legend-green; }
+    }
+
+    .form-check-inline { margin-right: 20px; }
+  }
+
+  .textarea-group { position: relative;
+
+    textarea { padding-right: 30px; }
+
+    .background-txt-area, .observation-txt-area { height: 120px; }
+
+    .divided-txt-area { height: 95px; }
+
+    .big-txt-area { height: 326px; }
+
+    .view-more-button { position: absolute; right: 20px; bottom: 7px; cursor: pointer;
+
+      i { color: $text-color; font-size: $medium-large-font; }
+    }
+  }
+
+
+.added-table-count {
+  padding: 10px 12px;
+  background: $off-white;
+  border: 1px solid $select-border-color;
+  @include flexstyle(flex,space-between,cenyter);
+  border-radius: 5px;
+
+  &.wp-count {
+    padding: 5px 10px;
+  }
+
+  i {
+    font-size: $medium-large-font;
+    color: $text-color;
+
+    &.zmdi-grid {
+      font-size: $medium-font;
+    }
+  }
+
+  .count-add-button {
+    cursor: pointer;
+    margin-left: 2px;
+    i, label {
+      font-size: $small-regular-font;
+      color: $text-color;
+      cursor: pointer;
+    }
+  }
+
+  .added-count {
+    font-size: $x-small-font;
+    color: $light-theme-color;
+    font-style: italic;
+    margin-left: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 5px;
+
+    span {
+      margin-right: 2px;
+    }
+  }
+}
+  // Design bootstrap modal common css
+  .close { opacity: 1 !important; }
+
+  .modal {
+    &.fade {
+      @include flexstyle(flex,center,center);
+      display: flex !important;
+      overflow-y: hidden;
+    }
+    .modal-body { max-height: calc(100vh - 100px); overflow-y: auto;
+      &::-webkit-scrollbar { width: 8px; }
+
+      &::-webkit-scrollbar-track { background: $border-color; }
+
+      &::-webkit-scrollbar-thumb { background: $scrollbar-thumb-color; }
+      /* Firefox supported css*/ scrollbar-color: $scrollbar-thumb-color $border-color; /* thumb and track color */ scrollbar-width: thin; }
+  }
+
+  .page-modal {
+    &.audit-team-add { width: 550px; max-width: 100%;
+
+      .modal-form { width: 70%; max-width: 100%; }
+    }
+
+    &.upload-file-dialog { width: 470px;
+
+      .file-upload-section { width: 382px; height: auto;
+
+        .uploaded-files-list { position: relative; top: auto; width: 68%; }
+
+        .upload-search-box { width: 68%; margin: 10px 0; position: relative;
+
+          i { position: absolute; left: 15px; top: 10px; color: $text-color; }
+
+          input { font-size: $regular-font-inc; color: $text-color; padding-left: 35px; }
+        }
+
+        .file-upload-button { min-width: 102px; right: 6px;
+
+          i { margin-right: 5px; }
+        }
+
+        .placeholde-input { width: 260px; }
+      }
+    }
+
+    .modal-header { padding: 20px 10px 10px 30px; border: none; position: relative;
+
+      .modal-title { font-size: $medium-font; color: $text-color; line-height: 1; }
+
+      .close { position: absolute; right: 17px; top: 12px; padding: 0; margin: 0; opacity: 1;
+
+        i { color: $text-color; font-size: $medium-regular-font; }
+      }
+    }
+
+    .modal-body { padding: 25px 30px; }
+
+    &.delete-modal { width: 350px;
+
+      .confirmation-message { margin: 30px 0 50px 0; }
+    }
+  }
+  /*datalist autocomplete common design css*/
+  .audit-team-form {
+    .dropdown { width: 100%; border-radius: 5px; border-color: 1px solid $select-border-color !important;
+
+      .custom-list-group { padding-left: 0; }
+
+      li { padding: 7px 14px; font-size: $regular-font-inc; color: $text-color;
+
+        &:hover, &.active, &:focus { background: $list-hover-bg; }
+      }
+
+      &::-webkit-scrollbar { width: 8px; }
+
+      &::-webkit-scrollbar-track { background: $border-color; }
+
+      &::-webkit-scrollbar-thumb { background: $scrollbar-thumb-color; }
+      /* Firefox supported css*/ scrollbar-color: $scrollbar-thumb-color $border-color; /* thumb and track color */ scrollbar-width: thin; }
+  }
+  /*Validation message css*/
+  .nowrap { white-space: nowrap; }
+
+  .feedback-box { position: absolute; left: 0; white-space: nowrap; }
+
+  .invalid-feedback { display: inline-block !important; width: 100%; margin-top: .25rem; font-size: $small-font; color: $red-color; }
+  /*Common color-profile upload section design css*/
+  .file-upload-section { position: relative; width: 345px;
+
+    .file-upload-input { opacity: 0; z-index: 3; width: 100%; opacity: 0; z-index: 3; width: 100%; position: absolute; top: 0; right: 0; left: 0; }
+
+    .placeholde-input { width: 216px; color: $text-color; font-size: $regular-font-inc; border-radius: 5px; }
+
+    .file-upload-button { min-width: 126px; font-size: $regular-font-inc; color: $text-color; border-radius: 5px; border: 1px solid $select-border-color; height: 36px; position: absolute; right: 0; top: 0; }
+
+    .file-name { font-size: $regular-font; color: $text-color; margin: 0 0 0 10px; max-width: 57%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .uploaded-files-list { background: $white; border: 1px solid $select-border-color; padding: 5px 15px 5px 5px; list-style: none; max-height: 147px; overflow-y: auto; border-radius: 5px;
+
+      &::-webkit-scrollbar { width: 8px; }
+
+      &::-webkit-scrollbar-track { background: $border-color; }
+
+      &::-webkit-scrollbar-thumb { background: $scrollbar-thumb-color; }
+      /* Firefox supported css*/ scrollbar-color: $scrollbar-thumb-color $border-color; /* thumb and track color */ scrollbar-width: thin;
+
+      li { margin-bottom: 5px;
+
+        &:last-child { margin-bottom: 0; }
+      }
+
+      .download-btn { width: 30px; height: 30px; padding: 0; line-height: 20px; background: $button-bg-color; border-radius: 5px;
+
+        img { max-height: 19px; }
+      }
+    }
+
+    .upload-file-action { margin-right: 10px;
+
+      &:last-child { margin-right: 0; }
+    }
+  }
+
+.uploaded-files-list { max-height: 147px; overflow-y: auto; list-style: none; padding-left: 0; padding-right: 5px; width: 100%;
+
+  &::-webkit-scrollbar { width: 8px; }
+
+  &::-webkit-scrollbar-track { background: $border-color; }
+
+  &::-webkit-scrollbar-thumb { background: $scrollbar-thumb-color; }
+  /* Firefox supported css*/ scrollbar-color: $scrollbar-thumb-color $border-color; /* thumb and track color */ scrollbar-width: thin;
+
+  li { margin-bottom: 5px;
+
+    &:last-child { margin-bottom: 0; }
+  }
+
+  .download-btn { width: 30px; height: 30px; padding: 0; line-height: 20px; background: $button-bg-color; border-radius: 5px;
+
+    img { max-height: 19px; }
+  }
+
+  .upload-file-action { margin-right: 10px; cursor: pointer;
+    &:last-child { margin-right: 0; }
+  }
+
+  .file-name { font-size: $regular-font; color: $text-color; margin: 0 5px 0 10px; width: 62%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle !important;
+
+
+    &.file-name-px { max-width: 200px; width: 100%; }
+  }
+  &.work-program-teams {
+    .file-name { max-width: 100%; overflow: auto; white-space: normal; }
+  }
+  .pull-right {
+      display: inline-block;
+      vertical-align: middle;
+      float: none !important;
+  }
+}
+  /*Download option common design css*/
+  .download-options {
+    .btn-download {
+      &:hover { background: darken($button-bg-color, 10%) }
+    }
+
+    .download-opt-img { max-width: 22px;
+
+      &.pdf-img { max-width: 18px; }
+    }
+  }
+  // No record design
+  .no-record { color: $text-color; font-size: $regular-large-font; text-align: center; padding: 30px 0; }
+  //send review common design
+  .send-mail-text { padding: 5px 15px; background: $light-theme-color; color: $white; font-size: $small-regular-font; border-radius: 5px; }
+  // Popover design in download options
+  .popover-content { padding: 6px;
+    .btn-icon { width: 30px; height: 30px; line-height: 15px;
+
+      img { max-height: 19px; }
+    }
+  }
+  /*Strategic Analysis add form [Author = Shipra]*/
+  .mt-25 { margin-top: 25px; }
+
+  .strategic-add { max-width: 916px;
+    .modal-content { width: 916px; }
+    .strategic-analysis-form { width: calc(100% - 115px); }
+  }
+
+  .strategic-admin-add {
+    h4 { padding-top: 12px; }
+  }
+  /*Override html editor scss*/
+  .hide-editor-header {
+    .angular-editor-toolbar { display: none; }
+
+    .angular-editor-textarea { height: 87px !important; border-radius: 5px; resize: none !important; padding: 10px 30px 10px 10px !important; overflow-y: auto;
+
+      &::-webkit-scrollbar { width: 8px; }
+
+      &::-webkit-scrollbar-track { background: $border-color; }
+
+      &::-webkit-scrollbar-thumb { background: $scrollbar-thumb-color; }
+      /* Firefox supported css*/ scrollbar-color: $scrollbar-thumb-color $border-color; /* thumb and track color */ scrollbar-width: thin; }
+
+    &.comment-editor {
+      .angular-editor-textarea { border: none !important; padding: 0 !important; }
+    }
+  }
+  /*Override observation list AG-Grid scss*/
+  .ag-theme-alpine {
+    @include ag-theme-alpine();
+  }
+
+  .ag-theme-alpine {
+    .ag-header { background-color: $white; }
+
+    .ag-root-wrapper { border-left: none; border-right: none; border-color: $select-border-color; }
+
+    .ag-floating-top { border-color: $select-border-color; }
+
+    .ag-row-odd { background-color: $table-bg-color; }
+
+    .ag-cell-value {
+      &.no-wrap { text-overflow: unset; white-space: normal; }
+    }
+  }
+
+  .ag-floating-top ::-webkit-scrollbar { width: 8px; }
+
+  .ag-floating-top ::-webkit-scrollbar-track { background: $border-color; }
+
+  .ag-floating-top ::-webkit-scrollbar-thumb { background: $scrollbar-thumb-color; }
+  ​
+  /*Rcm Edit page css*/
+  .tab-container {
+    &.rcm-edit-tabs {
+      .tab-content { padding: 0 !important; }
+
+      .tabs-form-area { padding: 35px 20px; }
+
+
+      .add-new-tabs-heading { display: none; }
+
+      .add-new-text { color: $text-color; font-size: $regular-large-font; font-weight: normal; }
+    }
+  }
+
+  .rcm-tabs-area {
+    .nav-tabs { display: flex !important; flex-direction: row !important;
+
+      li:first-child { order: 2 !important;
+
+        a { min-width: 82px; }
+      }
+    }
+  }
+  /*Sampling methodology*/
+  .sampling-survey {
+    .survey-form {
+      .styled-checkbox + label p { width: calc(100vw - 550px); }
+      p { width: calc(100vw - 500px); }
+    }
+  }
+
+  .sampling-main {
+    .page-container { padding: 20px 0; }
+
+    .survey-radio td { }
+  }
+
+    .sampling-main .survey-radio {
+      label { position: relative; width: 250px; }
+
+      input[type="radio"] + label:before { position: absolute; top: 3px; }
+    }
+
+  .status { width: 120px; }
+  //Auditable list
+  .button-status { min-width: 50px; display: inline-block; }
+
+  .audit-list {
+    button.btn.survey-response { padding: 8px 0; min-width: 104px; line-height: 14px; }
+  }
+
+  .w-180px { width: 180px; }
+
+  .align-center { text-align: center; }
+  //Observation management
+  .auditor { font-weight: 700; }
+
+  .break-word { white-space: initial !important; }
+
+  .white-space { white-space: nowrap !important; }
+
+  .management-list {
+    &.table thead th { vertical-align: middle; }
+  }
+
+  .btn.upload-top { width: auto;
+
+    img { vertical-align: top; }
+
+    i { color: $text-color; }
+    font-size: $regular-font-inc;
+
+    &:hover i { color: $text-color; }
+  }
+
+  .survey-form {
+
+    &.analysis-survey {
+      p { width: calc(100vw - 800px); }
+
+      .survey-radio label { width: calc(100vw - 850px) }
+
+      .styled-checkbox + label p { width: calc(100vw - 850px) }
+    }
+
+    p { width: calc(100vw - 400px); white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+
+    .survey-radio label { width: calc(100vw - 450px); white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+
+    .styled-checkbox + label p { width: calc(100vw - 450px); white-space: nowrap; text-overflow: ellipsis; overflow: hidden; display: inline-block; vertical-align: middle; }
+  }
+
+  span.information-popover { vertical-align: top; float: right;
+
+    i { vertical-align: top; font-size: 25px; }
+
+    .popover-body { padding: 25px }
+
+    .close { position: absolute; top: 0; right: 6px; }
+  }
+
+  .survey-form p.small-msg.mb-0 { font-size: $small-font; }
+
+  .parent-smiley { display: inline-block; }
+
+  .drag-section input[type="text"]:disabled { background-color: transparent; }
+
+  .page-title.title-trim { width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .first-group { position: relative; display: table; border-collapse: separate; }
+
+  .btn.upload-btn:hover {
+    i { color: $text-color; }
+  }
+
+  .tr-class { display: table-row !important; }
+
+  .td-class { display: table-cell !important; }
+
+  .country-modal {
+    typeahead-container {
+      span { font-size: $regular-font-inc; }
+
+      .dropdown-item.active { background: $list-hover-bg; color: $text-color; }
+    }
+
+    ng-dropdown-panel {
+      span { font-size: $regular-font-inc; }
+    }
+  }
+
+  .ng-select.disable-dropdown ng-dropdown-panel { display: none; }
+  // Design audit team name section
+  .team-name-section { position: relative;
+
+    i { position: absolute; right: 10px; top: 8px; }
+
+    .audit-name-list { position: absolute; top: 100%; left: 0; right: 0; width: 100%; background: $white; padding: 5px 0; list-style: none; border: 1px solid $select-border-color; z-index: 9; max-height: 250px; overflow-y: auto;
+
+      li { font-size: $small-font; color: $text-color; padding: 5px 10px; margin-bottom: 5px; cursor: pointer;
+
+        &:hover { background: $button-bg-color; }
+
+        .info-email { font-size: $x-small-font; color: $grey-btn-color; }
+      }
+
+      &::-webkit-scrollbar { width: 8px; }
+
+      &::-webkit-scrollbar-track { background: $border-color; }
+
+      &::-webkit-scrollbar-thumb { background: $scrollbar-thumb-color; }
+      /* Firefox supported css*/ scrollbar-color: $scrollbar-thumb-color $border-color; /* thumb and track color */ scrollbar-width: thin;
+
+      &.hide-list { display: none; }
+    }
+  }
+  // Design entity selection dropdown
+  .auditable-entity-selection { position: relative; width: 210px;
+    .selection-label { font-size: $small-font; color: $text-color; position: absolute; top: -10px; left: 6px; z-index: 9999; background: $white; padding: 5px; }
+  }
+  // Design bulk upload box
+  .bulkupload-box { padding-top: 10px; margin-top: 5px; border-top: 1px solid $select-border-color; position: relative;
+    input[type="file"] { position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; opacity: 0; }
+  }
+  .bulkupload-popover { max-width: 210px;
+    .popover-content { padding: 10px; }
+    .upload-top { max-width: 100%; height: 40px; padding: 10px;
+      img { vertical-align: middle; max-height: 30px; }
+      .upload-text { vertical-align: text-top; }
+    }
+    .download-excel-text { font-size: $small-font; }
+  }
+  //dynamic table design
+  .dynamic-table-dropdown {
+    .popover-content { min-width: 120px; text-align: center; }
+    &.bottom > .arrow, &.top > .arrow { margin-left: 0; }
+  }
+  //remove click from backdrop css
+  .remove-click { pointer-events: none; }
+
+//Design version number for selectbox
+.version-no {
+    font-size: $x-small-font;
+    color: $grey;
+}
+.ag-theme-alpine {
+  .ag-header-cell-resize {
+      display: none !important;
+  }
+}
+
+/*set status css form approved response*/
+
+.approved { background-color: $legend-green !important; }
+.loggedin-users{
+    line-height: normal;
+}
+
+/*design sampling no-data */
+.sampling-no-data{
+    border: 1px solid $grey-border;
+   p{
+       width: auto !important;
+       padding: 100px 0;
+   }
+}
+/*Media query for small desktop and screens*/
+@media(max-width: 1440px) {
+  .sidebar {
+    .copyright-section {
+      left: 20px;
+      bottom: 20px;
+    }
+  }
+
+  .list-items-parent {
+    .main-menus {
+      .menu-name {
+        font-size: $small-font;
+      }
+    }
+  }
+}
+  /*Scrollbar css for multiselect dropdown*/
+  .ng-dropdown-panel {
+    .scroll-host {
+      &::-webkit-scrollbar { width: 8px; }
+
+      &::-webkit-scrollbar-track { background: $border-color; }
+
+      &::-webkit-scrollbar-thumb { background: $scrollbar-thumb-color; }
+      /* Firefox supported css*/ scrollbar-color: $scrollbar-thumb-color $border-color; /* thumb and track color */ scrollbar-width: thin; }
+  }
+  /*Strategic Analysis add form [Author = Shipra]*/
+  .mt-25 { margin-top: 25px; }
+
+.strategic-add { max-width: 916px;
+
+  .modal-content { width: 916px; }
+  .strategic-add {
+    width: 700px;
+  }
+
+}
+  /*Strategic Analysis survey*/
+  .route-link { color: $light-theme-color !important;text-decoration: underline !important;cursor: pointer !important;
+
+    &:hover { text-decoration: underline; color: $text-color; }
+  }
+
+  .round-circle { font-size: $small-font !important; color: $dark-blue !important; background: $list-hover-bg; padding: 3px; border-radius: 100%; margin-left: 2px; height: 20px; width: 20px; display: inline-block; vertical-align: middle; text-align: center; padding-top: 1px; }
+
+  .btn.survey-response.cancel-outline { padding: 8px 11px; font-size: $small-font; min-width: auto;
+
+    &:active { border: 1px solid $light-theme-color; }
+  }
+
+  .btn-transparent { background: transparent; }
+
+  .survey-list-page { padding-bottom: 80px;
+
+    .top-contents { border-bottom: 1px solid $select-border-color; }
+
+    .page-title { line-height: 32px; }
+
+    .page-container h4 { width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  }
+
+  .question-error { position: absolute; bottom: -18px; left: 0; }
+
+.survey-container {
+  h5 { font-size: $regular-large-font; color: $text-color; font-style: italic; text-align: center; }
+
+  li { list-style: none; line-height: 22px; padding: 10px 20px; margin-bottom: 10px; }
+
+  .box { background: $white; border: 1px solid $grey-border; }
+
+  i { font-size: $regular-medium-font; vertical-align: middle; color: $text-color; }
+
+  .survey-sidebar {
+
+    span { font-size: $regular-font-inc; vertical-align: middle; }
+  }
+
+  .survey-form {
+    p { font-size: $regular-font-inc;
+
+      &.form-label { font-size: $regular-font-inc; }
+      span { font-size: $regular-font-inc; }
+    }
+  }
+  .file-upload-section {
+    .uploaded-files-list { padding: 5px;
+      .file-name {
+          width: 62%;
+      }
+      li {
+          padding: 0 !important;
+      }
+    }
+  }
+}
+
+
+  .p0 { padding: 0; }
+
+  .mr-15 { margin-right: 15px; }
+
+  .align-right { text-align: right; }
+
+
+  .survey-lists, .drag-section {
+    ::placeholder, .ng-placeholder { color: $grey-btn-color !important; font-size: $regular-font; }
+
+    .square-text {
+      .styled-checkbox + label:before, .survey-radio input[type="radio"] + label:before { vertical-align: top; }
+
+      input[type="text"] { border: 1px solid $border-field; height: 36px; border-radius: .25rem; }
+    }
+
+    .box { padding: 15px 44px 14px 50px;
+
+      .dots { text-align: center;
+
+        img { cursor: pointer; }
+      }
+
+      .showonhover { visibility: hidden; transition: 0.3s ease all; }
+
+      &:hover {
+        .showonhover { visibility: visible; transition: 0.3s ease all; }
+      }
+    }
+
+
+
+    ng-select { padding-left: 0 !important; }
+
+    label { display: block; font-size: $regular-font-inc; text-transform: capitalize; line-height: 16px; }
+
+
+    .form-group { margin-bottom: 0; }
+
+
+
+    .survey-radio { /* completely hiding radio button */ input[type="radio"] { display: none; }
+      /* simulate radiobutton appearance using pseudoselector */ input[type="radio"] + label:before { content: ""; /* create custom radiobutton appearance */ display: inline-block; width: 15px; height: 15px; padding: 3px; margin-right: 10px; vertical-align: text-top; /* background-color only for content */ background-clip: content-box; border: 1px solid $text-color; border-radius: 50%; }
+      /* appearance of checked radiobutton */ input[type="radio"]:checked + label:before { background-color: $text-color; }
+      /* resetting default box-sizing */ *,
+      *:before,
+      *:after { box-sizing: border-box; }
+    }
+
+
+    input[type="text"] { border-bottom: 1px solid $border-field; border-top: 0; border-left: 0; border-right: 0;
+
+      &:focus { outline: 0; }
+    }
+
+    .ng-select {
+      .ng-clear-wrapper { display: none; color: $text-color !important; }
+
+      .ng-arrow-wrapper .ng-arrow { vertical-align: middle; border-color: $text-color transparent transparent !important; }
+
+      .ng-select-container { border: 1px solid $border-field; }
+    }
+
+    #upload_button { display: block; }
+
+    #upload_button input[type=file] { display: none; }
+  }
+
+  .answers-box {
+    td {
+      &:first-child { width: 85%; }
+
+      &:last-child { padding-right: 15px; }
+    }
+  }
+
+  .scroll-content { max-height: 105px; overflow-y: auto; display: block; }
+
+  .upload-btn { font-size: $regular-font; color: $grey-btn-color; width: 205px; background: transparent; border: 1px solid $border-field;
+
+    &:hover, &:focus, &:active { border: 1px solid $border-field; }
+  }
+
+  #upload_button i { color: $text-color; }
+  //checkbox style
+  .styled-checkbox { position: absolute; opacity: 0;
+
+    & + label { position: relative; cursor: pointer; padding: 0; line-height: 16px; }
+
+    & + label:before { content: ''; margin-right: 10px; display: inline-block; vertical-align: text-top; width: 16px; height: 16px; border: 2px solid $text-color; border-radius: 3px; }
+
+    &:checked + label:before { background: $text-color; }
+
+    &:checked + label:after { content: ''; position: absolute; left: 3px; top: 7px; background: $white; width: 2px; height: 2px; box-shadow: 2px 0 0 $white, 4px 0 0 $white, 4px -2px 0 $white, 4px -4px 0 $white, 4px -6px 0 $white, 4px -8px 0 $white; transform: rotate(45deg); }
+  }
+
+  .ag-grid-checkbox, .rcm-checkbox { position: relative; cursor: pointer; width: 16px; height: 16px; vertical-align: sub; -webkit-appearance: none;
+
+    &:focus { outline: none; }
+  }
+
+    .ag-grid-checkbox:before, .rcm-checkbox:before { content: ""; display: block; position: absolute; width: 16px; height: 16px; top: 0; left: 0; border: 1px solid $select-border-color; border-radius: 2px; }
+
+
+    .ag-grid-checkbox:checked:before, .rcm-checkbox:checked:before { content: ""; display: block; position: absolute; width: 16px; height: 16px; top: 0; left: 0; background-color: $white; }
+
+    .ag-grid-checkbox:checked:after { content: ""; display: block; width: 5px; height: 10px; border: solid $text-color; border-width: 0 2px 2px 0; -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); position: absolute; top: 2px; left: 5px; }
+
+    .rcm-checkbox:checked:after { content: ""; display: block; width: 5px; height: 10px; border: solid $light-theme-color; border-width: 0 2px 2px 0; -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); position: absolute; top: 2px; left: 5px; }
+  // Custom radio buttons
+  div {
+    &#smileys {
+      input[type="radio"] { -webkit-appearance: none; width: 35px; height: 35px; border: none; cursor: pointer; transition: border .2s ease; filter: opacity(0.5); transition: all .2s ease;
+
+        &:hover, &:checked { filter: opacity(1); }
+
+        &:focus { outline: 0; }
+
+        &.fifth-emoji { background: url('~/assets/images/emoji_5.png') center; background-size: cover; }
+
+        &.forth-emoji { background: url('~/assets/images/emoji_4.png') center; background-size: cover; }
+
+
+        &.third-emoji { background: url('~/assets/images/emoji_3.png') center; background-size: cover; }
+
+        &.second-emoji { background: url('~/assets/images/emoji_2.png') center; background-size: cover; }
+
+        &.first-emoji { background: url('~/assets/images/emoji_1.png') center; background-size: cover; }
+      }
+    }
+  }
+  //Create survey modal popup
+  .process-add-page { height: auto; }
+
+  .multiple-choice {
+    .ng-dropdown-panel .scroll-host { max-height: 170px; }
+
+    .modal-body { padding: 25px 30px 67px; }
+  }
+
+  .empty-questions { border: 1px solid $grey-border; padding: 30px; background: $white;
+
+    i { font-size: 200px; display: block; margin: 0 auto; color: $grey-border; text-align: center; }
+  }
+
+
+  .strategic-drag { max-width: 100vw; height: auto; margin-bottom: 0 !important; position: absolute; left: 0; right: 0; bottom: -95px; top: initial; //Animation of popup from bottom to top
+                    margin-top: -100px; transition: -webkit-transform 0.5s ease-out !important; /*Bootstrap property overwrite*/ transition: transform 0.5s ease-out !important; /*Bootstrap property overwrite*/ transition: transform 0.5s ease-out !important, -webkit-transform 0.5s ease-out; -webkit-transform: translate(0px, -100px) !important; /*Bootstrap property overwrite*/ transform: translate(0px, -100px) !important; /*Bootstrap property overwrite*/
+                    &.page-modal .modal-body { padding: 10px 10px 70px 30px; }
+    &.page-modal .modal-header { padding-top: 30px; }
+
+    &.page-modal .modal-header .close { right: -80px; top: 25px;
+
+      i { font-size: 25px; }
+    }
+
+    .modal-content { width: 100vw; height: auto; border-radius: 30px 30px 0px 0px; overflow: hidden; }
+  }
+
+  .strategic-analysis-modal {
+    .form-control { height: 40px; width: 100%; }
+
+    table { width: 100%; }
+
+    textarea.form-control { height: 90px; }
+
+    label { font-size: $regular-font-inc; line-height: 17px; vertical-align: top; }
+
+    ::placeholder { color: $text-color !important; }
+
+    .ng-select.ng-select-single .ng-select-container { height: 40px; }
+  }
+
+  .lowercase { text-transform: lowercase; }
+
+  .add-other {
+    label { font-size: $regular-medium-font; vertical-align: top; }
+
+    .styled-checkbox + label:before { width: 26px; height: 26px; vertical-align: middle; margin-top: -2px; }
+
+    .styled-checkbox:checked + label:after { transform: scale(1.7) rotate(45deg); top: 10px; left: 5px; }
+  }
+
+.cancel-outline { background-color: $white !important; color: $light-theme-color; min-width: 140px; border: 1px solid $light-theme-color;
+
+  &:focus, &:active, &:hover { border: 1px solid $light-theme-color; }
+  &.approved {
+      background-color: $legend-green !important;
+      color: $white;
+      border-color:$white; 
+  }
+}
+
+  .input-group-addon { padding: 6px 20px; font-size: $regular-font-inc; line-height: $regular-medium-font; color: $text-color; text-align: center; background-color: $white; border: 1px solid $select-border-color; width: 1%; white-space: nowrap; vertical-align: middle; display: table-cell; }
+
+  .ng-select .ng-arrow-wrapper .ng-arrow { border-color: $text-color transparent transparent; }
+
+  .file-upload-modal {
+    .styled-checkbox + label:before { margin-right: 5px; }
+  }
+
+  .all-checkbox label { font-size: $regular-font; text-transform: uppercase; }
+
+  p.limit-text { font-size: $small-font; }
+
+  .input-group { position: relative; display: table; border-collapse: separate; }
+
+  .input-group-addon.prefix { border-radius: 4px 0px 0px 4px; border-right: 0; }
+
+  .prefix input { border-radius: 0px 4px 4px 0px; }
+
+  .prefix .input-group-addon { border-right: 0; border-radius: 4px 0px 0px 4px; }
+
+  .marlr { margin: 0 32px; margin-bottom: 1rem; }
+  //Slide toggle
+  /* Rounded sliders */
+  .switch { position: relative; display: inline-block; width: 31px; height: 17px; }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: $slider-color; -webkit-transition: .4s; transition: .4s; }
+
+    .slider:before { position: absolute; content: ""; height: 13px; width: 13px; left: 2px; bottom: 2px; background-color: $white; -webkit-transition: .4s; transition: .4s; }
+
+  input:checked + .slider { background-color: $text-color; }
+
+  input:focus + .slider { box-shadow: 0 0 1px $text-color; }
+
+  input:checked + .slider:before { -webkit-transform: translateX(13px); -ms-transform: translateX(13px); transform: translateX(13px); }
+
+  .slider.round { border-radius: 50px; }
+
+    .slider.round:before { border-radius: 50%; }
+  //Strategic response survey
+  #smileys { display: inline-block;
+
+    input[type="radio"].selected-smiley { -webkit-filter: opacity(1); filter: opacity(1); }
+  }
+
+  .survey-popover { cursor: pointer; }
+
+  .popdetail { padding-left: 0; margin-bottom: 0;
+
+    li { list-style: none; margin-bottom: 10px;
+
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+  /*commented css it will use  in future*/
+  /*.popover-bottom {
+  min-width: 128px;
+}*/
+  .displayblock { display: block; }
+
+  .response-survey-main {
+    td { vertical-align: middle; }
+
+    td:last-child { padding: 6px; text-align: right; }
+  }
+
+
+  .survey-add { max-width: 789px;
+
+    .modal-content { width: 789px; }
+
+    .modal-body { padding: 37px 50px; }
+
+    .modal-header { padding: 26px 50px 0; }
+  }
+
+  .response-btn.download-btn { width: 360px; height: auto; border: 1px solid $border-field; background: transparent; text-align: left; padding: 13px 11px; line-height: 26px;
+
+    p { text-transform: capitalize; color: $text-color; }
+  }
+
+  .btn.btn-icon.response-btn i { color: $text-color; font-size: $regular-large-font; }
+
+  .modal.fade .modal-dialog.strategic-drag { -webkit-transform: translate(0,0); transform: translate(0,0); }
+  // Strategic Analysis User
+  .w-120 { width: 120px; }
+
+  .w-85px { width: 85px; }
+
+  .final-status { opacity: 0.5; }
+
+  .cursor-pointer { cursor: pointer; }
+
+  .mrl-5 { margin: 0 5px; }
+
+  .user-lists {
+    i { color: $text-color; font-size: $regular-font; }
+  }
+
+  .icon-round { background: $light-theme-color; font-size: $regular-font; color: $white; height: 20px; width: 20px; border-radius: 100%; display: inline-block; text-align: center;
+
+    i { color: $white; }
+  }
+
+  .space-six {
+    td { padding: 6px 12px; vertical-align: middle; }
+  }
+
+  .btn.smallform-btn { min-width: 68px; font-size: $small-font; padding: 8px 0; line-height: 14px; }
+
+  .survey-user-create {
+    .top-contents { border-bottom: 0; }
+
+    .page-container { padding: 40px 20px; }
+
+    label { font-size: $regular-font-inc; }
+
+    .form-group { margin-bottom: 25px; }
+  }
+
+  .btn.save-create { min-width: 180px; }
+
+  .user-survey-create {
+    .box { padding: 45px 44px 30px 50px;
+
+      > label { display: inline-block; }
+    }
+  }
+
+  .drag-section { list-style: none; padding: 15px 44px 14px 50px; background: $white; border: 1px solid $grey-border; margin-bottom: 30px;
+
+    #smileys { display: inline-block; }
+
+    input[type="text"] { border-bottom: 1px solid $border-field; border-top: 0; border-left: 0; border-right: 0; }
+  }
+
+  .strategic-confirm { max-width: 700px;
+
+    .modal-content { width: 700px; }
+
+    .modal-body { padding: 25px 50px 40px; }
+  }
+
+  .strategic-email {
+    .modal-content { min-height: 440px; }
+
+    &.page-modal {
+      .modal-header { padding: 25px 10px 10px 50px }
+
+      .modal-body { padding: 10px 50px 40px; }
+    }
+
+    .file-upload-section .placeholde-input { border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0; }
+
+    .file-upload-section .file-upload-button { color: $white; border: 1px solid $light-theme-color; right: 3px; border-left: 0; border-top-left-radius: 0px; border-bottom-left-radius: 0px; }
+
+    label { font-size: $regular-font-inc; }
+  }
+
+  .mt-140 { margin-top: 140px; }
+
+  .no-outline { background-color: $white !important; color: $light-theme-color; min-width: 140px; border: 1px solid $light-theme-color;
+
+    &:focus, &:active, &:hover { border: 1px solid $light-theme-color; }
+  }
+  //disabled css for non clickable elements
+  .disabled { opacity: .6; pointer-events: none; }
+  // Mom css override in rcm tabs
+  .work-program-tabs {
+    .mom-add-page {
+      .top-contents { display: none; }
+
+      .page-container { padding: 0 !important; padding-bottom: 20px !important; }
+    }
+  }
+  /*Bulk Upload hide popover css*/
+  .bukupload-header { position: relative;
+    .close-popover { position: absolute; top: 0; right: 0; cursor: pointer; }
+  }
+
+  .popover { font-family: $font-family !important;
+    &.hide-popover { display: none !important; }
+  }
+/*Strategic Analysis add form [Author = Shipra]*/
+.strategic-add { max-width: 100%;
+
+  .modal-content { width: 100%; }
+}
+
+
+
+.btn.response-btn.download-btn { width: 360px; height: auto; padding: 13px 11px; line-height: 26px; }
+
+.ng-dropdown-panel {
+  .ng-option {
+    p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+  }
+}
+@media(min-width: 1440px) {
+  .mom-add-page, .audit-add-page {
+    .team-section {
+      .ng-select { width: 550px; }
+    }
+  }
+}
+
+@media(min-width: 1800px) {
+  .mom-add-page, .audit-add-page {
+    .team-section {
+      .ng-select { width: 640px; }
+    }
+  }
+}
+  /*Media query for small desktop and screens*/
+  @media(max-width: 1440px) {
+    .sidebar {
+      .copyright-section { left: 20px; bottom: 20px; }
+    }
+
+    .list-items-parent {
+      .main-menus {
+        .menu-name { font-size: $small-font; }
+      }
+    }
+
+    .menu-list-item {
+      .zmdi { font-size: $regular-medium-font; }
+    }
+
+    .page-title { font-size: $large-font; }
+  }
+
+  .scroll-content { scrollbar-color: $grey-dark $grey-light; scrollbar-width: thin;
+
+    &::-webkit-scrollbar { width: 5px; }
+
+    &::-webkit-scrollbar-track { background: $grey-light; }
+
+    &::-webkit-scrollbar-thumb { background: $grey-light; }
+  }
+    /* width */
+    .scroll-content::-webkit-scrollbar { width: 5px; }
+    /* Track */
+    .scroll-content::-webkit-scrollbar-track { background: $grey-light; }
+    /* Handle */
+    .scroll-content::-webkit-scrollbar-thumb { background: $grey-dark; }
+  .error-text p.mb-0 { font-size: $small-font; color: $red-color; }
+  .modal.fade .modal-dialog.strategic-drag { webkit-transform: translate(0,-25%); transform: translate(0,-25%); }
+  p.warn-text.mb-0 { font-size: $small-font; color: $grey; }
+  .strategic-analysis-form {
+    label p { text-transform: capitalize; }
+  }
+
+  div#smileys input[type="radio"]:disabled:hover { filter: opacity(0.5); }
+
+
+  .drop-cross { margin: 30px 50px; }
+  /*Media query for small desktop and screens*/
+  @media(max-width: 1180px) {
+    .form-area { width: 100% !important;
+
+      .form-group { position: relative;
+
+        &.time-picker, &.date-picker {
+          i { bottom: 8px; right: 15px; }
+        }
+
+        &.text-right { text-align: left !important; }
+      }
+    }
+    /* Observation management responsive*/ .page-tabs {
+      .tab-content { padding: 20px !important; }
+
+      .w-59 { width: 95% !important; }
+    }
+
+    .observation-tab-contents {
+      .tab-left-contents, .tab-right-contents { width: 100%; margin-right: 0; }
+    }
+
+    .observation-controls {
+      .tab-label { width: 100%; display: block; text-align: left !important; }
+
+      .form-group { width: 100%; display: block; }
+    }
+
+    .recommendation-section {
+      textarea { height: 260px !important; }
+    }
+
+    .table {
+      &.form-table {
+        th { padding: 5px 8px; font-size: $x-small-font; }
+
+        .sub-sections {
+          .section-no { margin-right: 5px; }
+        }
+
+        .main-section {
+          .w-5 { display: block !important; }
+        }
+      }
+    }
+
+    .general-page {
+      .form-area {
+        &.small-from-area { width: 100%; }
+      }
+
+      .w-80, .w-38, .w-10 { width: 100% !important; }
+
+      .form-group {
+        .ml-10 { margin-left: 0 !important;
+
+          .form-btn { margin-top: 10px !important; }
+        }
+      }
+    }
+
+
+    .table-responsive { overflow: inherit !important; overflow-x: auto !important; }
+    .observation-tab-contents {
+      .form-label { width: fit-content !important; }
+    }
+    .tab-content { position: relative;
+      .responsive-space { margin-bottom: 30px; }
+      .responsive-save { position: absolute; bottom: 10px; }
+    }
+    .observation-comments-page {
+      .min-width-180 { min-width: 140px !important; }
+      .responsive-save { left: 20px; }
+    }
+    .page-container {
+      .to-text { margin-top: 0; text-align: left !important; margin-left: 10px; }
+    }
+    .point-discussion-section {
+      th {
+        .mlm-10 { margin-left: 40px; }
+      }
+    }
+  }
+  /*Media query laptop: Author Shipra*/
+  @media(max-width: 1024px) {
+    .survey-container span { font-size: $regular-large-font; vertical-align: middle; }
+
+    .strategic-drag.page-modal .modal-header .close { right: 0; }
+  }
+  /*Media query form tablet and small laptop*/
+  @media(max-width: 992px) {
+    .page-container { padding: 30px 20px; }
+    .btn.btn-icon.upload-top { height: auto; width: auto; padding: 3px 5px; }
+
+    span.upload-text { display: none; }
+
+    table.user-list { width: 100vw; }
+
+
+
+    .all-checkbox label { font-size: 13px; }
+
+    .scale-section {
+      p.marlr { margin: 0 8px; }
+
+      p.ml-10 { font-size: $small-font; }
+    }
+
+    .table-responsive { overflow: inherit !important; overflow-x: auto !important; }
+
+    .btn {
+      &.btn-icon, &.dark-bg-btn { width: 30px; height: 30px; padding: 0; line-height: 20px;
+
+        i { font-size: 20px; line-height: 25px; }
+
+        img { max-height: 20px; }
+      }
+    }
+
+    .page-title { font-size: $medium-regular-font; }
+
+    .search-box { width: 230px; }
+
+    .table-action-btn {
+      .mr-40 { margin-right: 20px; }
+    }
+
+    .page-tabs {
+      .nav-tabs {
+        .nav-link { min-width: 85px; font-size: $small-font; }
+      }
+    }
+
+
+    .page-container {
+      .to-text { width: 100%; text-align: center; }
+    }
+    // Distribution list css .top-name-selection {
+      &.w-50 { width: 100% !important; }
+    .overview-page {
+      .w-80, .w-10 { width: 100% !important; }
+      .w-10 { margin-left: 0 !important; margin-top: 10px; }
+    }
+    }
+    
+  
+  // Media query for tablet
+  @media(max-width: 860px) {
+    .mom-add-page, .audit-add-page, .survey-user-create {
+      .team-section {
+        .ng-select { width: 220px; }
+      }
+    }
+  }
+  // Media query for tablet
+  @media(max-width: 768px) {
+    .mom-add-page, .audit-add-page {
+      .team-section {
+        .ng-select { width: 190px; }
+      }
+    }
+  }
+
+

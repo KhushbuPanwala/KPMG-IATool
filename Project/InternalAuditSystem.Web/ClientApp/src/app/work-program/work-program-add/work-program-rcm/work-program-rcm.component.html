@@ -1,0 +1,85 @@
+<div class="work-program-rcm">
+  <div class="form-area">
+    <label class="form-label d-block">{{selectRCM}}</label>
+    <div class="d-inline-block align-middle w-80">
+      <ng-select [items]="rcmSearchList"
+                 [multiple]="true"
+                 bindLabel="riskDescription"
+                 [selectableGroup]="true"
+                 [closeOnSelect]="false"
+                 bindValue="id"
+                 [(ngModel)]="selectedRcm">     
+        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+          <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" class="rcm-checkbox" /><p class="wp-rcm-name d-inline-block align-middle mb-0 ml-10" [innerHtml]="item.riskDescription"></p>
+        </ng-template>
+      </ng-select>
+    </div>
+    <div class="d-inline-block align-middle">
+      <a class="action-btn d-inline-block align-top text-center ml-20" (click)="onAddRcmClick()" tooltip="{{addToolTip}}">
+        <i class="zmdi zmdi-plus-circle"></i>
+      </a>
+    </div>
+  </div>
+  <!-- Audit plan process list page contents -->
+  <div class="rcm-list-page mt-60">
+    <!--Table contents-->
+    <div class="table-container table-responsive">
+      <table class="table table-striped w-100">
+        <thead>
+          <tr>
+            <th class="w-10">{{subProcessLabel}}</th>
+            <th class="w-20">{{riskDescription}}</th>
+            <th class="w-20">{{controlDescription}}</th>
+            <th class="w-10">{{controlCategory}}</th>
+            <th class="w-10">{{controlType}}</th>
+            <th class="w-10">{{natureOfControl}}</th>
+            <th class="w-20" colspan="2">{{antiFraudControl}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="workProgramRCMList.length===0">
+            <td colspan="8"><p class="no-record">{{showNoDataText}}</p></td>
+          </tr>
+          <tr *ngFor="let risk of workProgramRCMList | paginate: { itemsPerPage: selectedPageItem, currentPage: pageNumber, totalItems:totalRecords}">
+            <td class="w-10" title="{{risk.rcmSubProcessName}}"><p class="desc-text mb-0">{{risk.rcmSubProcessName}}</p></td>
+            <td class="w-20" title="{{risk.riskDescription}}"><p class="desc-text mb-0" [innerHtml]="risk.riskDescription"></p></td>
+            <td class="w-20" title="{{risk.controlDescription}}"><p class="desc-text mb-0" [innerHtml]="risk.controlDescription"></p></td>
+            <td class="w-10" title="{{risk.controlCategoryString}}"><p class="desc-text mb-0">{{risk.controlCategoryString}}</p></td>
+            <td class="w-10" title="{{risk.controlTypeString}}"><p class="desc-text mb-0">{{risk.controlTypeString}}</p></td>
+            <td class="w-10" title="{{risk.natureOfControlString}}"><p class="desc-text mb-0">{{risk.natureOfControlString}}</p></td>
+            <td class="w-10" title="{{risk.antiFraudControlString}}"><p class="desc-text mb-0">{{risk.antiFraudControlString}}</p></td>
+            <td class="w-10">
+              <div class="table-action-btn">
+                <a class="d-inline-block align-middle mr-20 action-icon" (click)="onEditClick(risk.id)">
+                  <i class="zmdi zmdi-edit"></i>
+                </a>
+                <a class="d-inline-block align-middle action-icon" (click)="openDeleteModal(risk.id)">
+                  <i class="zmdi zmdi-delete"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--Table footer contens-->
+    <div class="table-footer row clearfix"  *ngIf="workProgramRCMList.length>0">
+      <div class="col-sm-7">
+        <pagination-controls [responsive]="responsive"
+                             [previousLabel]="labels.previousLabel"
+                             [nextLabel]="labels.nextLabel"
+                             (pageChange)="onPageChange($event)"></pagination-controls>
+      </div>
+      <div class="right-contents col-sm-5 text-right">
+        <div class="d-inline-block selectbox-content">
+          <ng-select #select [items]="pageItems" [searchable]="false" [(ngModel)]="selectedPageItem"
+                     (change)="onPageItemChange()" bindLabel="item" bindValue="noOfItems">
+          </ng-select>
+        </div>
+        <div class="d-inline-block ml-10">
+          <p class="mb-0 showing-results-text mt-5 align-middle">{{showingResults}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

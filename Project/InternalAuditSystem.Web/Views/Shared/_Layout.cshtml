@@ -1,0 +1,38 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IATool</title>
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <environment names="Staging, Production">
+        <link rel="stylesheet" href="~/dist/styles.css" />
+    </environment>
+</head>
+<body>
+
+    @RenderBody()
+    <environment names="Development">
+        <script src="~/dist/runtime.js" type="module"></script>
+        <script src="~/dist/polyfills.js" type="module"></script>
+        <script src="~/dist/styles.js" type="module"></script>
+        <script src="~/dist/vendor.js" type="module"></script>
+        <script src="~/dist/main.js" type="module"></script>
+        @RenderSection("Scripts", required: false)
+        <mini-profiler />
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/dist/runtime-es2015.js" type="module"></script>
+        <script src="~/dist/runtime-es5.js" nomodule defer></script>
+        <script src="~/dist/polyfills-es5.js" nomodule defer></script>
+        <script src="~/dist/polyfills-es2015.js" type="module"></script>
+        <script src="~/dist/main-es2015.js" type="module"></script>
+        <script src="~/dist/main-es5.js" nomodule defer></script>
+    </environment>
+</body>
+</html>

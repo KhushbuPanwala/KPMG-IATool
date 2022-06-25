@@ -1,0 +1,58 @@
+@import '../../../../../styles.scss';
+/* Rating add page scss */
+.rating-add-page {
+  .rating-form {
+    width: calc(100% - 158px);
+  }
+}
+
+.legend-red {
+  margin-left: 0 !important;
+
+  &.active, &:hover {
+    background: $legend-red;
+  }
+
+  &:not(:disabled):not(.disabled):active {
+    background-color: $legend-red;
+  }
+}
+
+.legend-yellow {
+  &.active, &:hover {
+    background: $legend-yellow;
+  }
+
+  &:not(:disabled):not(.disabled):active {
+    background-color: $legend-yellow;
+  }
+}
+
+.legend-green {
+  &.active, &:hover {
+    background: $legend-green;
+  }
+
+  &:not(:disabled):not(.disabled):active {
+    background-color: $legend-green;
+  }
+}
+
+.legend-red, .legend-yellow, .legend-green {
+  &.active, &:hover, &:focus {
+    color: $white !important;
+  }
+}
+
+/* Media query for laptop small screens */
+@media(max-width: 1180px) {
+  .rating-add-page {
+    .rating-form {
+      width: calc(100% - 158px);
+    }
+
+    .w-40, .w-50 {
+      width: 100%;
+    }
+  }
+}

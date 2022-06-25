@@ -1,0 +1,86 @@
+<!--observation list page contents-->
+<div class="generate-report-add">
+  <div class="top-contents mb-15 ml-20">
+    <h4 class="page-title">{{observationListLabel}}</h4>
+    <div class="right-contents download-options">
+      <button type="button"
+              class="btn btn-icon  ml-10  btn-outline-primary back-btn p-0" tooltip="{{backToolTip}}" (click)="onBackClick()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container mb-20">
+    <div class="d-inline-block align-middle w-30 mr-5 form-group">
+      <label class="form-label required">{{auditPlanLabel}}</label>
+      <ng-select #selectPlan class="page-select" [items]="auditPlanList" name="auditPlan"
+                 #auditPlan="ngModel" [placeholder]="dropdownDefaultValue"
+                 (change)="onChangeAuditPlan()"
+                 [searchable]="false" [(ngModel)]="selectedPlan" bindLabel="title" bindValue="id">
+        <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+          <p style="margin-bottom: 0;">{{item.title}}</p>
+          <span class="version-no">{{version}}:{{item.version}}</span>
+        </ng-template>
+        <ng-template ng-header-tmp>
+          <input type="text" class="w-100" (input)="selectPlan.filter($event.target.value)" />
+        </ng-template>
+      </ng-select>
+    </div>
+    <div class="d-inline-block align-middle w-30 mr-5 form-group">
+      <label class="form-label required">{{processLabel}}</label>
+      <ng-select #selectProcess [items]="processList" class="page-select"
+                 name="process" #process="ngModel"
+                 (change)="onChangeProcess()"
+                 [placeholder]="dropdownDefaultValue"
+                 [searchable]="false" [(ngModel)]="selectedProcess" bindLabel="name" bindValue="id">
+        <ng-template ng-header-tmp>
+          <input type="text" class="w-100" (input)="selectProcess.filter($event.target.value)" />
+        </ng-template>
+      </ng-select>
+    </div>
+    <div class="d-inline-block align-middle w-30 mr-5 form-group">
+      <label class="form-label required">
+        {{subProcessLabel}}
+      </label>
+      <ng-select class="page-select" #selectSubprocess [items]="subProcessList"
+                 name="subProcessName" #subProcessName="ngModel"
+                 [placeholder]="dropdownDefaultValue"
+                 [searchable]="false" [(ngModel)]="selectedSubProcess" bindLabel="processName" bindValue="processId">
+        <ng-template ng-header-tmp>
+          <input type="text" class="w-100" (input)="selectSubprocess.filter($event.target.value)" />
+        </ng-template>
+      </ng-select>
+    </div>
+    <a class="action-btn d-inline-block align-middle mt-10 w-3 mr-10 text-center" (click)="getObservations()">
+      <i class="zmdi zmdi-plus-circle"></i>
+    </a>
+  </div>
+  <div class="page-container">
+    <div class="top-contents mb-10">
+      <div class="search-box">
+        <input class="form-control search-control pl-30"
+               (keydown.Tab)="searchObservation($event,searchValue)" placeholder="{{searchText}}"
+               [(ngModel)]="searchValue" (keypress)="searchObservation($event,searchValue)">
+        <i class="zmdi zmdi-search"></i>
+      </div>
+    </div>
+
+    <div id="grid-wrapper" class="observation-table">
+      <ag-grid-angular #agGrid class="ag-theme-alpine"
+                       [enableSorting]="true"
+                       [rowData]="rowData"
+                       [columnDefs]="columnDefs"
+                       [gridOptions]="gridOptions"
+                       [rowDragManaged]="true"
+                       [enableBrowserTooltips]="true"
+                       (rowDragEnd)="onRowDragEnd($event)" [defaultColDef]="defaultColDef"  (firstDataRendered)="onFirstDataRendered($event)">
+      </ag-grid-angular>
+    </div>
+    <button class="btn form-btn mt-60" (click)="saveReportObservations()">
+      <img src="../../assets/images/save.png" alt="{{saveNextButtonText}}" class="align-top" />
+      {{saveNextButtonText}}
+    </button>
+
+  </div>
+</div>
+<!--Loader component-->
+<app-loader></app-loader>

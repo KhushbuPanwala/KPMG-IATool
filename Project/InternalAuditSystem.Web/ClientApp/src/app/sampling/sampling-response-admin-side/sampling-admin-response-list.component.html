@@ -1,0 +1,67 @@
+<!-- sampling survey response -->
+<app-loader></app-loader>
+<div class="sector-list-page response-survey-main">
+
+  <h4 class="page-title mb-25 ml-20">{{samplingTitle}}</h4>
+  <div class="page-container">
+    <div class="top-contents mb-10">
+      <div class="search-box">
+        <!--Search is to be done on the basis of Name of client-->
+        <input class="form-control search-control pl-30" placeholder="{{searchText}}" [(ngModel)]="searchValue"
+               (keydown.Tab)="searchUserWiseResponse($event,null, selectedPageItem, searchValue)"
+               (keypress)="searchUserWiseResponse($event,null, selectedPageItem, searchValue)" />
+        <i class="zmdi zmdi-search"></i>
+      </div>
+      <div class="right-contents">
+        <button class="btn btn-icon btn-outline-primary back-btn p-0 ml-10" (click)="onBackClick()">
+          <i class="zmdi zmdi-long-arrow-left"></i>
+        </button>
+      </div>
+    </div>
+    <!--Table contents-->
+    <div class="table-container table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="w-25">{{nameOfClientLabel}}</th>
+            <th class="w-75" colspan="3">{{rcmDescriptionLabel}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="userWiseResponseList.length===0">
+            <td colspan="10"><p class="no-record">{{showNoDataText}}</p></td>
+          </tr>
+          <tr *ngFor="let index = index;let response of userWiseResponseList | paginate: { itemsPerPage: selectedPageItem, currentPage: pageNumber, totalItems:totalRecords}">
+            <td class="w-30"><p class="desc-text mb-0" title="{{response.nameClient}}" tooltip="{{response.nameClient}}">{{response.userName}}</p></td>
+            <td class="w-30"><p class="desc-text mb-0" title="{{response.rcmDescription}}" tooltip="{{response.rcmDescription}}">{{response.rcmDescription}}</p></td>
+            <td class="w-40">
+              <div class="table-action-btn d-inline-block mr-20">
+                <button class="btn cancel-outline survey-response" (click)="openSurvey(response.strategicAnalysis.id,'',response.strategicAnalysis.rcmId)">{{responseButtonText}}</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!--Table footer contens-->
+      <div class="table-footer row clearfix" *ngIf="userWiseResponseList.length > 0">
+        <div class="table-pagination col-sm-7">
+          <pagination-controls [responsive]="responsive"
+                               [previousLabel]="labels.previousLabel"
+                               [nextLabel]="labels.nextLabel"
+                               (pageChange)="onPageChange($event)"></pagination-controls>
+        </div>
+        <div class="right-contents col-sm-5 text-right">
+          <div class="d-inline-block">
+            <ng-select #select [items]="pageItems" [searchable]="false" [(ngModel)]="selectedPageItem"
+                       (change)="onPageItemChange()"
+                       bindLabel="item" bindValue="noOfItems">
+            </ng-select>
+          </div>
+          <div class="d-inline-block ml-10">
+            <p class="mb-0 showing-results-text mt-5 align-middle">{{showingResults}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

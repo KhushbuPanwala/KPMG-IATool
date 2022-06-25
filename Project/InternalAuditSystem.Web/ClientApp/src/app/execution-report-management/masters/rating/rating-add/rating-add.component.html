@@ -1,0 +1,71 @@
+<!--Rating add page design-->
+<div class="rating-add-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">{{ratingLabel}}</h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" (click)="onBackClick()" tooltip="{{backToolTip}}">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container p-35">
+    <form #ratingAddForm="ngForm">
+      <div class="rating-form">
+        <div class="mb-20">
+          <div class="d-inline-block align-middle w-40 mb-20 form-group mr-20">
+            <label class="form-label required">{{ratingLabel}}</label>
+            <input type="text" class="form-control" [(ngModel)]="rating.ratings" name="ratings" #ratings="ngModel" required
+                   appValidateAlphanumeric appValidateMaxLength="12" />
+            <div *ngIf="ratings.errors" class="feedback-box">
+              <p *ngIf="ratings.touched && !ratings.valid && ratings.errors.required" class="invalid-feedback">{{requiredMessage}}</p>
+              <p *ngIf="ratings.touched && !ratings.valid && ratings.errors.appValidateAlphanumeric" class="invalid-feedback">{{invalidMessage}}</p>
+              <p *ngIf="ratings.touched && !ratings.errors.required && !ratings.errors.appValidateAlphanumeric" class="invalid-feedback" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+            </div>
+          </div>
+          <div class="d-inline-block align-middle mb-20 form-group">
+            <label class="form-label d-block required">{{legendLabel}}</label>
+            <div class="btn-group">
+              <label class="btn color-btn legend-red" [(ngModel)]="rating.legend" name="legend" #legend="ngModel"
+                     btnRadio="{{redColor}}" tabindex="0" role="button">{{redColor}}</label>
+              <label class="btn color-btn ml-20 legend-green" [(ngModel)]="rating.legend" name="legend" #legend="ngModel"
+                     btnRadio="{{greenColor}}" tabindex="0" role="button">{{greenColor}}</label>
+              <label class="btn color-btn ml-20 legend-yellow" [(ngModel)]="rating.legend" name="legend" #legend="ngModel"
+                     btnRadio="{{yellowColor}}" tabindex="0" role="button">{{yellowColor}}</label>
+            </div>
+          </div>
+          <div class="d-inline-block align-middle mb-20 form-group">
+            <label class="form-label">{{scoreLabel}}</label>
+            <input type="text" class="form-control number-control" [(ngModel)]="rating.score" name="score" #score="ngModel" appValidateNaturalNumber />
+            <div *ngIf="score.errors" class="feedback-box">
+              <p *ngIf="score.touched && !score.valid && score.errors.appValidateNaturalNumber" class="invalid-feedback">{{invalidMessage}}</p>
+            </div>
+          </div>
+          <div class="mb-95">
+            <div class="w-40 d-inline-block mr-20 form-group">
+              <label class="form-label">{{qualitativeFactorsLabel}}</label>
+              <textarea class="form-control page-txt-area" [(ngModel)]="rating.qualitativeFactors" name="qualitativeFactors"
+                        #qualitativeFactors="ngModel" appValidateMaxLength="256"></textarea>
+              <div *ngIf="qualitativeFactors.errors" class="feedback-box">
+                <p *ngIf="qualitativeFactors.touched && !qualitativeFactors.errors.required && !qualitativeFactors.errors.appValidateName" class="invalid-feedback" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+            <div class="w-40 d-inline-block form-group">
+              <label class="form-label">{{quantitativeFactorsLabel}}</label>
+              <textarea class="form-control page-txt-area" [(ngModel)]="rating.quantitativeFactors"
+                        name="quantitativeFactors" #quantitativeFactors="ngModel" appValidateMaxLength="256"></textarea>
+              <div *ngIf="quantitativeFactors.errors" class="feedback-box">
+                <p *ngIf="quantitativeFactors.touched && !quantitativeFactors.errors.required && !quantitativeFactors.errors.appValidateName" class="invalid-feedback" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn form-btn mt-20" (click)="saveRating()" [disabled]="ratingAddForm.invalid">
+          <img src="../assets/images/save.png" class="align-top" />
+          {{saveButtonText}}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!--Loader component-->
+<app-loader></app-loader>

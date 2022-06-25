@@ -1,0 +1,29 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Auditable entity division add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{divisionModalTitle}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="audit-team-form modal-form" #divisionAddEditForm="ngForm" *ngIf="divisionObject !== undefined">
+    <div class="form-group  mb-15">
+      <label class="form-label required mb-10">{{divisionModalTitle}}</label>
+      <input type="text" class="form-control" [(ngModel)]="divisionObject.name" name="divisionName" #divisionName="ngModel" required appValidateMaxLength="256" />
+      <div class="feedback-box" *ngIf="divisionName.errors  && divisionObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="divisionName.touched && !divisionName.valid && divisionName.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="divisionName.touched && !divisionName.errors.required">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <button class="btn form-btn mt-20" (click)="saveDivision()" [disabled]="divisionAddEditForm.invalid">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>
+
+
+
+

@@ -1,0 +1,298 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="closeModel()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body" #reportObservationDocument>
+  <form class="audit-team-form modal-form">
+    <div class="file-upload-section">
+      <input type="text" class="form-control placeholde-input" placeholder="{{chooseFilePlaceHolder}}" />
+      <input type="file" class="form-control file-upload-input" multiple (change)="uploadFileTemporaryOnChoose($event)" />
+      <button class="btn file-upload-button"><i class="zmdi zmdi-upload"></i>{{chooseFileText}}</button>
+      <div class="upload-search-box">
+        <input type="search" class="form-control"
+               placeholder="{{searchText}}"
+               (keydown.Tab)="searchFile($event)" name="search"
+               [(ngModel)]="searchValue" (keypress)="searchFile($event)">
+        <i class="zmdi zmdi-search"></i>
+      </div>
+      <ul class="uploaded-files-list mb-0" *ngIf="!isShowSearch && (reportObservationDocumentFilesList.length !== 0 || reportObservationDocumentObjList.length !== 0)">
+        <li class="clearfix" *ngFor="let index = index;let file of reportObservationDocumentFilesList">
+          <!--For Displaying file icon-->
+          <button class="btn btn-icon download-btn d-inline-block align-middle">
+            <!--Word icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,wordType)">
+              <img class="download-opt-img" src="../../../../assets/images/word.png" alt="{{wordToolTip}}" />
+            </ng-template>
+            <!--Pdf icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,pdfType)">
+              <img class="download-opt-img" src="../../../../assets/images/pdf.png" alt="{{pdfToolTip}}" />
+            </ng-template>
+            <!--Ppt icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,pptType)">
+              <img class="download-opt-img" src="../../../../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+            </ng-template>
+            <!--Excel icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,excelType)">
+              <img class="download-opt-img" src="../../../../assets/images/excel.png" alt="" />
+            </ng-template>
+            <!--JPG icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,jpgType)">
+              <img class="download-opt-img" src="../../../../assets/images/jpg.png" alt="" />
+            </ng-template>
+            <!--PNG icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,pngType)">
+              <img class="download-opt-img" src="../../../../assets/images/png.png" alt="" />
+            </ng-template>
+            <!--GIF icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,gifType)">
+              <img class="download-opt-img" src="../../../../assets/images/gif.png" alt="" />
+            </ng-template>
+            <!--Zip icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,zipType)">
+              <img class="download-opt-img" src="../../../../assets/images/zip.png" alt="" />
+            </ng-template>
+            <!--MP3 icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,mp3Type)">
+              <img class="download-opt-img" src="../../../../assets/images/mp3.png" alt="" />
+            </ng-template>
+            <!--MP4 icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,mp4Type)">
+              <img class="download-opt-img" src="../../../../assets/images/mp4.png" alt="" />
+            </ng-template>
+            <!--SVG icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,svgType)">
+              <img class="download-opt-img" src="../../../../assets/images/svg.png" alt="" />
+            </ng-template>
+            <!--CSV icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,csvType)">
+              <img class="download-opt-img" src="../../../../assets/images/csv.png" alt="" />
+            </ng-template>
+            <!--other icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,otherFileType)">
+              <img class="download-opt-img" src="../../../../assets/images/default-file.png" alt="" />
+            </ng-template>
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{file.name}}">{{file.name}}</p>
+          <!--Display view,download,delete icon-->
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block align-middle" (click)="openDeleteModalFromList(index)">
+              <i class="zmdi zmdi-delete align-middle"></i>
+            </a>
+          </div>
+        </li>
+        <li class="clearfix" *ngFor="let index = index;let file of reportObservationDocumentObjList">
+          <!--For Displaying file icon-->
+          <button class="btn btn-icon download-btn d-inline-block align-middle p-0">
+            <!--Word icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,wordType)">
+              <img class="download-opt-img" src="../../../../assets/images/word.png" alt="{{wordToolTip}}" />
+            </ng-template>
+            <!--Pdf icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,pdfType)">
+              <img class="download-opt-img" src="../../../../assets/images/pdf.png" alt="{{pdfToolTip}}" />
+            </ng-template>
+            <!--Ppt icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,pptType)">
+              <img class="download-opt-img" src="../../../../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+            </ng-template>
+            <!--Excel icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,excelType)">
+              <img class="download-opt-img" src="../../../../assets/images/excel.png" alt="" />
+            </ng-template>
+            <!--JPG icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,jpgType)">
+              <img class="download-opt-img" src="../../../../assets/images/jpg.png" alt="" />
+            </ng-template>
+            <!--PNG icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,pngType)">
+              <img class="download-opt-img" src="../../../../assets/images/png.png" alt="" />
+            </ng-template>
+            <!--GIF icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,gifType)">
+              <img class="download-opt-img" src="../../../../assets/images/gif.png" alt="" />
+            </ng-template>
+            <!--Zip icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,zipType)">
+              <img class="download-opt-img" src="../../../../assets/images/zip.png" alt="" />
+            </ng-template>
+            <!--MP3 icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,mp3Type)">
+              <img class="download-opt-img" src="../../../../assets/images/mp3.png" alt="" />
+            </ng-template>
+            <!--MP4 icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,mp4Type)">
+              <img class="download-opt-img" src="../../../../assets/images/mp4.png" alt="" />
+            </ng-template>
+            <!--SVG icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,svgType)">
+              <img class="download-opt-img" src="../../../../assets/images/svg.png" alt="" />
+            </ng-template>
+            <!--CSV icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,csvType)">
+              <img class="download-opt-img" src="../../../../assets/images/csv.png" alt="" />
+            </ng-template>
+            <!--other icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,otherFileType)">
+              <img class="download-opt-img" src="../../../../assets/images/default-file.png" alt="" />
+            </ng-template>
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{file.documentPath}}">{{file.documentPath}}</p>
+          <!--Display view,download,delete icon-->
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block align-middle" (click)="viewFile(file.id)">
+              <i class="zmdi zmdi-eye align-middle"></i>
+            </a>
+            <a class="upload-file-action d-inline-block align-middle" (click)="downloadFile(file.id)">
+              <i class="zmdi zmdi-download align-middle"></i>
+            </a>
+            <a class="upload-file-action d-inline-block align-middle" (click)="openDeleteModal(file.id)">
+              <i class="zmdi zmdi-delete align-middle"></i>
+            </a>
+          </div>
+        </li>
+      </ul>
+      <ul class="uploaded-files-list mb-0" *ngIf="isShowSearch && searchReportObservationDocumentFilesList.length !== 0 || searchReportObservationDocumentObjList.length !== 0">
+        <li class="clearfix" *ngFor="let index = index;let file of searchReportObservationDocumentFilesList">
+          <!--For Displaying file icon-->
+          <button class="btn btn-icon download-btn d-inline-block align-middle mr-10 p-0">
+            <!--Word icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,wordType)">
+              <img class="download-opt-img" src="../../../../assets/images/word.png" alt="{{wordToolTip}}" />
+            </ng-template>
+            <!--Pdf icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,pdfType)">
+              <img class="download-opt-img" src="../../../../assets/images/pdf.png" alt="{{pdfToolTip}}" />
+            </ng-template>
+            <!--Ppt icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,pptType)">
+              <img class="download-opt-img" src="../../../../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+            </ng-template>
+            <!--Excel icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,excelType)">
+              <img class="download-opt-img" src="../../../../assets/images/excel.png" alt="" />
+            </ng-template>
+            <!--JPG icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,jpgType)">
+              <img class="download-opt-img" src="../../../../assets/images/jpg.png" alt="" />
+            </ng-template>
+            <!--PNG icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,pngType)">
+              <img class="download-opt-img" src="../../../../assets/images/png.png" alt="" />
+            </ng-template>
+            <!--GIF icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,gifType)">
+              <img class="download-opt-img" src="../../../../assets/images/gif.png" alt="" />
+            </ng-template>
+            <!--Zip icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,zipType)">
+              <img class="download-opt-img" src="../../../../assets/images/zip.png" alt="" />
+            </ng-template>
+            <!--MP3 icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,mp3Type)">
+              <img class="download-opt-img" src="../../../../assets/images/mp3.png" alt="" />
+            </ng-template>
+            <!--MP4 icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,mp4Type)">
+              <img class="download-opt-img" src="../../../../assets/images/mp4.png" alt="" />
+            </ng-template>
+            <!--SVG icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,svgType)">
+              <img class="download-opt-img" src="../../../../assets/images/svg.png" alt="" />
+            </ng-template>
+            <!--CSV icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,csvType)">
+              <img class="download-opt-img" src="../../../../assets/images/csv.png" alt="" />
+            </ng-template>
+            <!--other icon-->
+            <ng-template [ngIf]="checkFileExtention(file.name,otherFileType)">
+              <img class="download-opt-img" src="../../../../assets/images/default-file.png" alt="" />
+            </ng-template>
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{file.name}}">{{file.name}}</p>
+          <!--Display view,download,delete icon-->
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block align-middle" (click)="openDeleteModalFromList(index)">
+              <i class="zmdi zmdi-delete align-middle"></i>
+            </a>
+          </div>
+        </li>
+        <li class="clearfix" *ngFor="let index = index;let file of searchReportObservationDocumentObjList">
+          <!--For Displaying file icon-->
+          <button class="btn btn-icon download-btn d-inline-block align-middle p-0">
+            <!--Word icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,wordType)">
+              <img class="download-opt-img" src="../../../../assets/images/word.png" alt="{{wordToolTip}}" />
+            </ng-template>
+            <!--Pdf icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,pdfType)">
+              <img class="download-opt-img" src="../../../../assets/images/pdf.png" alt="{{pdfToolTip}}" />
+            </ng-template>
+            <!--Ppt icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,pptType)">
+              <img class="download-opt-img" src="../../../../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+            </ng-template>
+            <!--Excel icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,excelType)">
+              <img class="download-opt-img" src="../../../../assets/images/excel.png" alt="" />
+            </ng-template>
+            <!--JPG icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,jpgType)">
+              <img class="download-opt-img" src="../../../../assets/images/jpg.png" alt="" />
+            </ng-template>
+            <!--PNG icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,pngType)">
+              <img class="download-opt-img" src="../../../../assets/images/png.png" alt="" />
+            </ng-template>
+            <!--GIF icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,gifType)">
+              <img class="download-opt-img" src="../../../../assets/images/gif.png" alt="" />
+            </ng-template>
+            <!--Zip icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,zipType)">
+              <img class="download-opt-img" src="../../../../assets/images/zip.png" alt="" />
+            </ng-template>
+            <!--MP3 icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,mp3Type)">
+              <img class="download-opt-img" src="../../../../assets/images/mp3.png" alt="" />
+            </ng-template>
+            <!--MP4 icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,mp4Type)">
+              <img class="download-opt-img" src="../../../../assets/images/mp4.png" alt="" />
+            </ng-template>
+            <!--SVG icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,svgType)">
+              <img class="download-opt-img" src="../../../../assets/images/svg.png" alt="" />
+            </ng-template>
+            <!--CSV icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,csvType)">
+              <img class="download-opt-img" src="../../../../assets/images/csv.png" alt="" />
+            </ng-template>
+            <!--other icon-->
+            <ng-template [ngIf]="checkFileExtention(file.documentPath,otherFileType)">
+              <img class="download-opt-img" src="../../../../assets/images/default-file.png" alt="" />
+            </ng-template>
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{file.documentPath}}">{{file.documentPath}}</p>
+          <!--Display view,download,delete icon-->
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block align-middle" (click)="viewFile(file.documentPath)">
+              <i class="zmdi zmdi-eye align-middle"></i>
+            </a>
+            <a class="upload-file-action d-inline-block align-middle" (click)="downloadFile(file.id)">
+              <i class="zmdi zmdi-download align-middle"></i>
+            </a>
+            <a class="upload-file-action d-inline-block align-middle" (click)="openDeleteModal(file.id)">
+              <i class="zmdi zmdi-delete align-middle"></i>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <button class="btn form-btn mt-20" (click)="uploadedDocument()">
+      <img src=".../../../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>

@@ -1,0 +1,88 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!-- Audit Plan list page -->
+<div class="sector-list-page response-survey-main">
+  <h4 class="page-title mb-25 ml-20">{{auditPlanTitle}}</h4>
+  <div class="page-container">
+    <div class="top-contents mb-10">
+      <div class="search-box">
+        <input class="form-control search-control pl-30" placeholder="{{searchText}}"[(ngModel)]="searchValue"
+               (keydown.Tab)="searchAuditPlan($event,pageNumber, itemsPerPage, searchValue)"
+               (keypress)="searchAuditPlan($event,pageNumber, itemsPerPage, searchValue)">
+        <i class="zmdi zmdi-search"></i>
+      </div>
+      <div class="right-contents">
+        <button class="btn btn-icon  p-0" tooltip="{{excelToolTip}}" (click)="exportToExcel()" >
+          <img src="../assets/images/excel.png" alt="{{excelToolTip}}" />
+        </button>
+        <button class="btn dark-bg-btn p-0 ml-10" (click)="redirectToGeneralPage()" tooltip="{{addToolTip}}" >
+          <i class="zmdi zmdi-plus-circle"></i>
+        </button>
+      </div>
+    </div>
+    <!--Table contents-->
+    <div class="table-container table-responsive">
+      <table class="table table-striped audit-list">
+        <thead>
+          <tr>
+            <th class="w-40">{{auditPlanTitle}}</th>
+            <th class="w-15">{{statusTitle}}</th>
+            <th class="w-5">{{versionLabel}}</th>
+            <th class="w-15">{{auditTypeLabel}}</th>
+            <th class="w-20" colspan="2">{{totalBudgetedHours}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!--No Record Found-->
+          <tr *ngIf="auditPlanList.length===0">
+            <td colspan="5"><p class="no-record">{{showNoDataText}}</p></td>
+          </tr>
+          <tr *ngFor="let auditPlan of auditPlanList | paginate: { itemsPerPage: itemsPerPage, currentPage: pageNumber, totalItems:totalRecords}">
+            <td class="w-40"><p class="desc-text mb-0" title="{{auditPlan.title}}">{{auditPlan.title}}</p></td>
+            <td class="w-15">
+              <p class="mb-0 w-180px">
+                <span class="button-status">{{auditPlan.statusString}} </span> <button class="btn cancel-outline survey-response ml-5" *ngIf="auditPlan.statusString === 'Active'" (click)="updatedStatus(auditPlan)">{{markClosed}}</button>
+                <button class="btn form-btn cancel-outline survey-response ml-5" *ngIf="auditPlan.statusString === 'Closed'" (click)="updatedStatus(auditPlan)">{{activeText}}</button>
+              </p>
+            </td>
+            <td class="w-5">{{auditPlan.version}}</td>
+            <td class="w-15"><p class="desc-text mb-0" title="{{auditPlan.auditTypeName}}">{{auditPlan.auditTypeName}}</p></td>
+            <td class="w-20 text-center">{{auditPlan.totalBudgetedHours}}{{hoursLabel}}</td>
+            <td class="w-5">
+              <div class="table-action-btn">
+                <a class="d-inline-block align-middle mr-10 action-icon" (click)="createNewVersion(auditPlan.id)" tooltip="{{newVersionToolTip}}">
+                  <i class="zmdi zmdi-copy"></i>
+                </a>
+                <a class="d-inline-block align-middle mr-10 action-icon" (click)="openEditAuditPlanPage(auditPlan.id)" tooltip="{{editToolTip}}">
+                  <i class="zmdi zmdi-edit"></i>
+                </a>
+                <a class="d-inline-block align-middle action-icon" (click)="deleteAuditPlan(auditPlan.id)" tooltip="{{deleteToolTip}}">
+                  <i class="zmdi zmdi-delete"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+      <!--Table footer contens-->
+      <div class="table-footer row clearfix"  *ngIf="auditPlanList.length !== 0">
+        <div class="col-sm-7">
+          <pagination-controls [responsive]="responsive"
+                               [previousLabel]="labels.previousLabel"
+                               [nextLabel]="labels.nextLabel"
+                               (pageChange)="onPageChange($event)"></pagination-controls>
+        </div>
+        <div class="right-contents col-sm-5 text-right">
+          <div class="d-inline-block">
+            <ng-select #select [items]="pageItems" [searchable]="false" [(ngModel)]="itemsPerPage"
+                       bindLabel="item" bindValue="noOfItems" (change)="onItemPerPageChange($event)">
+            </ng-select>
+          </div>
+          <div class="d-inline-block ml-10">
+            <p class="mb-0 showing-results-text mt-5 align-middle">{{showingResults}}</p>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

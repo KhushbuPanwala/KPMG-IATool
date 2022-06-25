@@ -1,0 +1,189 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Generate ACM report contents-->
+<div class="generate-audit-committee-page">
+  <div class="top-contents mb-15 ml-20">
+    <h4 class="page-title">{{generateAcmReportTitle}}</h4>
+    <div class="right-contents download-options">
+
+      <button type="button"
+              class="btn btn-icon  ml-10  btn-outline-primary back-btn p-0" tooltip="{{backToolTip}}" (click)="backToAcmList()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container">
+    <form class="audit-team-form modal-form" #acmReportAddEditForm="ngForm">
+      <div class="form-area acm-area  mb-40">
+        <div class="row clearfix">
+          <div class="col-lg-4">
+            <div class="form-group mb-20">
+              <label class="form-label required">{{reportTitleLabel}}</label>
+              <input type="text" class="form-control" [(ngModel)]="acmReportDetails.acmReportTitle" name="acmReportTitle" #acmReportTitle="ngModel" required appValidateMaxLength="256" />
+              <div class="invalid-feedback" *ngIf="acmReportTitle.errors">
+                <p *ngIf="acmReportTitle.touched && !acmReportTitle.valid && acmReportTitle.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                <p *ngIf="acmReportTitle.touched && !acmReportTitle.errors.required" class="invalid-feedback" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group mb-10">
+              <label class="form-label">
+                {{statusTitle}}
+              </label>
+              <ng-select #selectStatus [items]="statusItems" class="page-select" [searchable]="false" [name]="acmReportDetails.acmReportStatusToString" [ngModelOptions]="{standalone: true}"
+                         [(ngModel)]="acmReportDetails.acmReportStatusToString" bindLabel="label" bindValue="label">
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="w-80 d-inline-block">
+              <label class="form-label">
+                {{stageTitle}}
+              </label>
+              <ng-select #selectStage [items]="stageItems" class="page-select" [searchable]="false" [name]="acmReportDetails.acmReportStageToString" [ngModelOptions]="{standalone: true}"
+                         [(ngModel)]="acmReportDetails.acmReportStageToString" bindLabel="label" bindValue="label">
+              </ng-select>
+            </div>
+            <div class="w-10 d-inline-block ml-10">
+              <button class="btn dark-bg-btn p-0 ml-10" tooltip="{{addToolTip}}" (click)="getReports(null, selectedPageItem, searchValue,acmReportDetails.acmReportStatusToString,acmReportDetails.acmReportStageToString,false)">
+                <i class="zmdi zmdi-plus-circle"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <label class="form-label mb-20">
+        {{reportListTitle}}
+      </label>
+      <!--Table contents-->
+      <div class="table-container table-responsive">
+        <table class="table table-striped w-100">
+          <thead>
+            <tr>
+              <th class="w-5"></th>
+              <th class="w-10">{{reportTitle}}</th>
+              <th class="w-5">{{noOfObservationTitle}}</th>
+              <th class="w-10">{{ratingTitle}}</th>
+              <th class="w-10">{{statusTitle}}</th>
+              <th class="w-10">{{stageTitle}}</th>
+              <th class="w-30" colspan="2">{{periodTitle}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="getAllAcmReportList.length===0">
+              <td colspan="9"><p class="no-record">{{showNoDataText}}</p></td>
+            </tr>
+            <tr *ngFor="let report of getAllAcmReportList| paginate: { itemsPerPage: selectedPageItem, currentPage: pageNumber, totalItems:totalRecords}">
+              <td class="w-5"><input type="checkbox" id="chkreport" class="ag-grid-checkbox" (change)="onSelectedRowData($event,report.id)" [checked]="report.isChecked" /></td>
+              <td class="w-10" title="{{report.reportTitle}}"><p class="desc-text mb-0">{{report.reportTitle}}</p></td>
+              <td class="w-5" (click)="openObservationList(report.id)"><span class="observation-num">{{report.noOfObservation}}</span></td>
+              <td class="w-10" title="{{report.ratings}}"><p class="desc-text mb-0">{{report.ratings}} </p></td>
+              <td class="w-10" title="{{report.status}}"><p class="desc-text mb-0">{{report.status}} </p></td>
+              <td class="w-10" title="{{report.stageName}}"><p class="desc-text mb-0">{{report.stageName}} </p></td>
+              <td class="w-15">{{report.auditPeriodStartDate| date:'MMM yyyy'}} - {{report.auditPeriodEndDate| date:'MMM yyyy'}}</td>
+              <td class="w-10">
+                <div class="table-action-btn">
+                  <a class="d-inline-block align-middle mr-10 action-icon" tooltip="{{editToolTip}}" (click)="editReport(report.id)">
+                    <i class="zmdi zmdi-edit"></i>
+                  </a>
+                  <a class="d-inline-block align-middle action-icon mr-10" tooltip="{{deleteToolTip}}" (click)="deleteReport(report.id)">
+                    <i class="zmdi zmdi-delete"></i>
+                  </a>
+                </div>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--Table footer contens-->
+      <div class="table-footer row clearfix" *ngIf="getAllAcmReportList.length>0">
+
+        <div class="col-sm-7">
+          <pagination-controls [responsive]="responsive"
+                               [previousLabel]="labels.previousLabel"
+                               [nextLabel]="labels.nextLabel"
+                               (pageChange)="onPageChange($event,true)"></pagination-controls>
+        </div>
+        <div class="right-contents col-sm-5 text-right">
+          <div class="d-inline-block">
+            <ng-select #select [items]="pageItems" [searchable]="false" [(ngModel)]="selectedPageItem" name="page" #page="ngModel"
+                       (change)="onPageItemChange(true)"
+                       bindLabel="item" bindValue="noOfItems">
+            </ng-select>
+          </div>
+          <div class="d-inline-block ml-10">
+            <p class="mb-0 showing-results-text mt-5 align-middle">{{showingResults}}</p>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="form-area acm-area border-area">
+      <label class="form-label d-inline-block align-middle w-20 mr-5 mb-0">{{selectReviewer}}</label>
+      <div class="mb-20 top-name-selection w-70 d-inline-block">
+        <ng-select #selectedReviewerPerson class="page-select w-40 d-inline-block align-middle" [items]="userList" [searchable]="false"
+                   [(ngModel)]="selectedReviewer" name="reviewer" #reviewer="ngModel" bindLabel="name" bindValue="userId">
+          <ng-template ng-header-tmp>
+            <input type="text" class="w-100" (input)="selectedReviewerPerson.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+        <a class="action-btn d-inline-block w-10 text-center" tooltip="{{addToolTip}}" (click)="addReviewer(selectedReviewer)">
+          <i class="zmdi zmdi-plus-circle"></i>
+        </a>
+        <a class="action-btn d-inline-block w-10 text-center team-master-label no-wrap" (click)="openTeamMaster()">{{teamMasterLabel}}</a>
+      </div>
+      <div class="team-section  report-team-section">
+        <table class="table form-table ">
+          <thead>
+            <tr>
+              <th class="w-25">
+                {{nameLabel}}
+              </th>
+              <th class="w-25">
+                {{designationLabel}}
+              </th>
+              <th class="w-50" colspan="3">{{statusTitle}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="reviewerList.length===0">
+              <td colspan="5"><p class="no-record">{{showNoDataText}}</p></td>
+            </tr>
+            <tr *ngFor="let reviewer of reviewerList">
+              <td class="w-25">
+                <input type="text" class="form-control" disabled [(ngModel)]="reviewer.name" />
+              </td>
+              <td class="w-25">
+                <input type="text" class="form-control" disabled [(ngModel)]="reviewer.designation" />
+              </td>
+              <td class="w-25">
+                <ng-select #selectReviewerStatus [items]="statusItems" class="page-select"
+                           [searchable]="false" [(ngModel)]="reviewer.status" bindLabel="label" bindValue="value">
+                </ng-select>
+              </td>
+              <td class="w-20">
+                <button class="btn btn-attachment" (click)="openUploadFileModal(reviewer.userId)">
+                  <i class="zmdi zmdi-attachment"></i>
+                  {{attachmentText}}
+                </button>
+              </td>
+              <td class="text-center w-5">
+                <a class="action-btn mt-3 d-block" tooltip="{{removeToolTip}}" (click)="deleteReviewer(reviewer.userId)">
+                  <i class="zmdi zmdi-delete"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+    </div>
+    <button class="btn form-btn mt-20" [disabled]="acmReportAddEditForm.invalid" (click)="saveReportListAndReviewer()">
+      <img src="../assets/images/save.png" class="align-top" alt="{{saveButtonText}}" />
+      {{saveButtonText}}
+    </button>
+
+  </div>
+</div>

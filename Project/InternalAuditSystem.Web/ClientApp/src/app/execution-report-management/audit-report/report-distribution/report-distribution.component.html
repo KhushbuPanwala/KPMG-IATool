@@ -1,0 +1,70 @@
+<!--Distirubtion add page contents-->
+<div class="distribution-add-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">
+      {{distributorListTitle}}
+    </h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" (click)="onBackClick()" tooltip="{{backToolTip}}">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container p-30">
+    <div class="form-area">
+      <div class="mb-20 top-name-selection w-50">
+        <label class="form-label d-inline-block align-middle w-10 mb-0 mr-30">
+          {{selectDistributor}}
+        </label>
+        <ng-select #select class="page-select w-40 d-inline-block align-middle" [items]="usersList"
+                   [searchable]="false" [(ngModel)]="selectedDistributor" bindLabel="name"
+                   bindValue="userId">
+          <ng-template ng-header-tmp>
+            <input type="text" class="w-100" (input)="select.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+        <a class="action-btn d-inline-block w-10 text-center" tooltip="{{addToolTip}}"
+           (click)="addDistributor(selectedDistributor)">
+          <i class="zmdi zmdi-plus-circle"></i>
+        </a>
+      </div>
+      <div class="team-divider-section team-section">
+        <table class="table form-table">
+          <thead>
+            <tr>
+              <th class="w-50">
+                {{nameLabel}}
+              </th>
+              <th class="w-50">
+                {{designationLabel}}
+              </th>
+              <th class="w-5"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="distributorsList.length===0">
+              <td colspan="3"><p class="no-record">{{showNoDataText}}</p></td>
+            </tr>
+            <tr *ngFor="let distributor of distributorsList">
+              <td class="w-50">
+                <input type="text" class="form-control" disabled [(ngModel)]="distributor.name" name="name" #name="ngModel" required appValidateAlphanumeric />
+              </td>
+              <td class="w-50">
+                <input type="text" class="form-control" disabled [(ngModel)]="distributor.designation" name="designation" #designation="ngModel" required appValidateAlphanumeric />
+              </td>
+              <td class="text-center w-5">
+                <a class="action-btn mt-5 d-block" tooltip="{{removeToolTip}}" (click)="deleteDistributor(distributor.userId)">
+                  <i class="zmdi zmdi-delete"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <button class="btn form-btn mt-20" [disabled]="distributorsList.length===0" (click)="saveDistributor()">
+      <img src="../assets/images/save.png" class="align-top" alt="{{saveNextButtonText}}" />
+      {{saveNextButtonText}}
+    </button>
+  </div>
+</div>

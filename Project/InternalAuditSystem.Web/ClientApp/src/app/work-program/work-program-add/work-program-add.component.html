@@ -1,0 +1,23 @@
+<!--Work program add page contents-->
+<div class="work-program-add-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">
+      {{auditTitle}}
+    </h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" (click)="onBackClick()" tooltip="{{backToolTip}}">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <tabset class="page-tabs work-program-tabs">
+    <tab heading="{{auditTitle}}" id="tab1"><app-work-program-audit (addedWorkProgramId)="onAddWorkProgram($event)" ></app-work-program-audit></tab>
+    <tab class="mom-tab" heading="{{addMomTitle}}" *ngIf="workProgramId!=undefined" [active]="isWorkProgramAdded">
+      <app-addmom  [addedWorkProgramId]="workProgramId"  ></app-addmom>
+    </tab>
+    <tab heading="{{rcmTitle}}" *ngIf="workProgramId!=undefined">
+      <app-work-program-rcm *ngIf="isRcmEditPage" (rcmEdit)="onRcmEditClick($event)" [addedWorkProgramId]="workProgramId" ></app-work-program-rcm>
+      <app-work-program-rcm-edit *ngIf="isRcmListPage" (rcmList)="onRcmListCancel($event)" (isSamplingList)="onAddSamplingClick($event)" [rcmId]="rcmGuid"></app-work-program-rcm-edit>
+    </tab>
+  </tabset>
+</div>

@@ -1,0 +1,39 @@
+<!--Loader component-->
+<app-loader></app-loader>
+
+<!--Process add page elements-->
+<div class="process-add-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">
+      {{rcmSubProcessTitle}}
+    </h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" (click)="onBackClick()" tooltip="{{backToolTip}}">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container fixed-height-container p-35">
+    <form #rcmSubProcessAddForm="ngForm">
+      <div class="sector-form">
+        <div class="mb-20">
+          <div class="d-inline-block align-middle w-40 mb-20 form-group mr-20">
+            <label class="form-label required">
+              {{rcmSubProcessTitle}}
+            </label>
+            <textarea class="form-control small-txt-area" [(ngModel)]="rcmSubProcess.subProcess" name="subProcess" #subProcesses="ngModel" required appValidateAlphanumeric appValidateMaxLength="140"></textarea>
+            <div *ngIf="subProcesses.errors" class="feedback-box" style="width:60%">
+              <p *ngIf="subProcesses.touched && !subProcesses.valid && subProcesses.errors.required" class="invalid-feedback">{{requiredMessage}}</p>
+              <p *ngIf="subProcesses.touched && !subProcesses.valid && subProcesses.errors.appValidateAlphanumeric" class="invalid-feedback">{{invalidMessage}}</p>
+              <p *ngIf="subProcesses.touched && !subProcesses.errors.required && !subProcesses.errors.appValidateAlphanumeric" class="invalid-feedback" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+            </div>
+          </div>
+        </div>
+        <button class="btn form-btn mt-20" (click)="saveRcmSubProcess()" [disabled]="rcmSubProcessAddForm.invalid">
+          <img src="../assets/images/save.png" class="align-top" />
+          {{saveButtonText}}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

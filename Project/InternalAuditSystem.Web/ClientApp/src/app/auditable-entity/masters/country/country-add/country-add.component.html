@@ -1,0 +1,49 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Auditable entity country type add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{countryText}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="audit-team-form modal-form country-modal" #countryAddForm="ngForm" name="countryForm" (keydown.enter)="$event.preventDefault()">
+    <div class="form-group  mb-10">
+      <label class="form-label mb-10 required">{{regionText}}</label>
+      <ng-select #select class="page-select" [items]="countryObject.regionACList" [searchable]="false" name="regionName" #regionName="ngModel"
+                 [(ngModel)]="countryObject.regionId" bindLabel="name" bindValue="id" required>
+        <ng-template ng-header-tmp let-item="item">
+          <input type="text" class="w-100" (input)="select.filter($event.target.value)" />
+        </ng-template>
+      </ng-select>
+    </div>
+    <div class="form-group  mb-10">
+      <label class="form-label mb-10 required">{{countryText}}</label>
+      <div class="team-name-section">
+        <input [(ngModel)]="countryObject.countryName" name="getCountryName" #getCountryName="ngModel"
+               class="form-control" (keyup)="passValueOnEnterEvent($event, countryObject.countryName)" appValidateMaxLength="256" required appValidateCountryStateName/>
+        <i class="zmdi zmdi-rotate-right zmdi-hc-spin" *ngIf="isLoading"></i>
+        <ul class="audit-name-list" [ngClass]="{'hide-list': isToHideList}">
+          <li id="country.id" *ngFor="let country of dropdownList | async">
+            <a (click)="populateSelectedCountryDetails(country.name)">
+              <p class="mb-0">{{country.name}}</p>
+              <span class="d-block info-email">{{country.name}}</span>
+            </a>
+          </li>
+        </ul>
+        <div *ngIf="getCountryName.errors  && countryObject !== undefined">
+          <p class="mb-0 invalid-feedback" *ngIf="getCountryName.touched && !getCountryName.valid && getCountryName.errors.required">{{requiredMessage}}</p>
+          <p class="mb-0 invalid-feedback" *ngIf="getCountryName.touched && !getCountryName.valid && !getCountryName.errors.required && getCountryName.errors.appValidateCountryStateName">{{invalidMessage}}</p>
+          <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="getCountryName.touched && !getCountryName.valid && !getCountryName.errors.required && !getCountryName.errors.appValidateCountryStateName">{{maxLengthExceedMessage}}</p>
+          <p class="mb-0 invalid-feedback" *ngIf="isNoRecordMatched">{{noRecordFound}}</p>
+        </div>
+      </div>
+      
+    </div>
+    <button class="btn form-btn mt-20" (click)="saveCountry()" [disabled]="countryAddForm.invalid||countryObject.countryName===''">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>

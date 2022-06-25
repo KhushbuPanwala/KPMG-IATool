@@ -1,0 +1,107 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Audit plan general page elements-->
+<div class="general-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">{{generalTitle}}</h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" tooltip="{{backToolTipMsg}}" (click)="backToListPage()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container">
+    <form #generalAddEditForm="ngForm">
+      <div class="row clearfix">
+        <!--Plan Title-->
+        <div class="form-group col-lg-6  mb-20">
+          <label class="form-label required">{{auditPlanTitleLabel}}</label>
+          <input type="text" class="form-control" [(ngModel)]="auditPlanObj.title" name="auditPlanTitle" #auditPlanTitle="ngModel" required appValidateMaxLength="256" />
+          <div *ngIf="auditPlanTitle.errors  && auditPlanObj !== undefined">
+            <p class="mb-0 invalid-feedback" *ngIf="auditPlanTitle.touched && !auditPlanTitle.valid && auditPlanTitle.errors.required">{{requiredMessage}}</p>
+            <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="auditPlanTitle.touched && !auditPlanTitle.errors.required">{{maxLengthExceedMessage}}</p>
+          </div>
+        </div>
+        <!--Version-->
+        <div class="form-group col-lg-6 mb-20">
+          <div class="w-38">
+            <label class="form-label">{{versionLabel}}</label>
+            <input type="text" class="form-control" [(ngModel)]="auditPlanObj.version" name="auditPlanVersion" #auditPlanVersion="ngModel" readonly />
+          </div>
+        </div>
+        <!--Audit Cycle Selection-->
+        <div class="col-lg-6">
+          <label class="form-label  d-block bold">{{auditCycleLabel}}:</label>
+          <!--Due date-->
+          <div class="form-group d-inline-block align-middle mr-20 mb-20 date-picker w-38">
+            <label class="form-label required">{{dueDateLabel}}</label>
+            <div class="form-icon-group">
+              <input type="text"
+                     placeholder="{{dueDateLabel}}"
+                     class="form-control"
+                     bsDatepicker
+                     name="auditPlanEndDate" #auditPlanEndDate="ngModel"
+                     [(ngModel)]="auditPlanObj.endDateTime"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',adaptivePosition: false}" required />
+              <i class="zmdi zmdi-calendar calender-icon"></i>
+            </div>
+            <div *ngIf="auditPlanEndDate.errors  && auditPlanObj !== undefined">
+              <p class="mb-0 invalid-feedback" *ngIf="auditPlanEndDate.touched && !auditPlanEndDate.valid && auditPlanEndDate.errors.required">{{requiredMessage}}</p>
+            </div>
+          </div>
+          <!--Identified date-->
+          <div class="form-group d-inline-block align-middle mb-20 date-picker w-38">
+            <label class="form-label required">{{identifiedOnLabel}}</label>
+            <div class="form-icon-group">
+              <input type="text"
+                     placeholder="{{identifiedOnLabel}}"
+                     class="form-control"
+                     bsDatepicker
+                     name="auditPlanStartDate" #auditPlanStartDate="ngModel"
+                     [(ngModel)]="auditPlanObj.startDateTime"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', adaptivePosition: false}" required />
+              <i class="zmdi zmdi-calendar calender-icon"></i>
+            </div>
+            <div *ngIf="auditPlanStartDate.errors  && auditPlanObj !== undefined">
+              <p class="mb-0 invalid-feedback" *ngIf="auditPlanStartDate.touched && !auditPlanStartDate.valid && auditPlanStartDate.errors.required">{{requiredMessage}}</p>
+            </div>
+          </div>
+        </div>
+
+        <!--Status-->
+        <div class="form-group col-lg-6 mb-20">
+          <label class="form-label  d-block bold hidden-label">{{auditCycleLabel}}:</label>
+          <div class="d-inline-block w-38">
+            <label class="form-label">{{statusLabel}}</label>
+            <input type="text" class="form-control" [(ngModel)]="auditPlanObj.statusString" name="auditPlanStatus" #auditPlanStatus="ngModel" readonly />
+          </div>
+          <div class="w-10 d-inline-block  ml-10" *ngIf="this.auditPlanId !== undefined">
+            <button class="btn form-btn w-104" [disabled]="isToDisableCloseButton" (click)="updateCurrentStatusToclose()">{{statusButtonCloseText}}</button>
+          </div>
+        </div>
+        <!--Audit Type Selection-->
+        <div class="form-group col-lg-6 mb-20">
+          <label class="form-label">{{auditTypeLabel}}</label>
+          <ng-select #selectType [items]="auditTypeList" [searchable]="false" name="auditType" #auditType="ngModel" [(ngModel)]="auditPlanObj.selectedTypeId" bindLabel="name" bindValue="id" [placeholder]="dropdownDefaultValue">
+            <ng-template ng-header-tmp>
+              <input style="width: 100%; line-height: 24px" type="text" (input)="selectType.filter($event.target.value)" />
+            </ng-template>
+          </ng-select>
+        </div>
+        <!--Audit Category Selection-->
+        <div class="form-group col-lg-6 mb-20">
+          <label class="form-label">{{auditCategoryLabel}}</label>
+          <ng-select #selectCategory [items]="auditCategoryList" [searchable]="false" name="auditCategory" #auditCategory="ngModel" [(ngModel)]="auditPlanObj.selectCategoryId" bindLabel="name" bindValue="id" [placeholder]="dropdownDefaultValue">
+            <ng-template ng-header-tmp>
+              <input style="width: 100%; line-height: 24px" type="text" (input)="selectCategory.filter($event.target.value)" />
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+      <button class="btn form-btn mt-40" [disabled]="generalAddEditForm.invalid" (click)="saveDataAndRediectToOverview()">
+        <img src="../../assets/images/save.png" alt="{{saveNextButtonText}}" class="align-top" />
+        {{saveNextButtonText}}
+      </button>
+    </form>
+  </div>
+</div>

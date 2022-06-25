@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drag and Drop table rows in Javascript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h3 class="text-center">Drag and Drop table rows using Javascript</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Description</th>
+            </tr>
+            <tbody class="row_drag">
+            
+                <tr  id="1">
+                    <td>1</td>
+                    <td>title1</td>
+                    <td>Desc1</td>
+                </tr>
+				<tr  id="2">
+                    <td>2</td>
+                    <td>title2</td>
+                    <td>Desc2</td>
+                </tr>
+				<tr  id="3">
+                    <td>3</td>
+                    <td>title3</td>
+                    <td>Desc3</td>
+                </tr>
+				<tr  id="4">
+                    <td>4</td>
+                    <td>title4</td>
+                    <td>Desc4</td>
+                </tr>
+				
+				<tr  id="5">
+                    <td>5</td>
+                    <td>title5</td>
+                    <td>Desc5</td>
+                </tr>
+           
+            </tbody>
+        </table>
+    </div> 
+</body>
+</html>
+
+<script type="text/javascript">
+    $( ".row_drag" ).sortable({
+        delay: 100,
+        stop: function() {
+            var selectedRow = new Array();
+            $('.row_drag>tr').each(function() {
+                selectedRow.push($(this).attr("id"));
+            });
+           alert(selectedRow);
+        }
+    });
+</script>

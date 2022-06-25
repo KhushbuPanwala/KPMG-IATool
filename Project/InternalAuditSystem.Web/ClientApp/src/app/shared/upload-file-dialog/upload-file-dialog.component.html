@@ -1,0 +1,269 @@
+<!--Audit client participants add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body" #planDocument>
+  <form class="audit-team-form modal-form">
+    <div class="file-upload-section">
+      <input type="text" class="form-control placeholde-input" placeholder="{{noFileChosen}}" />
+      <input type="file" class="form-control file-upload-input" />
+      <button class="btn file-upload-button"><i class="zmdi zmdi-upload"></i>{{chooseFileText}}</button>
+      <div class="upload-search-box">
+        <input type="search" class="form-control" placeholder="{{searchText}}" />
+        <i class="zmdi zmdi-search"></i>
+      </div>
+     
+      <ul class="uploaded-files-list">
+        <li class="clearfix">
+          <button class="btn btn-icon download-btn d-inline-block align-middle">
+            <img class="download-opt-img" src="../assets/images/word.png" alt="{{wordToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block align-middle">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block align-middle">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block align-middle">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li class="clearfix">
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/pdf.png" alt="{{pdfToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/svg.png" alt="{{pdfToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/svg.png" alt="{{pdfToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/csv.png" alt="{{pdfToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/excel.png" alt="{{pdfToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/exe.png" alt="{{pdfToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/gif.png" alt="{{pdfToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/jpg.png" alt="{{pdfToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/mp4.png" alt="{{pdfToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/mp3.png" alt="{{pdfToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/png.png" alt="{{pdfToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <button class="btn btn-icon download-btn d-inline-block">
+            <img class="download-opt-img" src="../assets/images/zip.png" alt="{{pdfToolTip}}" />
+          </button>
+          <p class="d-inline-block align-middle file-name" title="{{fileNameText}}">{{fileNameText}}</p>
+          <div class="pull-right">
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-eye"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-download"></i>
+            </a>
+            <a class="upload-file-action d-inline-block">
+              <i class="zmdi zmdi-delete"></i>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <button class="btn form-btn mt-20">
+      <img src="../../assets/images/save.png" alt="" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>
+
+
+
+

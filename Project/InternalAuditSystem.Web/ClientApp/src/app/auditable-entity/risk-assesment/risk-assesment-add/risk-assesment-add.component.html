@@ -1,0 +1,187 @@
+<!--Auditable entity risk assesment add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{riskAssessmentDetailsTitle}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<form #riskAssessmentAddForm="ngForm">
+  <div class="modal-body" #riskDocument>
+    <div class="modal-form">
+      <div class="form-group mb-15">
+        <label class="form-label required">{{assessmentName}}</label>
+        <input type="text" class="form-control" [(ngModel)]="riskAssessmentDetail.name"
+               name="name" #name="ngModel" required appValidateMaxLength="256" />
+        <p *ngIf="name.errors && name.touched && !name.valid && name.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+        <p class="invalid-feedback mb-0" appValidateMaxLength *ngIf="name.errors && name.touched && !name.errors.required">{{maxLengthExceedMessage}}</p>
+      </div>
+      <div class="form-group mb-15">
+        <label class="form-label required">{{statusTitle}}</label>
+        <ng-select #select [items]="statusList" [searchable]="false" [(ngModel)]="riskAssessmentDetail.status" bindLabel="label" bindValue="value"
+                   name="status" #status="ngModel" required>
+        </ng-select>
+        <p *ngIf="status.errors && status.touched && !status.valid && status.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+      </div>
+      <div class="form-group mb-15 ">
+        <label class="form-label required">{{year}}</label>
+        <input type="text" class="form-control" [(ngModel)]="riskAssessmentDetail.year" name="yearField" #yearField="ngModel" required appValidateMaxLength="4" appValidateMinLength="4" appValidateNaturalNumber />
+        <p *ngIf="yearField.touched && !yearField.valid && yearField.errors.required" class="invalid-feedback">{{requiredMessage}}</p>
+        <p *ngIf="yearField.touched && !yearField.valid && yearField.errors.appValidateNaturalNumber" class="invalid-feedback" appValidateNaturalNumber>{{invalidMessage}}</p>
+        <p *ngIf="yearField.errors && yearField.touched && yearField.errors.appValidateMaxLength" class="invalid-feedback" appValidateMaxLength="4">{{maxLengthExceedMessage}}</p>
+        <p *ngIf="yearField.errors && yearField.touched && yearField.errors.appValidateMinLength" class="invalid-feedback" appValidateMinLength="4">{{min4DigitRequired}}</p>
+
+      </div>
+      <div class="form-group mb-15 required">
+        <label class="form-label required">{{summaryOfAssessment}}</label>
+        <textarea class="form-control page-txt-area" [(ngModel)]="riskAssessmentDetail.summary" name="summary" #summary="ngModel" required appValidateMaxLength="256"></textarea>
+        <p *ngIf="summary.errors && summary.touched && !summary.valid && summary.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+        <p *ngIf="summary.errors && summary.touched && summary.errors.appValidateMaxLength" class="invalid-feedback" appValidateMaxLength="256">{{maxLengthExceedMessage}}</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label required">{{attachment}}</label>
+        <div class="file-upload-section">
+          <input type="text" class="form-control placeholde-input" placeholder="{{noFileChosen}}" />
+          <input type="file" class="form-control file-upload-input" multiple (change)="fileChange($event)" />
+          <button class="btn file-upload-button">{{chooseFileText}}</button>
+          <p *ngIf="!isFileUploaded" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+          <ul class="uploaded-files-list" *ngIf="(riskAssessmentDetail.riskAssessmentDocumentACList !== undefined && riskAssessmentDetail.riskAssessmentDocumentACList.length > 0 )|| (riskAsssessmentFilesList !== undefined && riskAsssessmentFilesList.length>0)">
+            <li class="clearfix" *ngFor="let file of riskAsssessmentFilesList; let index = index">
+              <button class="btn btn-icon download-btn d-inline-block align-middle">
+                <!--Word icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,wordType)">
+                  <img class="download-opt-img" src="../assets/images/word.png" alt="{{wordToolTip}}" />
+                </ng-template>
+                <!--Pdf icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,pdfType)">
+                  <img class="download-opt-img" src="../assets/images/pdf.png" alt="{{pdfToolTip}}" />
+                </ng-template>
+                <!--Ppt icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,pptType)">
+                  <img class="download-opt-img" src="../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+                </ng-template>
+                <!--Excel icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,excelType)">
+                  <img class="download-opt-img" src="../assets/images/excel.png" alt="" />
+                </ng-template>
+                <!--JPG icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,jpgType)">
+                  <img class="download-opt-img" src="../assets/images/jpg.png" alt="" />
+                </ng-template>
+                <!--PNG icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,pngType)">
+                  <img class="download-opt-img" src="../assets/images/png.png" alt="" />
+                </ng-template>
+                <!--GIF icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,gifType)">
+                  <img class="download-opt-img" src="../assets/images/gif.png" alt="" />
+                </ng-template>
+                <!--Zip icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,zipType)">
+                  <img class="download-opt-img" src="../assets/images/zip.png" alt="" />
+                </ng-template>
+                <!--MP3 icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,mp3Type)">
+                  <img class="download-opt-img" src="../assets/images/mp3.png" alt="" />
+                </ng-template>
+                <!--MP4 icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,mp4Type)">
+                  <img class="download-opt-img" src="../assets/images/mp4.png" alt="" />
+                </ng-template>
+                <!--SVG icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,svgType)">
+                  <img class="download-opt-img" src="../assets/images/svg.png" alt="" />
+                </ng-template>
+                <!--CSV icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,csvType)">
+                  <img class="download-opt-img" src="../assets/images/csv.png" alt="" />
+                </ng-template>
+                <!--other icon-->
+                <ng-template [ngIf]="checkFileExtention(file.name,otherFileType)">
+                  <img class="download-opt-img" src="../assets/images/default-file.png" alt="" />
+                </ng-template>
+              </button>
+              <p class="d-inline-block align-middle file-name" title="{{file.name}}">{{file.name}}</p>
+              <div class="pull-right">
+                <a class="upload-file-action d-inline-block align-middle" (click)="openDeleteModal(index,'')">
+                  <i class="zmdi zmdi-delete"></i>
+                </a>
+              </div>
+            </li>
+            <li class="clearfix" *ngFor="let riskAssessmentDoc of riskAssessmentDetail.riskAssessmentDocumentACList; let index = index">
+              <button class="btn btn-icon download-btn d-inline-block align-middle">
+                <!--Word icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,wordType)">
+                  <img class="download-opt-img" src="../assets/images/word.png" alt="{{wordToolTip}}" />
+                </ng-template>
+                <!--Pdf icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,pdfType)">
+                  <img class="download-opt-img" src="../assets/images/pdf.png" alt="{{pdfToolTip}}" />
+                </ng-template>
+                <!--Ppt icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,pptType)">
+                  <img class="download-opt-img" src="../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+                </ng-template>
+                <!--Excel icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,excelType)">
+                  <img class="download-opt-img" src="../assets/images/excel.png" alt="" />
+                </ng-template>
+                <!--JPG icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,jpgType)">
+                  <img class="download-opt-img" src="../assets/images/jpg.png" alt="" />
+                </ng-template>
+                <!--PNG icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,pngType)">
+                  <img class="download-opt-img" src="../assets/images/png.png" alt="" />
+                </ng-template>
+                <!--GIF icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,gifType)">
+                  <img class="download-opt-img" src="../assets/images/gif.png" alt="" />
+                </ng-template>
+                <!--Zip icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,zipType)">
+                  <img class="download-opt-img" src="../assets/images/zip.png" alt="" />
+                </ng-template>
+                <!--MP3 icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,mp3Type)">
+                  <img class="download-opt-img" src="../assets/images/mp3.png" alt="" />
+                </ng-template>
+                <!--MP4 icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,mp4Type)">
+                  <img class="download-opt-img" src="../assets/images/mp4.png" alt="" />
+                </ng-template>
+                <!--SVG icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,svgType)">
+                  <img class="download-opt-img" src="../assets/images/svg.png" alt="" />
+                </ng-template>
+                <!--CSV icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,csvType)">
+                  <img class="download-opt-img" src="../assets/images/csv.png" alt="" />
+                </ng-template>
+                <!--other icon-->
+                <ng-template [ngIf]="checkFileExtention(riskAssessmentDoc.path,otherFileType)">
+                  <img class="download-opt-img" src="../assets/images/default-file.png" alt="" />
+                </ng-template>
+              </button>
+              <p class="d-inline-block align-middle file-name" title="{{riskAssessmentDoc.fileName}}">{{riskAssessmentDoc.fileName}}</p>
+              <div class="pull-right">
+                <a class="upload-file-action d-inline-block align-middle" (click)="openDocument(riskAssessmentDoc.path)">
+                  <i class="zmdi zmdi-eye"></i>
+                </a>
+                <a class="upload-file-action d-inline-block align-middle" (click)="downloadRiskAssessmentDoc(riskAssessmentDoc.id)">
+                  <i class="zmdi zmdi-download"></i>
+                </a>
+                <a class="upload-file-action d-inline-block align-middle" (click)="openDeleteModal(index, riskAssessmentDoc.id)">
+                  <i class="zmdi zmdi-delete"></i>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <button class="btn form-btn mt-15" (click)="saveRiskAssessment()" [disabled]="riskAssessmentAddForm.invalid || !isFileUploaded">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </div>
+</form>

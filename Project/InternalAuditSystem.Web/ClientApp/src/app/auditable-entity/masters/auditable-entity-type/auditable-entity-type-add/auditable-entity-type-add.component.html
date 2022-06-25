@@ -1,0 +1,29 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Entity type add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{entityTypeLabel}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="audit-team-form modal-form" #entityTypeAddEditForm="ngForm" *ngIf="entityTypeObject !== undefined">
+    <div class="form-group  mb-15">
+      <label class="form-label required mb-10">{{typeLabel}}</label>
+      <input type="text" class="form-control"  [(ngModel)]="entityTypeObject.typeName" name="entityTypeName" #entityTypeName="ngModel" required appValidateMaxLength="256"/>
+      <div class="feedback-box" *ngIf="entityTypeName.errors  && entityTypeObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="entityTypeName.touched && !entityTypeName.valid && entityTypeName.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="entityTypeName.touched && !entityTypeName.errors.required">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <button class="btn form-btn mt-20" (click)="saveEntityType()" [disabled]="entityTypeAddEditForm.invalid">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>
+
+
+
+

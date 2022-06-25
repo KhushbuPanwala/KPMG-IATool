@@ -1,0 +1,68 @@
+<!--Auditable entity eographical area add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<form #geoGraphicalAddForm="ngForm">
+  <div class="modal-body">
+    <div class="modal-form">
+      <div class="form-group">
+        <label class="form-label required">{{regionText}}</label>
+        <ng-select #selectRegion [items]="regionList" [searchable]="false" (change)="onRegionSelection(primaryGeographicalAreaDetail.regionId)"
+                   [(ngModel)]="primaryGeographicalAreaDetail.regionId" bindLabel="name" bindValue="id" [placeholder]="dropdownDefaultValue"
+                   name="region" #region="ngModel" required>
+          <ng-template ng-header-tmp>
+            <input style="width: 100%; line-height: 24px" type="text" (input)="selectRegion.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+        <p *ngIf="region.errors && region.touched && !region.valid && region.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label required">{{countryText}}</label>
+        <ng-select #selectCountry [items]="countryList" [searchable]="false" (change)="onCountrySelection(primaryGeographicalAreaDetail.entityCountryId)"
+                   [(ngModel)]="primaryGeographicalAreaDetail.entityCountryId" bindLabel="name" bindValue="id" [placeholder]="dropdownDefaultValue"
+                   name="country" #country="ngModel" required>
+          <ng-template ng-header-tmp>
+            <input class="w-100" type="text" (input)="selectCountry.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+        <p *ngIf="country.errors && country.touched && !country.valid && country.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label required">{{stateText}}</label>
+        <ng-select #selectProvince [items]="provinceStateList" [searchable]="false"
+                   [(ngModel)]="primaryGeographicalAreaDetail.entityStateId" bindLabel="name" bindValue="id" [placeholder]="dropdownDefaultValue"
+                   name="state" #state="ngModel" required>
+          <ng-template ng-header-tmp>
+            <input style="width: 100%; line-height: 24px" type="text" (input)="selectProvince.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+        <p *ngIf="state.errors && state.touched && !state.valid && state.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label required">{{locationLabel}}</label>
+        <ng-select #selectLocation [items]="locationList" [searchable]="false" [(ngModel)]="primaryGeographicalAreaDetail.locationId"
+                   bindLabel="name" bindValue="id" [placeholder]="dropdownDefaultValue"
+                     name="location" #location="ngModel" required>
+          <ng-template ng-header-tmp>
+            <input style="width: 100%; line-height: 24px" type="text" (input)="selectLocation.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+        <p *ngIf="location.errors && location.touched && !location.valid && location.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+      </div>
+
+    </div>
+    <button class="btn form-btn mt-20" (click)="savePrimaryGeographicalArea()" [disabled]="geoGraphicalAddForm.invalid">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </div>
+</form>
+<app-loader></app-loader>
+
+
+
+
+

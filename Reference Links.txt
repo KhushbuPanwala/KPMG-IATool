@@ -1,0 +1,10 @@
+BRD Document
+https://promactinfotech1.sharepoint.com/sites/KPMG_IATool/Shared%20Documents/Forms/AllItems.aspx?viewid=c86fdefa%2D8e52%2D454e%2D90a1%2D928a49269fee&id=%2Fsites%2FKPMG%5FIATool%2FShared%20Documents%2FBRD%2DAND%2DResponses
+
+Basic Guidance to create the project 
+http://wiki.promact.com/books/guidelines/page/project-structure
+
+
+https://medium.com/@pavel.sulimau/dotnetcore-xunit-coverlet-reportgenerator-cake-codecoveragereport-1ed4adf408d2
+
+http://nmock.sourceforge.net/quickstart.html

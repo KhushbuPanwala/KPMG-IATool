@@ -1,0 +1,88 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Audit plan process add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{selectAuditProcessModalTitle}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form #planProcessAddEditForm="ngForm">
+    <div class="modal-form">
+      <!--Audit process dropdown-->
+      <div class="form-group  mb-15">
+        <label class="form-label required">{{auditProcessLabel}}</label>
+        <ng-select #selectPorcess class="page-select" [items]="processList" [searchable]="false" name="planProcess" #planProcess="ngModel" (change)="populateSubprocessList(planProcessObj.parentProcessId)"
+                   [(ngModel)]="planProcessObj.parentProcessId" bindLabel="name" bindValue="id" [placeholder]="selectProcessPlaceholder" required [disabled]="isEdit">
+          <ng-template ng-header-tmp>
+            <input type="text" class="w-100" (input)="selectPorcess.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+        <p *ngIf="planProcess.touched && !planProcess.valid && planProcess.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+      </div>
+      <!--Audit Subprocess dropdown-->
+      <div class="form-group  mb-15">
+        <label class="form-label required">{{auditSubProcessLabel}}</label>
+        <ng-select #selectSubProcess class="page-select" [items]="subProcessList" [searchable]="false" name="planSubProcess" #planSubProcess="ngModel"
+                   [(ngModel)]="planProcessObj.processId" bindLabel="name" bindValue="id" [placeholder]="selectSubProcessPlaceholder" required  [disabled]="isEdit">
+          <ng-template ng-header-tmp>
+            <input type="text" class="w-100" (input)="selectSubProcess.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+        <p *ngIf="planSubProcess.touched && !planSubProcess.valid && planSubProcess.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+      </div>
+      <!--Status-->
+      <div class="form-group mb-15">
+        <label class="form-label required">{{statusTitle}}</label>
+        <ng-select #select [items]="processStatusList" [searchable]="false" name="planProcessStatus" #planProcessStatus="ngModel"
+                   [(ngModel)]="planProcessObj.status" bindLabel="label" bindValue="value" required>
+        </ng-select>
+        <p *ngIf="planProcessStatus.touched && !planProcessStatus.valid && planProcessStatus.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+      </div>
+      <!--Timeline-->
+      <label class="form-label bold d-block">{{timeLineLabel}}</label>
+      <!--Start Date-->
+      <div class="d-inline-block align-middle form-group mb-20 date-picker w-45">
+        <label class="form-label required">{{startDate}}</label>
+        <div class="form-icon-group">
+          <input type="text"
+                 placeholder="{{startDate}}"
+                 class="form-control"
+                 bsDatepicker
+                 name="planProcessStartDate" #planProcessStartDate="ngModel"
+                 [(ngModel)]="planProcessObj.startDateTime"
+                 [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',adaptivePosition: true }" required>
+          <i class="zmdi zmdi-calendar calender-icon"></i>
+          <div class="feedback-box" *ngIf="planProcessStartDate.errors  && planProcessObj !== undefined">
+            <p class="mb-0 invalid-feedback" *ngIf="planProcessStartDate.touched && !planProcessStartDate.valid && planProcessStartDate.errors.required">{{requiredMessage}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="to-text mt-10 d-inline-block align-middle width-30 text-center">
+        <span>{{toText}}</span>
+      </div>
+      <!--End Date-->
+      <div class="d-inline-block align-middle form-group mb-20 date-picker w-45">
+        <label class="form-label required">{{endDate}}</label>
+        <div class="form-icon-group">
+          <input type="text"
+                 placeholder="{{endDate}}"
+                 class="form-control"
+                 bsDatepicker
+                 name="planProcessEndDate" #planProcessEndDate="ngModel"
+                 [(ngModel)]="planProcessObj.endDateTime"
+                 [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', adaptivePosition: true}" required>
+          <i class="zmdi zmdi-calendar calender-icon"></i>
+          <div class="feedback-box" *ngIf="planProcessEndDate.errors  && planProcessObj !== undefined">
+            <p class="mb-0 invalid-feedback" *ngIf="planProcessEndDate.touched && !planProcessEndDate.valid && planProcessEndDate.errors.required">{{requiredMessage}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn form-btn mt-20" [disabled]="planProcessAddEditForm.invalid" (click)="savePlanProcess()">
+      <img src="../../assets/images/save.png" alt="{{buttonText}}" class="align-top" />
+      {{buttonText}}
+    </button>
+  </form>
+</div>

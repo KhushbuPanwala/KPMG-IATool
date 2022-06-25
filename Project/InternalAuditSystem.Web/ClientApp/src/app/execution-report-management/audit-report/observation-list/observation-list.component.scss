@@ -1,0 +1,9 @@
+/*imported common style to get common elements styles*/
+@import '../../../../styles.scss';
+
+//observation list design css
+.observation-table { height: 60vh;
+
+  .ag-theme-alpine { width: 100%; height: 100%; border-left: none; border-right: none; }
+  .ag-root-wrapper {border-left: none;border-right: none; }
+}

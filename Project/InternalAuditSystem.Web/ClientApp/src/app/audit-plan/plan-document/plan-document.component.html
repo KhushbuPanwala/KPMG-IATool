@@ -1,0 +1,161 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!-- Audit plan process list page contents -->
+<div class="documents-list-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">{{documentsTitle}}</h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" tooltip="{{backToolTipMsg}}" (click)="rediectToListPage()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="page-container">
+    <div class="top-contents mb-10">
+      <div class="search-box">
+        <input class="form-control search-control pl-30" placeholder="{{searchText}}" [(ngModel)]="searchValue"
+               (keydown.Tab)="searchPlanDocuments($event,pageNumber, itemsPerPage, searchValue)"
+               (keypress)="searchPlanDocuments($event,pageNumber, itemsPerPage, searchValue)">
+        <i class="zmdi zmdi-search"></i>
+      </div>
+      <div class="right-contents">
+
+        <button class="btn btn-icon dark-bg-btn p-0 ml-10" tooltip="{{addToolTip}}" (click)="openDocumentUploadModal()">
+          <i class="zmdi zmdi-plus-circle"></i>
+        </button>
+      </div>
+    </div>
+    <!--Table contents-->
+    <div class="table-container table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="w-50">{{purposeTitle}}</th>
+            <th class="w-50" colspan="2">{{documentsTitle}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!--No Record Found-->
+          <tr *ngIf="planDocumentsList.length === 0">
+            <td colspan="5"><p class="no-record">{{showNoDataText}}</p></td>
+          </tr>
+          <tr *ngFor="let index = index;let document of planDocumentsList | paginate: { itemsPerPage: itemsPerPage, currentPage: pageNumber, totalItems:totalRecords}">
+            <td class="w-50" title="{{document.purpose}}"><p class="desc-text mb-0">{{document.purpose}}</p></td>
+            <td class="w-45 uploaded-files-list" title="">
+              <!--For Displaying file icon-->
+              <button class="btn btn-icon download-btn d-inline-block align-middle mr-10 p-0">
+                <!--Word icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,wordType)">
+                  <img class="download-opt-img" src="../../../assets/images/word.png" alt="" />
+                </ng-template>
+                <!--Pdf icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,pdfType)">
+                  <img class="download-opt-img" src="./../../assets/images/pdf.png" alt="" />
+                </ng-template>
+                <!--Ppt icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,pptType)">
+                  <img class="download-opt-img" src="./../../assets/images/powerpoint.png" alt="" />
+                </ng-template>
+                <!--Excel icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,excelType)">
+                  <img class="download-opt-img" src="../../../assets/images/excel.png" alt="" />
+                </ng-template>
+                <!--JPG icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,jpgType)">
+                  <img class="download-opt-img" src="../../../assets/images/jpg.png" alt="" />
+                </ng-template>
+                <!--PNG icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,pngType)">
+                  <img class="download-opt-img" src="../../../assets/images/png.png" alt="" />
+                </ng-template>
+                <!--GIF icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,gifType)">
+                  <img class="download-opt-img" src="../../../assets/images/gif.png" alt="" />
+                </ng-template>
+                <!--Zip icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,zipType)">
+                  <img class="download-opt-img" src="../../../assets/images/zip.png" alt="" />
+                </ng-template>
+                <!--MP3 icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,mp3Type)">
+                  <img class="download-opt-img" src="../../../assets/images/mp3.png" alt="" />
+                </ng-template>
+                <!--MP4 icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,mp4Type)">
+                  <img class="download-opt-img" src="../../../assets/images/mp4.png" alt="" />
+                </ng-template>
+                <!--SVG icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,svgType)">
+                  <img class="download-opt-img" src="../../../assets/images/svg.png" alt="" />
+                </ng-template>
+                <!--CSV icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,csvType)">
+                  <img class="download-opt-img" src="../../../assets/images/csv.png" alt="" />
+                </ng-template>
+                <!--other icon-->
+                <ng-template [ngIf]="checkFileExtention(document.fileName,otherFileType)">
+                  <img class="download-opt-img" src="./../../assets/images/default-file.png" alt="" />
+                </ng-template>
+              </button>
+              <p class="desc-text d-inline-block align-middle mb-0 file-name-px file-name" title="{{document.fileName}}">{{document.fileName}}</p>
+              <a class="d-inline-block align-middle action-icon ml-10" (click)="downloadFile(document.id)" >
+                <i class="zmdi zmdi-download"></i>
+              </a>
+              <a class="d-inline-block align-middle action-icon ml-10" (click)="viewFile(document.path)">
+                <i class="zmdi zmdi-eye"></i>
+              </a>
+            </td>
+            <td class="w-5">
+              <div class="table-action-btn">
+                <a class="d-inline-block align-middle mr-10 action-icon" tooltip="{{editToolTip}}" (click)="openDocumentEditModal(index)">
+                  <i class="zmdi zmdi-edit align-middle"></i>
+                </a>
+                <a class="d-inline-block align-middle action-icon" tooltip="{{deleteToolTip}}" (click)="deleteDocument(document.id)">
+                  <i class="zmdi zmdi-delete align-middle"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--Table footer contens-->
+    <div class="table-footer row clearfix" *ngIf="planDocumentsList.length !== 0">
+      <div class="col-sm-7">
+        <pagination-controls [responsive]="responsive"
+                             [previousLabel]="labels.previousLabel"
+                             [nextLabel]="labels.nextLabel"
+                             (pageChange)="onPageChange($event)"></pagination-controls>
+      </div>
+      <div class="right-contents col-sm-5 text-right">
+        <div class="d-inline-block">
+          <ng-select #select [items]="pageItems" [searchable]="false" [(ngModel)]="itemsPerPage"
+                     bindLabel="item" bindValue="noOfItems" (change)="onItemPerPageChange($event)">
+          </ng-select>
+        </div>
+        <div class="d-inline-block ml-10">
+          <p class="mb-0 showing-results-text mt-5 align-middle">{{showingResults}}</p>
+        </div>
+      </div>
+
+    </div>
+    <div class="table-button-section mt-20">
+      <div class="d-inline-block align-middle">
+        <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn  form-btn" aria-controls="dropdown-basic" (click)="rediectToListPage()">
+            <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+            {{saveButtonText}}
+          </button>
+        </div>
+      </div>
+      <div class="d-inline-block align-middle ml-20">
+        <button class="btn form-btn border-form-btn  d-inline-block"  (click)="redirectToPreviousPage()">
+          {{previousButton}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

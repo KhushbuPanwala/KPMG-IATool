@@ -1,0 +1,54 @@
+<!--Delete confirmation modal contents-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right modal-close" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="dynamic-table  d-inline-block align-top">
+    <table class="table modal-table">
+      <tbody>
+        <tr>
+          <td *ngFor="let i = index;let column of columnNames" class="dynamic-table-column">
+            <textarea type="text" id="{{i}}" *ngIf="i>0" class="form-control border-none" name="nameOfColumn"
+                      [(ngModel)]="jsonDocument.columnNames[i]"></textarea>
+            <ng-template #popTemplate>
+              <a class="action-btn  delete-column-text" (click)="deleteColumnInTable(i)">
+                {{deleteColumn}}
+              </a>
+            </ng-template>
+            <a [popover]="popTemplate" *ngIf="i !== 0 && jsonDocument.columnNames.length > 2" class="dropdown-arrow" containerClass="dynamic-table-dropdown" [outsideClick]="true" placement="auto">
+              <i class="zmdi zmdi-chevron-down"></i>
+            </a>
+            <p *ngIf="i === 0" class="sr-no text-center">{{serialNumber}}</p>
+          </td>
+
+        </tr>
+
+
+        <tr *ngFor="let i = index;let dataElement of data" class="fix-row">
+          <td *ngFor="let j=index;let rowData of dataElement.RowData">
+            <textarea *ngIf="j>0" class="form-control border-none" [(ngModel)]="jsonDocument.data[i].RowData[j]"></textarea>
+            <p *ngIf="j === 0" class="sr-no text-center">{{i+1}}</p>
+          </td>
+          <div class="fix-icons">
+            <a *ngIf="i === jsonDocument.data.length - 1" class="action-btn d-block  mr-10" (click)="addRowInTable()">
+              <i class="zmdi zmdi-plus-circle" title="{{addRow}}" placement="bottom"></i>
+            </a>
+            <a *ngIf="jsonDocument.data.length > 1" class="action-btn delete-icon d-block" (click)="deleteRowInTable(jsonDocument.data[i].RowData[0])">
+              <i class="zmdi zmdi-delete" title="{{deleteRow}}" placement="bottom"></i>
+            </a>
+          </div>
+      </tbody>
+    </table>
+  </div>
+  <a class="action-btn d-inline-block align-top w-4 text-left ml-10" tooltip="{{addColumn}}" (click)="addTableColumn()">
+    <i class="zmdi zmdi-plus-circle"></i>
+  </a>
+
+  <button class="btn form-btn mt-20 d-block" type="button" (click)="onChange()">
+    <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+    {{saveButtonText}}
+  </button>
+</div>

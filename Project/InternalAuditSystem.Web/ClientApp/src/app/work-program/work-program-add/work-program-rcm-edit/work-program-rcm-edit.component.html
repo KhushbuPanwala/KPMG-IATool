@@ -1,0 +1,172 @@
+<!--Edit page of RCM in work program contents-->
+<div class="rcm-edit-page" *ngIf="!isShowSampling">
+  <div class="form-area">
+    <div class="rcm-top-section row clearfix">
+      <div class="form-group col-lg-6">
+        <label class="form-label required">
+          {{rcmProcessTitle}}
+        </label>
+        <ng-select #selectRcmProcess class="page-select" [items]="processList" name="process" #process="ngModel" [(ngModel)]="rcmDetails.rcmProcessId" bindLabel="process" bindValue="id" [searchable]="false" [placeholder]="dropdownDefaultValue" required>
+          <ng-template ng-header-tmp>
+            <input type="text" class="w-100" (input)="selectRcmProcess.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="form-group col-lg-6">
+        <label class="form-label required">
+          {{rcmSubProcessTitle}}
+        </label>
+        <ng-select #selectRcmSubProcess class="page-select" [items]="subProcessList" name="subProcess" #subProcess="ngModel" [(ngModel)]="rcmDetails.rcmSubProcessId" bindLabel="subProcess" bindValue="id" [searchable]="true" [placeholder]="dropdownDefaultValue" required>
+          <ng-template ng-header-tmp>
+            <input type="text" class="w-100" (input)="selectRcmProcess.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+  </div>
+  <div class="rcm-tabs-area mt-20">
+    <div (click)="$event.preventDefault()">
+      <tabset class="rcm-edit-tabs page-tabs" #staticTabs>
+        <tab *ngFor="let tabz of tabs; let i=index;"
+             [heading]="tabz.title"
+             [active]="tabz.active"
+             (selectTab)="tabz.active = true"
+             (deselect)="tabz.active = false"
+             [disabled]="tabz.disabled"
+             [customClass]="tabz.customClass">
+          {{tabz?.content}}
+          <form #workProgramRcmAddForm="ngForm">
+            <div class="tabs-form-area observation-tab-contents clearfix">
+              <!--Tab left side contents-->
+              <div class="tab-left-contents">
+                <div class="row clearfix">
+                  <div class="col-lg-4 form-group">
+                    <label class="form-label required">{{riskCategoryLabel}}</label>
+                    <div class="textarea-group hide-editor-header">
+                      <angular-editor [(ngModel)]="tabz.rcmDetails.riskCategory" [config]="config" name="riskCategory{{i}}" #riskCategory="ngModel" required></angular-editor>
+                      <a class="view-more-button" (click)="openEditorModal(tabz.rcmDetails.riskCategory,riskCategoryLabel,i)">
+                        <i class="zmdi zmdi-crop-free"></i>
+                      </a>
+                    </div>
+                    <p *ngIf="riskCategory.errors && riskCategory.touched && !riskCategory.valid && riskCategory.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                  </div>
+                  <div class="col-lg-4 form-group">
+                    <label class="form-label required">{{riskDescriptionLabel}}</label>
+                    <div class="textarea-group hide-editor-header">
+                      <angular-editor [(ngModel)]="tabz.rcmDetails.riskDescription" [config]="config" name="riskDescription{{i}}" #riskDescription="ngModel" required></angular-editor>
+                      <a class="view-more-button" (click)="openEditorModal(tabz.rcmDetails.riskDescription,riskDescriptionLabel,i)">
+                        <i class="zmdi zmdi-crop-free"></i>
+                      </a>
+                    </div>
+                    <p *ngIf="riskDescription.errors && riskDescription.touched && !riskDescription.valid && riskDescription.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                  </div>
+                  <div class="col-lg-4 form-group">
+                    <label class="form-label required">{{controlObjectivelabel}}</label>
+                    <div class="textarea-group hide-editor-header">
+                      <angular-editor [(ngModel)]="tabz.rcmDetails.controlObjective" [config]="config" name="controlObjective{{i}}" #controlObjective="ngModel" required></angular-editor>
+                      <a class="view-more-button" (click)="openEditorModal(tabz.rcmDetails.controlObjective,controlObjectivelabel,i)">
+                        <i class="zmdi zmdi-crop-free"></i>
+                      </a>
+                    </div>
+                    <p *ngIf="controlObjective.errors && controlObjective.touched && !controlObjective.valid && controlObjective.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                  </div>
+                </div>
+                <div class="row clearfix">
+                  <div class="col-lg-12 form-group">
+                    <label class="form-label">{{controlDescriptionLabel}}</label>
+                    <div class="textarea-group hide-editor-header">
+                      <angular-editor [(ngModel)]="tabz.rcmDetails.controlDescription" [config]="config" name="controlDescription{{i}}" #controlDescription="ngModel"></angular-editor>
+                      <a class="view-more-button" (click)="openEditorModal(tabz.rcmDetails.controlDescription,controlDescriptionLabel,i)">
+                        <i class="zmdi zmdi-crop-free"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="row clearfix">
+                  <div class="col-lg-12 form-group textarea-group hide-editor-header">
+                    <label class="form-label">{{testStepsLabel}}</label>
+                    <div class="textarea-group hide-editor-header">
+                      <angular-editor [(ngModel)]="tabz.rcmDetails.testSteps" [config]="config" name="testSteps{{i}}" #testSteps="ngModel"></angular-editor>
+                      <a class="view-more-button" (click)="openEditorModal(tabz.rcmDetails.testSteps,testStepsLabel,i)">
+                        <i class="zmdi zmdi-crop-free"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn form-btn mt-60" (click)="onSaveClick(tabz.rcmDetails)" [disabled]="workProgramRcmAddForm.invalid">
+                  <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+                  {{saveButtonText}}
+                </button>
+                <button class="btn form-btn mt-60 ml-10" (click)="onCancelClick()">
+                  {{cancelButtonText}}
+                </button>
+              </div>
+              <div class="tab-right-contents">
+                <div class="form-group mb-10">
+                  <label class="form-label required">{{controlCategoryLabel}}</label>
+                  <ng-select #select [items]="controlCategories" required [placeholder]="dropdownDefaultValue" [searchable]="false" [(ngModel)]="tabz.rcmDetails.controlCategory" name="controlCategory{{i}}" #controlCategory="ngModel" bindLabel="label" bindValue="value">
+                  </ng-select>
+                  <p *ngIf="controlCategory.errors && controlCategory.touched && !controlCategory.valid && controlCategory.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                </div>
+                <div class="form-group mb-10">
+                  <label class="form-label required">{{controlTypeLabel}}</label>
+                  <ng-select #select [items]="controlTypeList" required [placeholder]="dropdownDefaultValue" [searchable]="false" [(ngModel)]="tabz.rcmDetails.controlType" name="controlType{{i}}" #controlType="ngModel" bindLabel="label" bindValue="value">
+                  </ng-select>
+                  <p *ngIf="controlType.errors && controlType.touched && !controlType.valid && controlType.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                </div>
+                <div class="form-group mb-10">
+                  <label class="form-label required">{{natureOfControlLabel}}</label>
+                  <ng-select #select [items]="natureOfControlList" required [placeholder]="dropdownDefaultValue" [searchable]="false" [(ngModel)]="tabz.rcmDetails.natureOfControl" name="natureOfControl{{i}}" #natureOfControl="ngModel" bindLabel="label" bindValue="value">
+                  </ng-select>
+                  <p *ngIf="natureOfControl.errors && natureOfControl.touched && !natureOfControl.valid && natureOfControl.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                </div>
+                <div class="form-group mb-10">
+                  <label class="form-label required">{{antiFraudControlLabel}}</label>
+                  <ng-select #select [items]="fraudControlList" required [placeholder]="dropdownDefaultValue" [searchable]="false" [(ngModel)]="tabz.rcmDetails.antiFraudControl" name="antiFraudControl{{i}}" #antiFraudControl="ngModel" bindLabel="label" bindValue="value">
+                  </ng-select>
+                  <p *ngIf="antiFraudControl.errors && antiFraudControl.touched && !antiFraudControl.valid && antiFraudControl.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">{{samplingMethodology}}</label>
+                  <div class="added-table-count wp-count mb-10 clearfix">
+                    <div class="add-content">
+                      <a class="count-add-button d-inline-block align-middle ml-6" (click)="onSamplingAddClick(tabz.rcmDetails.id, tabz.rcmDetails)">
+                        <i class="zmdi zmdi-plus-circle"></i>
+                        <label class="mb-0 d-inline-block ml-5" *ngIf="tabz.rcmDetails.strategicAnalysisId!==null">{{addedLabel}}</label>
+                        <label class="mb-0 d-inline-block ml-5" *ngIf="tabz.rcmDetails.strategicAnalysisId===null">{{addToolTip}}</label>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">{{testResultsLabel}}</label>
+                  <ng-select #select [items]="testResultList" [searchable]="false" [placeholder]="dropdownDefaultValue" [(ngModel)]="tabz.rcmDetails.testResults" name="testResults{{i}}" #testResults="ngModel" bindLabel="label" bindValue="value">
+                  </ng-select>
+                </div>
+                <div class="create-observation-box">
+                  <div class="added-table-count wp-count mb-10 clearfix">
+                    <div class="add-content">
+                      <a class="count-add-button d-inline-block align-middle  ml-6" (click)="openObservationAddPage(tabz.rcmDetails.id)">
+                        <i class="zmdi zmdi-plus-circle"></i>
+                        <label class="mb-0 d-inline-block ml-5">{{createObservationLabel}}</label>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </tab>
+        <tab class="add-new-tabs-heading">
+          <ng-template tabHeading>
+            <a class="add-new-text" (click)="addRCMTab(false)">
+              <i class="zmdi zmdi-plus-circle mr-5"></i>
+              {{addToolTip}}
+            </a>
+          </ng-template>
+        </tab>
+      </tabset>
+    </div>
+  </div>
+</div>
+<app-work-program-sampling-methodology *ngIf="isShowSampling" (isShowSample)="isShowSample($event)" [samplingRcmDetail]="rcmDetail"></app-work-program-sampling-methodology>

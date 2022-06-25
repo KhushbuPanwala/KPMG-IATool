@@ -1,0 +1,153 @@
+  <!--Strategic Analysis response page elements-->
+<div class="admin-responseform">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{surveyResponseText}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <i class="zmdi zmdi-close"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="strategic-analysis-form modal-form">
+      <div class="row" *ngFor="let userWiseResponse of userWiseResponseList;let i = index">
+        <div *ngFor="let userResponse of userWiseResponse.listOfUserResponseWithQuestion; let index = index;" class="col-xs-12 col-12 col-sm-12 form-group mb-10">
+          <div *ngIf="userResponse.question !== null">
+            <label class="form-label  mb-10" [ngClass]="{'required': userResponse.question.isRequired === true}" tooltip="{{userResponse.question.questionText}}"><p class="mb-0 word-wrap">{{userResponse.question.questionText}}</p></label>
+            <!--For dropdown-->
+            <div *ngIf="userResponse.question.type === 1">
+              <textarea name="options" class="form-control  w-100" id="{{userResponse.question.id}}" value="{{userResponse.selectedDropdownOption}}" [disabled]="true"></textarea>
+
+            </div>
+            <!--For MCQ-->
+            <div *ngIf="userResponse.question.type === 0">
+              <div class="form-group survey-radio mb-10" *ngIf="(userResponse.other === null && userResponse.other === null)">
+                <textarea name="options" class="form-control  w-100" id="{{userResponse.id}}" title="{{userResponse.options[0].optionText}}" value="{{userResponse.options[0].optionText}}" [disabled]="true"></textarea>
+              </div>
+              <div class="form-group survey-radio" *ngIf="(userResponse.other !== null && userResponse.other !== null)">
+                <textarea  name="options" class="form-control  w-100" id="{{userResponse.id}}" title="{{userResponse.other}}" value="{{userResponse.other}}"></textarea>
+              </div>
+            </div>
+            <!--For Rating Scale Question-->
+            <div *ngIf="userResponse.question.type === 2">
+              <div *ngFor="let smiley of userResponse.question.ratingScaleQuestion.resultSmileyList; let k = index;" class="parent-smiley">
+                <div id="smileys" *ngFor="let smiley of smileyValues; let l = index">
+
+                  <input *ngIf="smileyValues[l].number === userResponse.question.ratingScaleQuestion.resultSmileyList[k] && (userResponse.question.ratingScaleQuestion.resultSmileyList[k] === 1)" type="radio"
+                         name="smiley"
+                         [ngClass]="{'selected-smiley': userResponse.representationNumber === smileyValues[l].number}"
+                         value="{{smileyValues[l].value}}" class="{{smileyValues[l].class}}" tooltip="{{userResponse.question.ratingScaleQuestion.startLabel}}" [disabled]="true">
+
+                  <input *ngIf="smileyValues[l].number === userResponse.question.ratingScaleQuestion.resultSmileyList[k] && (userResponse.question.ratingScaleQuestion.resultSmileyList[k] !== 1) && (userResponse.question.ratingScaleQuestion.resultSmileyList[k] !== 5)" type="radio"
+                         name="smiley"
+                         [ngClass]="{'selected-smiley': userResponse.representationNumber === smileyValues[l].number}"
+                         value="{{smileyValues[l].value}}" class="{{smileyValues[l].class}}" [disabled]="true">
+                  <input *ngIf="smileyValues[l].number === userResponse.question.ratingScaleQuestion.resultSmileyList[k] && (userResponse.question.ratingScaleQuestion.resultSmileyList[k] === 5)" type="radio"
+                         name="smiley"
+                         [ngClass]="{'selected-smiley': userResponse.representationNumber === smileyValues[l].number}"
+                         value="{{smileyValues[l].value}}" class="{{smileyValues[l].class}}" tooltip="{{userResponse.question.ratingScaleQuestion.endLabel}}" [disabled]="true">
+                </div>
+              </div>
+            </div>
+            <!--For Subjective Question-->
+            <div *ngIf="userResponse.question.type === 3">
+              <textarea class="form-control page-txt-area w-100" [disabled]="true" title="{{userResponse.answerText}}">
+                {{userResponse.answerText}}
+              </textarea>
+            </div>
+            <!--For FileUpload Question-->
+            <div *ngIf="userResponse.question.type === 5" class="file-upload-section">
+              <ul class="uploaded-files-list">
+                <li class="clearfix" *ngFor="let res of userResponse.question.userResponseDocumentACs; let index = index">
+                  <button class="btn btn-icon download-btn d-inline-block align-middle">
+                    <!--Word icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,wordType)">
+                      <img class="download-opt-img" src="../assets/images/word.png" alt="{{wordToolTip}}" />
+                    </ng-template>
+                    <!--Pdf icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,pdfType)">
+                      <img class="download-opt-img" src="../assets/images/pdf.png" alt="{{pdfToolTip}}" />
+                    </ng-template>
+                    <!--Ppt icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,pptType)">
+                      <img class="download-opt-img" src="../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+                    </ng-template>
+                    <!--Excel icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,excelType)">
+                      <img class="download-opt-img" src="../assets/images/excel.png" alt="" />
+                    </ng-template>
+                    <!--JPG icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,jpgType)">
+                      <img class="download-opt-img" src="../assets/images/jpg.png" alt="" />
+                    </ng-template>
+                    <!--PNG icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,pngType)">
+                      <img class="download-opt-img" src="../assets/images/png.png" alt="" />
+                    </ng-template>
+                    <!--GIF icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,gifType)">
+                      <img class="download-opt-img" src="../assets/images/gif.png" alt="" />
+                    </ng-template>
+                    <!--Zip icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,zipType)">
+                      <img class="download-opt-img" src="../assets/images/zip.png" alt="" />
+                    </ng-template>
+                    <!--MP3 icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,mp3Type)">
+                      <img class="download-opt-img" src="../assets/images/mp3.png" alt="" />
+                    </ng-template>
+                    <!--MP4 icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,mp4Type)">
+                      <img class="download-opt-img" src="../assets/images/mp4.png" alt="" />
+                    </ng-template>
+                    <!--SVG icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,svgType)">
+                      <img class="download-opt-img" src="../assets/images/svg.png" alt="" />
+                    </ng-template>
+                    <!--CSV icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,csvType)">
+                      <img class="download-opt-img" src="../assets/images/csv.png" alt="" />
+                    </ng-template>
+                    <!--other icon-->
+                    <ng-template [ngIf]="checkFileExtention(res.path,otherFileType)">
+                      <img class="download-opt-img" src="../assets/images/default-file.png" alt="" />
+                    </ng-template>
+                  </button>
+
+                  <p class="d-inline-block align-middle file-name" title="{{res.path}}">{{res.path}}</p>
+                  <div class="pull-right">
+                    <a class="upload-file-action d-inline-block align-middle" (click)="openDocument(res.id)">
+                      <i class="zmdi zmdi-eye" tooltip="{{viewFiles}}"></i>
+                    </a>
+                    <a class="upload-file-action d-inline-block align-middle" (click)="downloadDocument(res.id)">
+                      <i class="zmdi zmdi-download" tooltip="{{downloadToolTip}}"></i>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+
+
+            </div>
+            <!--For Textbox Question-->
+            <div *ngIf="userResponse.question.type === 4">
+              <textarea class="form-control  w-100" [disabled]="true" tooltip="{{userResponse.answerText}}">
+                {{userResponse.answerText}}
+              </textarea>
+            </div>
+            <!--For Checkbox Question-->
+            <div *ngIf="userResponse.question.type === 6">
+              <div *ngFor="let opt of userResponse.options; let i = index;">
+                <div class="checkbox-section">
+                  <textarea class="form-control  w-100" title="{{userResponse.options[i].optionText}}" id="{{userResponse.id}}{{i}}" value="{{userResponse.options[i].optionText}}" [disabled]="true"></textarea>
+                </div>
+              </div>
+              <div class="form-group survey-radio" *ngIf="(userResponse.other !== null && userResponse.other !== null)">
+
+                <!--<input type="text" name="options" class="form-control" title="{{userResponse.other}}" id="{{userResponse.id}}" value="{{userResponse.other}}">-->
+                <textarea class="form-control  w-100" title="{{userResponse.other}}" id="{{userResponse.id}}" value="{{userResponse.other}}"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

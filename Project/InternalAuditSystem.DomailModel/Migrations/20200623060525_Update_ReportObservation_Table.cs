@@ -1,0 +1,31 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+namespace InternalAuditSystem.DomailModel.Migrations
+{
+    public partial class Update_ReportObservation_Table : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<string>(
+                name: "Implication",
+                table: "ReportObservation",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "character varying(256)",
+                oldMaxLength: 256,
+                oldNullable: true);
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<string>(
+                name: "Implication",
+                table: "ReportObservation",
+                type: "character varying(256)",
+                maxLength: 256,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldNullable: true);
+        }
+    }
+}

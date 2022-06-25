@@ -1,0 +1,152 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--ACM add page contents-->
+<div class="acm-commitee-page">
+  <div class="top-contents mb-15 ml-20">
+    <h4 class="page-title">{{auditCommitteeTitle}}</h4>
+    <div class="right-contents download-options">
+
+      <button type="button"
+              class="btn btn-icon  ml-10  btn-outline-primary back-btn p-0" tooltip="{{backToolTip}}" (click)="onBackClick()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="rcm-tabs-area mt-20">
+    <div (click)="$event.preventDefault()">
+      <tabset class="acm-edit-tabs rcm-edit-tabs page-tabs" #staticTabs>
+        <tab *ngFor="let tabz of tabs; let i=index;"
+             [heading]="tabz.title"
+             [active]="tabz.active"
+             (selectTab)="changeTab($event,tabz)"
+             (deselect)="tabz.active = false"
+             [disabled]="tabz.disabled"
+             [customClass]="tabz.customClass">
+          {{tabz?.content}}
+          <form #ACMAddForm="ngForm">
+            <div class="tabs-form-area observation-tab-contents clearfix">
+              <!--Tab left side contents-->
+              <div class="tab-left-contents clearfix">
+
+                <div class="observation-controls">
+                  <label class="d-inline-block align-top mr-20 w-15 text-right form-label required">{{headingLabel}}</label>
+                  <div class="form-group d-inline-block align-top w-82">
+                    <textarea class="form-control" type="text" [(ngModel)]="tabz.acmDetails.heading"
+                              name="heading{{i}}" #heading="ngModel" appValidateMaxLength="256" required></textarea>
+                    <div *ngIf="heading.errors" class="feedback-box">
+                      <p *ngIf="heading.touched && !heading.valid && heading.errors.required" class="invalid-feedback">{{headingRequiredMessage}}</p>
+                      <p *ngIf="heading.touched && !heading.errors.required" class="invalid-feedback" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+                    </div>
+                  </div>
+                </div>
+                <!--For observation field-->
+                <div class="observation-controls required">
+                  <label class="form-label d-inline-block align-top w-15 mr-20 text-right required">{{observationTabTitle}}</label>
+                  <div class="form-group d-inline-block align-top w-82 textarea-group hide-editor-header">
+                    <angular-editor [(ngModel)]="tabz.acmDetails.observation" [config]="config" name="observation{{i}}" #observation="ngModel" required></angular-editor>
+                    <a class="view-more-button" (click)="openEditorModal(tabz.acmDetails.observation,observationTabTitle,i)">
+                      <i class="zmdi zmdi-crop-free"></i>
+                    </a>
+                    <p *ngIf="observation.errors && observation.touched && !observation.valid && observation.errors.required" class="invalid-feedback mb-0">{{observationRequiredMessage}}</p>
+                  </div>
+                </div>
+                <!--For recommendation field-->
+                <div class="observation-controls required">
+                  <label class="form-label d-inline-block align-top w-15 mr-20 text-right required">{{recommendationTitle}}</label>
+                  <div class="form-group d-inline-block align-top w-82 textarea-group hide-editor-header">
+                    <angular-editor [(ngModel)]="tabz.acmDetails.recommendation" [config]="config" name="recommendation{{i}}" #recommendation="ngModel" required></angular-editor>
+                    <a class="view-more-button" (click)="openEditorModal(tabz.acmDetails.recommendation,recommendationTitle,i)">
+                      <i class="zmdi zmdi-crop-free"></i>
+                    </a>
+                    <p *ngIf="recommendation.errors && recommendation.touched && !recommendation.valid && recommendation.errors.required" class="invalid-feedback mb-0">{{recommendationRequiredMessage}}</p>
+                  </div>
+                </div>
+                <!--For management Response field-->
+                <div class="observation-controls h-148 mb-20 required">
+                  <label class="form-label d-inline-block align-top w-15 mr-20 text-right required">{{managementResponseTitle}}</label>
+                  <div class="form-group d-inline-block align-top w-82 textarea-group hide-editor-header">
+                    <angular-editor [(ngModel)]="tabz.acmDetails.managementResponse" [config]="config" name="managementResponse{{i}}" #managementResponse="ngModel" required></angular-editor>
+                    <p *ngIf="managementResponse.errors && managementResponse.touched && !managementResponse.valid && managementResponse.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                    <a class="view-more-button" (click)="openEditorModal(tabz.acmDetails.managementResponse,managementResponseTitle,i)">
+                      <i class="zmdi zmdi-crop-free"></i>
+                    </a>
+                  </div>
+                </div>
+                <!--For Save button-->
+                <div class="w-82 text-left pull-right responsive-save">
+                  <button class="btn form-btn mt-20" (click)="onSaveClick(tabz.acmDetails)" [disabled]="ACMAddForm.invalid">
+                    <img src="../../assets/images/save.png" alt="{{saveNextButtonText}}" class="align-top" />
+                    {{saveNextButtonText}}
+                  </button>
+                </div>
+              </div>
+              <div class="tab-right-contents responsive-space">
+                <!--For rating field-->
+                <div class="form-group mb-10">
+                  <label class="form-label required"> {{ratingLabel}} </label>
+                  <ng-select #select [items]="ratingList" class="page-select" required
+                             name="ratings" #ratings="ngModel"
+                             [searchable]="true" [(ngModel)]="tabz.acmDetails.ratingId"
+                             bindLabel="ratings" bindValue="id">
+                    <ng-template ng-label-tmp let-item="item">
+                      <span [ngClass]="{
+          'rating-red': item.legend=== redColor,
+          'rating-yellow': item.legend === yellowColor,
+          'rating-green': item.legend === greenColor
+          }" class="legand-tag"></span>
+                      {{item.ratings}}
+                    </ng-template>
+                  </ng-select>
+                  <p *ngIf="ratings.errors && ratings.touched && !ratings.valid && ratings.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                </div>
+                <!--For implication field-->
+                <div class="form-group mb-10">
+                  <label class="form-label required">{{implicationTitle}}</label>
+                  <textarea class="form-control implication-txt-area" [(ngModel)]="tabz.acmDetails.implication"
+                            name="implication{{i}}" #implication="ngModel" required appValidateMaxLength="256"></textarea>
+                  <div *ngIf="implication.errors">
+                    <p *ngIf="implication.touched && !implication.valid && implication.errors.required" class="invalid-feedback ">{{implicationRequiredMessage}}</p>
+                    <p *ngIf="implication.touched && !implication.errors.required" class="invalid-feedback" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+                  </div>
+                </div>
+                <!--For Status field-->
+                <div class="form-group mb-10">
+                  <label class="form-label required">
+                    {{statusTitle}}
+                  </label>
+                  <ng-select #select [items]="statusItems" required [searchable]="false" [(ngModel)]="tabz.acmDetails.status" name="status{{i}}" #status="ngModel" bindLabel="label" bindValue="value">
+                  </ng-select>
+                  <p *ngIf="status.errors && status.touched && !status.valid && status.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                </div>
+                <!--For adding options-->
+                <div class="added-table-count mb-10 clearfix">
+                  <div class="add-content">
+                    <i class="zmdi zmdi-file d-inline-block align-middle"></i>
+                    <a class="count-add-button d-inline-block align-middle ml-6" (click)="openUploadModal(tabz)">
+                      <i class="zmdi zmdi-plus-circle"></i>
+                      <label class="d-inline-block mb-0 ml-5">{{addToolTip}}</label>
+                    </a>
+                  </div>
+                  <div class="added-count ml-15">
+                    <span class="count-num d-inline-block align-top mr-10">
+                      <p class="d-inline-block align-top mb-0">{{fileCount}}{{filesAdded}}</p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </tab>
+        <!--For adding more tabs-->
+        <tab class="add-new-tabs-heading">
+          <ng-template tabHeading>
+            <a class="add-new-text" (click)="addNewTab()">
+              <i class="zmdi zmdi-plus-circle mr-5"></i>
+              {{addToolTip}}
+            </a>
+          </ng-template>
+        </tab>
+      </tabset>
+    </div>
+  </div>
+</div>

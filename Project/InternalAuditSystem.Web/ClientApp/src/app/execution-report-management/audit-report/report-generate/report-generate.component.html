@@ -1,0 +1,172 @@
+<!--Generate report add page contents-->
+<div class="generate-report-add">
+  <div class="top-contents mb-15 ml-20">
+    <h4 class="page-title">{{generateReportTitle}}</h4>
+    <div class="right-contents download-options">
+      <button type="button"
+              class="btn btn-icon  ml-10  btn-outline-primary back-btn p-0" tooltip="{{backToolTip}}" (click)="onBackClick()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container">
+    <form #reportAddForm="ngForm">
+      <div class="form-area">
+        <div class="row clearfix">
+          <div class="col-lg-6 form-group">
+            <label class="form-label required">{{reportTitleLabel}}</label>
+            <input type="text" class="form-control" [(ngModel)]="report.reportTitle" name="reportTitle" #reportTitle="ngModel" required appValidateMaxLength="256" />
+            <div class="invalid-feedback" *ngIf="reportTitle.errors">
+              <p *ngIf="reportTitle.touched && !reportTitle.valid && reportTitle.errors.required"
+                 class="invalid-feedback mb-0">{{requiredMessage}}</p>
+              <p *ngIf="reportTitle.touched && !reportTitle.errors.required" class="invalid-feedback" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+            </div>
+          </div>
+          <div class="col-lg-6 form-group">
+            <div class="row clearfix">
+              <div class="col-lg-6 form-group date-picker" [ngClass]="{'has-error-picker': auditPeriodStartDate.errors}">
+                <label class="form-label required">{{auditPeriodStartDateLabel}}</label>
+                <div class="form-icon-group">
+                  <input type="text"
+                         placeholder="Datepicker"
+                         class="form-control"
+                         [(ngModel)]="report.auditPeriodStartDate" name="auditPeriodStartDate" #auditPeriodStartDate="ngModel" required
+                         bsDatepicker
+                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',adaptivePosition: true }">
+                  <i class="zmdi zmdi-calendar calender-icn"></i>
+                </div>
+                <div class="invalid-feedback" *ngIf="auditPeriodStartDate.errors">
+                  <p *ngIf="auditPeriodStartDate.touched && !auditPeriodStartDate.valid && auditPeriodStartDate.errors.required"
+                     class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                </div>
+              </div>
+              <div class="col-lg-6 form-group date-picker" [ngClass]="{'has-error-picker': auditPeriodStartDate.errors}">
+                <label class="form-label required">{{auditPeriodEndDateLabel}}</label>
+                <div class="form-icon-group">
+                  <input type="text"
+                         placeholder="Datepicker"
+                         class="form-control"
+                         [(ngModel)]="report.auditPeriodEndDate" name="auditPeriodEndDate" #auditPeriodEndDate="ngModel" required
+                         bsDatepicker
+                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',adaptivePosition: true }">
+                  <i class="zmdi zmdi-calendar calender-icn"></i>
+                </div>
+                <div class="invalid-feedback" *ngIf="auditPeriodEndDate.errors">
+                  <p *ngIf="auditPeriodEndDate.touched && !auditPeriodEndDate.valid && auditPeriodEndDate.errors.required"
+                     class="invalid-feedback mb-0">{{requiredMessage}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row clearfix">
+          <div class="col-lg-6 form-group">
+            <label class="form-label required">{{ratingLabel}}</label>
+            <ng-select #select [items]="ratingList" class="page-select" required
+                       name="ratings" #ratings="ngModel"
+                       [searchable]="false" [(ngModel)]="report.ratingId" bindLabel="ratings" bindValue="id">
+              <ng-template ng-header-tmp>
+                <input type="text" class="w-100" (input)="select.filter($event.target.value)" />
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-6 form-group">
+            <label class="form-label required">{{statusLabel}}</label>
+            <ng-select class="page-select" #select [items]="statusList" name="status" #status="ngModel"
+                       [searchable]="false" [(ngModel)]="report.auditStatus" bindLabel="value" bindValue="key">
+            </ng-select>
+          </div>
+        </div>
+        <div class="row clearfix">
+          <div class="col-lg-6 form-group">
+            <label class="form-label required">{{stageLabel}}</label>
+            <ng-select class="page-select" #select [items]="stageList" name="stage" #stage="ngModel"
+                       [searchable]="false" [(ngModel)]="report.stage" bindLabel="value" bindValue="key">
+            </ng-select>
+          </div>
+        </div>
+        <div class="row clearfix">
+          <div class="col-lg-12 form-group textarea-group hide-editor-header">
+            <label class="form-label">{{commentsLabel}}</label>
+            <angular-editor [(ngModel)]="report.comment" [config]="config" name="comment" #comment="ngModel"></angular-editor>
+            <a class="view-more-button" (click)="openCommentModal()">
+              <i class="zmdi zmdi-crop-free"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="form-area">
+      <div class="mb-20 top-name-selection w-80">
+        <label class="form-label d-inline-block align-middle w-20 mb-0 mr-10">
+          {{selectReviewerLabel}}
+        </label>
+        <ng-select #reviewerSelect class="page-select w-30 d-inline-block align-middle" [items]="userList"
+                   [searchable]="false" [(ngModel)]="selectedReviewer" bindLabel="name"
+                   bindValue="userId">
+          <ng-template ng-header-tmp>
+            <input type="text" class="w-100" (input)="reviewerSelect.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+        <a class="action-btn d-inline-block align-middle w-5 mr-10 mt-5 text-center" (click)="addReviewer(selectedReviewer)" tooltip="{{addToolTip}}">
+          <i class="zmdi zmdi-plus-circle"></i>
+        </a>
+        <a class="action-btn d-inline-block w-10 text-center team-master-label no-wrap" (click)="openTeamMaster()">{{teamMasterLabel}}</a>
+      </div>
+      <div class="team-divider-section team-section report-team-section">
+        <table class="table form-table">
+          <thead>
+            <tr>
+              <th class="w-25">
+                {{nameLabel}}
+              </th>
+              <th class="w-25">
+                {{designationLabel}}
+              </th>
+              <th class="w-50" colspan="3">{{statusLabel}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="reviewerList.length===0">
+              <td colspan="5"><p class="no-record">{{showNoDataText}}</p></td>
+            </tr>
+            <tr *ngFor="let reviewer of reviewerList">
+
+              <td class="w-50">
+                <input type="text" class="form-control" disabled [(ngModel)]="reviewer.name" required />
+              </td>
+              <td class="w-50">
+                <input type="text" class="form-control" disabled [(ngModel)]="reviewer.designation" required />
+              </td>
+              <td class="w-25">
+                <ng-select #select class="page-select" [items]="reviewerStatusList" [searchable]="false"
+                           [(ngModel)]="reviewer.status" bindLabel="value" bindValue="key">
+                </ng-select>
+              </td>
+              <td class="w-20">
+                <button class="btn btn-attachment" (click)="openUploadFileModal(reviewer.userId)">
+                  <i class="zmdi zmdi-attachment"></i>
+                  {{attachmentText}}
+                </button>
+              </td>
+              <td class="text-center w-5">
+                <a class="action-btn mt-3 d-block" tooltip="{{removeToolTip}}" (click)="deleteReviewer(reviewer.userId)">
+                  <i class="zmdi zmdi-delete"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <button class="btn form-btn mt-60" (click)="saveReport()" [disabled]="reportAddForm.invalid">
+      <img src="../assets/images/save.png" class="align-top" />
+      {{saveNextButtonText}}
+    </button>
+
+  </div>
+</div>
+
+<!--Loader component-->
+<app-loader></app-loader>

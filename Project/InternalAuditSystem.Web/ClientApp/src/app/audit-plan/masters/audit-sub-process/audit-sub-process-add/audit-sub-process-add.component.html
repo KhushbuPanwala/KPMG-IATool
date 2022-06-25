@@ -1,0 +1,53 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Audit plan sub process add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{auditSubAddProcesses}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="audit-team-form modal-form" #auditSubProcessAddEditForm="ngForm" *ngIf="auditSubProcessObject !== undefined">
+    <div class="form-group  mb-15">
+      <label class="form-label required mb-10">{{subProcessesName}}</label>
+      <input type="text" class="form-control" [(ngModel)]="auditSubProcessObject.name" name="auditSubProcessName" #auditSubProcessName="ngModel" required appValidateMaxLength="140" />
+      <div  *ngIf="auditSubProcessName.errors  && auditSubProcessObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="auditSubProcessName.touched && !auditSubProcessName.valid && auditSubProcessName.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="auditSubProcessName.touched && !auditSubProcessName.errors.required">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <div class="form-group mb-15">
+      <label class="form-label required mb-10">{{auditProcesses}}</label>
+      <ng-select #select [items]="auditProcessList" [searchable]="false" name="process" #process="ngModel" [(ngModel)]="auditSubProcessObject.parentId" 
+                 bindLabel="name" bindValue="id" [placeholder]="dropdownDefaultValue" required>
+        <ng-template ng-header-tmp>
+          <input style="width: 100%; line-height: 24px" type="text" (input)="select.filter($event.target.value)" />
+        </ng-template>
+      </ng-select>
+        <p *ngIf="process.touched && !process.valid && process.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+    </div>
+    <!--Scope-->
+    <div class="form-group  mb-15">
+      <label class="form-label required mb-10">{{scopeBasedOnLabel}}</label>
+      <input type="text" class="form-control" [(ngModel)]="auditSubProcessObject.scopeBasedOn" name="scopeBasedOn" #scopeBasedOn="ngModel" required appValidateMaxLength="256" />
+      <div *ngIf="scopeBasedOn.errors  && auditSubProcessObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="scopeBasedOn.touched && !scopeBasedOn.valid && scopeBasedOn.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="scopeBasedOn.touched && !scopeBasedOn.errors.required">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <!--Scope-->
+    <div class="form-group  mb-10">
+      <label class="form-label mb-10">{{scopeLabel}}</label>
+      <input type="text" class="form-control" [(ngModel)]="scopeValue" name="scope" #scope="ngModel" readonly />
+    </div>
+    <button class="btn form-btn mt-20" (click)="saveAuditSubProcess()" [disabled]="auditSubProcessAddEditForm.invalid">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>
+
+
+
+

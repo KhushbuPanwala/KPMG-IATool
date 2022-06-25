@@ -1,0 +1,112 @@
+<!-- Auditable entity relationship list page contents -->
+<div class="relationship-list-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">{{relationshipTitle}}</h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" tooltip="{{backToolTip}}" (click)="onBackClick()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container">
+    <div class="top-contents mb-10">
+      <div class="search-box">
+        <input class="form-control search-control pl-30" placeholder="{{searchText}}" [(ngModel)]="relationSearchValue"
+               (keydown.Tab)="searchEntityRelationMapping($event)"
+               (keypress)="searchEntityRelationMapping($event)">
+        <i class="zmdi zmdi-search"></i>
+      </div>
+    </div>
+    <div class="row clearfix mb-20">
+      <div class="col-lg-5">
+        <label class="form-label required">{{selectEntityTitle}}</label>
+        <ng-select #selectEntity [items]="auditableEntityList" [searchable]="false" [(ngModel)]="entityRelationMappingDetails.relatedEntityId" bindLabel="name" bindValue="id" [placeholder]="dropdownDefaultValue">
+          <ng-template ng-header-tmp>
+            <input style="width: 100%; line-height: 24px" type="text" (input)="selectEntity.filter($event.target.value)" />
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+            <p class="mb-0">{{item.name}}</p>
+            <span>{{version}}{{item.version}}</span>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="col-lg-5">
+        <label class="form-label required">{{selectRelationshipType}}</label>
+        <ng-select #selectRelation [items]="relationShipTypeList" [searchable]="false" [(ngModel)]="entityRelationMappingDetails.relationTypeId" bindLabel="name" bindValue="id" [placeholder]="dropdownDefaultValue">
+          <ng-template ng-header-tmp>
+            <input style="width: 100%; line-height: 24px" type="text" (input)="selectRelation.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="col-sm-2">
+        <button class="btn form-btn mt-25" (click)="onSaveClick()">{{applyButton}}</button>
+      </div>
+    </div>
+    <!--Table contents-->
+    <div class="table-container table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="w-60">{{entityTitle}}</th>
+            <th class="w-40" colspan="2">{{relationshipTypeLabel}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="entityRelationMappingList.length===0">
+            <td colspan="3"><p class="no-record">{{showNoDataText}}</p></td>
+          </tr>
+          <tr *ngFor="let type of entityRelationMappingList | paginate: { itemsPerPage: relationSelectedPageItem, currentPage: pageNumber, totalItems:totalRecords}">
+            <td class="w-60" title="{{type.relatedEntityName}}"><p class="desc-text mb-0">{{type.relatedEntityName}}</p></td>
+            <td class="w-35" title="{{type.relationName}}"><p class="desc-text mb-0">{{type.relationName}}</p></td>
+            <td class="w-5">
+              <div class="table-action-btn">
+                <a class="d-inline-block align-middle mr-10 action-icon" tooltip="{{editToolTip}}" (click)="onEditClick(type.id)">
+                  <i class="zmdi zmdi-edit"></i>
+                </a>
+                <a class="d-inline-block align-middle action-icon" tooltip="{{deleteToolTip}}" (click)="deleteEntityRelationMapping(type.id)">
+                  <i class="zmdi zmdi-delete"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--Table footer contens-->
+    <div class="table-footer row clearfix" *ngIf="entityRelationMappingList.length > 0">
+      <div class="col-sm-7">
+        <pagination-controls [responsive]="responsive"
+                             [previousLabel]="labels.previousLabel"
+                             [nextLabel]="labels.nextLabel"
+                             (pageChange)="onPageChange($event)"></pagination-controls>
+      </div>
+      <div class="right-contents col-sm-5 text-right">
+        <div class="d-inline-block selectbox-content">
+          <ng-select #select [items]="pageItems" [searchable]="false" [(ngModel)]="relationSelectedPageItem"
+                     bindLabel="item" bindValue="noOfItems" (change)="onPageItemChange()">
+          </ng-select>
+        </div>
+        <div class="d-inline-block ml-10">
+          <p class="mb-0 showing-results-text mt-5 align-middle">{{showingResults}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="table-button-section mt-20">
+      <div class="d-inline-block align-middle">
+        <button class="btn form-btn  d-inline-block" (click)="onSaveAndNextClick()">
+          <img src="../../assets/images/save.png" alt="{{saveNextButtonText}}" class="align-top" />
+          {{saveNextButtonText}}
+        </button>
+      </div>
+      <div class="d-inline-block align-middle">
+        <button class="btn form-btn border-form-btn d-inline-block ml-20" (click)="onPreviousClick()">
+          {{previousButton}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loader></app-loader>
+
+
+

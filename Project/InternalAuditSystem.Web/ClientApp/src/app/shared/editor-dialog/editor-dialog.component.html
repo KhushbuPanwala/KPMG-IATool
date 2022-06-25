@@ -1,0 +1,14 @@
+<!--Audit client participants add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <angular-editor [(ngModel)]="data" [config]="config"></angular-editor>
+  <button class="btn form-btn mt-20" (click)="save()">
+    <img src="../../assets/images/save.png" alt="" class="align-top" />
+    {{saveButtonText}}
+  </button>
+</div>

@@ -1,0 +1,37 @@
+  <!--Strategic Analysis add page elements-->
+<app-loader></app-loader>
+<div class="modal-header strategic-admin-add">
+  <h4 class="modal-title pull-left">{{strategicAnalysisText}}</h4>
+  <div class="right-contents">
+    <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" (click)="bsModalRef.hide()" tooltip="{{backToolTip}}">
+      <i class="zmdi zmdi-long-arrow-left"></i>
+    </button>
+  </div>
+</div>
+<div class="modal-body">
+  <form #strategicAnalysisAddForm="ngForm" class="strategic-analysis-form strategic-add modal-form">
+    <div class="row">
+      <div class="col-xs-12 col-12 col-sm-6 form-group mb-20">
+        <label class="form-label  mb-10 required">{{surveryFormField}}</label>
+        <textarea class="form-control" aria-label="With textarea" [(ngModel)]="strategicAnalysis.surveyTitle" name="surveyTitle" #surveyTitle="ngModel" required appValidateMaxLength="256"></textarea>
+        <div *ngIf="surveyTitle.errors">
+          <p *ngIf="surveyTitle.touched && !surveyTitle.valid && surveyTitle.errors.required" class="invalid-feedback mb-0">{{surveyTitleRequiredMessage}}</p>
+          <p *ngIf="surveyTitle.touched && !surveyTitle.errors.required" class="invalid-feedback mb-0" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="!isSampling">
+      <div class="col-xs-12 col-12 col-sm-6 form-group mb-10">
+        <label class="form-label  mb-10">{{messageField}}</label>
+        <textarea class="form-control" aria-label="With textarea" [(ngModel)]="strategicAnalysis.message" name="message" #message="ngModel" appValidateMaxLength="512">{{message}}</textarea>
+        <div *ngIf="message.errors">
+          <p *ngIf="message.touched && !message.errors.required" class="invalid-feedback mb-0" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+        </div>
+      </div>
+    </div>
+    <button class="btn form-btn mt-20" (click)="createSurvey()" [disabled]="!strategicAnalysisAddForm.valid">
+      {{createSurveyText}}
+    </button>
+  </form>
+</div>

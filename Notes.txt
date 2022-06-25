@@ -1,0 +1,533 @@
+staging db connection 
+"ConnectionString": "User Id=hastik@iaproddb;Password=HAMuser@3317;Host=iaproddb.postgres.database.azure.com;Port=5432;Database=internalaudit_staging;"
+Guidline link
+10.1.81.212  wiki.promact.com
+
+Git commit author name
+git commit --amend --author="Author"
+
+Stagin DB
+User : iatool_staging@internalauditdb
+Dev link - https://internalaudit-dev.azurewebsites.net/
+Staging link - https://internalaudit-prod.azurewebsites.net/
+
+Road block link
+https://promactinfotech1.sharepoint.com/:w:/r/sites/KPMG_IATool/_layouts/15/Doc.aspx?sourcedoc=%7B9EDC17AA-637C-47F6-A444-9027761D26E2%7D&file=Roadblock%20Document.docx&action=default&mobileredirect=true&cid=ae9a2862-b798-433c-b736-03de33ce4644
+
+you need to url encode that url to send it as a querystring
+so basically https://localhost:1234/something?qs1=https://domain.com/somepath doesnt work
+we need to url encode =https://domain.com/somepath
+
+
+Couple of points
+We wont be using Office Interop libraries anywhere, they require office to be
+ installed on server which is not a feasible option, also it has many issues while running under IIS
+We will be using OpenXML SDK for docx and pptx generation
+We will be using pupeeter for pdf generation
+We wont be creating whole docx and pptx file from code, 
+		we will just use already generated template and fill placeholder data in it by code
+We will be using HTML template to convert it into PDF using Puppeteer
+
+https://github.com/rushi216/FileUploadDemo-Backend
+https://github.com/rushi216/FileUploadDemo-Frontend
+@Dipa reference code for file uploading using angular
+GitHubGitHub
+rushi216/FileUploadDemo-Backend
+Contribute to rushi216/FileUploadDemo-Backend development by creating an account on GitHub.
+GitHubGitHub
+rushi216/FileUploadDemo-Frontend
+Contribute to rushi216/FileUploadDemo-Frontend development by creating an account on GitHub.
+
+https://dev.azure.com/kpmggrcs/Internal%20Audit%20-%20IA/_git/Internal%20Audit%20-%20IA
+userid:khushbupanwala@promactinfo.com	
+password: Promact2019
+
+admin@suparna123.onmicrosoft.com
+P@ssw0rd0102@0102
+
+dev@suparna123.onmicrosoft.com
+P@ssw0rd0102@0102
+
+login in local application 
+ khusbu@suparna123.onmicrosoft.com
+ Promact2019
+
+QA Link
+https://internalaudit-dev.azurewebsites.net/
+ 
+ 
+Wireframe link
+https://balsamiq.cloud/s22p2gx/pri4b2o/rADA8
+userid:khushbupanwala@promactinfo.com	
+password: Promact2019
+
+V1 wireframe path
+https://promactinfotech1.sharepoint.com/sites/KPMG_IATool/Shared%20Documents/Forms/AllItems.aspx?viewid=c86fdefa%2D8e52%2D454e%2D90a1%2D928a49269fee&id=%2Fsites%2FKPMG%5FIATool%2FShared%20Documents%2FWireframes%2FMock%2Dups
+
+Remote origin url
+git remote set-url origin https://dev.azure.com/kpmggrcs/Internal%20Audit%20-%20IA/_git/Internal%20Audit%20-%20IA
+
+https://drive.google.com/file/d/1_6Flg_sHscpbQR2yJrR3zk2i5ZjvcX1W/view
+
+Postgres SQl Editor
+http://127.0.0.1:49964/browser/
+username:postgres
+password: promact2019
+
+ const headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+   
+
+Install-Package Microsoft.EntityFrameworkCore.Tools -Version 3.1.3
+
+Add-Migration EFCoreCodeFirstSample
+
+
+update-database
+Powercell
+dotnet tool install --global dotnet-ef --version 3.1.3
+dotnet ef migrations add "Remove_PlanFk_From_WorkProgram" -s..\InternalAuditSystem.Web
+domain model path
+
+
+
+-- solve lint  - ng for
+https://stackoverflow.com/questions/49243048/tslintexpected-a-for-of-loop-instead-of-a-for-loop-with-this-simple-iterat
+
+Reactive form validation
+https://stackblitz.com/edit/angular-7-reactive-form-validation
+
+-- add constraint in existing column
+ALTER TABLE public."AuditCategory"
+ADD CONSTRAINT category_entityid FOREIGN KEY ("EntityId") REFERENCES public."AuditableEntity" ("Id");
+
+-- Drop constraint
+ALTER TABLE child_table
+DROP CONSTRAINT constraint_fkey;
+
+Drag and drop -final
+https://www.ag-grid.com/angular-grid/#getting-started
+npm install --save ag-grid-community ag-grid-angular
+npm install 
+
+https://www.ag-grid.com/javascript-grid-row-dragging/
+
+HTML Editor
+https://froala.com/wysiwyg-editor/
+https://github.com/froala/angular-froala-wysiwyg
+
+Wireframe link
+https://balsamiq.cloud/s22p2gx/pri4b2o/rADA8
+userid:khushbupanwala@promactinfo.com	
+password: Promact2019
+
+
+https://drive.google.com/file/d/1_6Flg_sHscpbQR2yJrR3zk2i5ZjvcX1W/view
+
+
+--datatable
+https://l-lin.github.io/angular-datatables/#/basic/zero-config
+
+https://l-lin.github.io/angular-datatables/#/advanced/load-dt-options-with-promise
+https://www.ag-grid.com/example.php
+
+
+Postgres SQl Editor
+http://127.0.0.1:49964/browser/
+username:postgres
+password: promact2019
+
+Back Button Management
+https://www.concretepage.com/angular-2/angular-candeactivate-guard-example
+https://codecraft.tv/courses/angular/routing/router-guards/
+
+https://medium.com/better-programming/angular-how-keep-user-from-lost-his-data-by-accidentally-leaving-the-page-before-submit-4eeb74420f0d
+
+slect
+Modularity 
+ng generate module distribution  --route distribution --module app.module
+
+https://angular.io/guide/lazy-loading-ngmodules
+https://stackblitz.com/angular/drlvebnvprk?file=src%2Fapp%2Fapp-routing.module.ts
+https://stackblitz.com/edit/breadcrumbs?file=src%2Fapp%2Fapp-routing.module.ts
+
+
+Install-Package Microsoft.EntityFrameworkCore.Tools -Version 3.1.3
+
+Add-Migration EFCoreCodeFirstSample
+
+update-database
+
+
+-- add constraint in existing column
+ALTER TABLE public."AuditCategory"
+ADD CONSTRAINT category_entityid FOREIGN KEY ("EntityId") REFERENCES public."AuditableEntity" ("Id");
+
+-- Drop constraint
+ALTER TABLE child_table
+DROP CONSTRAINT constraint_fkey;
+
+Drag and drop -final
+https://www.ag-grid.com/angular-grid/#getting-started
+npm install --save ag-grid-community ag-grid-angular
+npm install 
+https://www.npmjs.com/package/ag-grid-community
+https://www.ag-grid.com/javascript-grid-row-dragging/
+
+https://stackblitz.com/edit/ag-grid-checkbox?file=app%2Fapp.component.ts  --done checkbox
+https://stackblitz.com/edit/angular-ag-grid-button-renderer?file=src%2Fapp%2Fapp.component.ts --button
+https://stackblitz.com/edit/angular-ag-grid-button-renderer?file=src%2Fapp%2Fapp.component.ts
+https://stackblitz.com/edit/angular-ag-grid-hides-cellrenderer-v3
+https://plnkr.co/edit/A70vEPlMNEN03Prm?preview  -checkbox
+https://stackoverflow.com/questions/37967341/how-to-hide-column-in-ag-grid
+https://stackoverflow.com/questions/41706848/how-to-use-a-checkbox-for-a-boolean-data-with-ag-grid
+https://stackoverflow.com/questions/51904625/ag-grid-checkbox-column-checked-by-renderer
+
+HTML Editor
+https://froala.com/wysiwyg-editor/
+https://github.com/froala/angular-froala-wysiwyg
+
+------------- Final HTML Editor
+https://www.npmjs.com/package/@kolkov/angular-editor
+https://github.com/kolkov/angular-editor
+https://openbase.io/js/@kolkov/angular-editor
+https://stackblitz.com/edit/angular-editor-wysiwyg?file=src%2Fapp%2Fapp.component.html
+npm install @kolkov/angular-editor --save
+
+
+--------------Preview 
+https://www.npmjs.com/package/ngx-doc-viewer
+npm i ngx-doc-viewer
+https://stackblitz.com/edit/ngx-doc-viewer-example?file=src%2Fapp%2Fapp.component.html
+https://stackblitz.com/edit/angular-doc-viewer?file=src%2Fapp%2Fdoc-viewer%2Fdoc-viewer.component.ts
+https://github.com/Marcelh1983/angular-document-viewer
+
+
+https://openbase.io/js/ngx-doc-viewer
+
+----------- File Upload
+https://w3path.com/new-angular-8-file-upload-or-image-upload/
+
+--------------Breadcrum
+
+https://www.codeproject.com/Articles/1278765/Angular-Breadcrumbs-with-Complex-Routing-and-Navig
+https://stackblitz.com/edit/angular-breadcrumb-demo
+https://codesandbox.io/s/ppnw8o95pq?file=/src/app/app.component.html --created
+https://stackblitz.com/edit/angular-and-material-multi-level-menu-with-breadcrumb-not-worki?file=src%2Fapp%2Fapp.component.ts
+https://medium.com/applantic/https-medium-com-applantic-how-to-implement-breadcrumb-navigation-in-angular-and-primeng-52573e49b97a
+
+--------- Back button Management
+https://commentedcoding.com/warn-user-of-unsaved-data-when-leaving-page/  --new
+
+https://www.concretepage.com/angular-2/angular-candeactivate-guard-example
+https://medium.com/better-programming/angular-how-keep-user-from-lost-his-data-by-accidentally-leaving-the-page-before-submit-4eeb74420f0d
+
+
+--------------
+npm install --save @angular/material @angular/animations @angular/cdk
+
+npm install --save @angular/animations @angular/cdk
+
+npm install --save hammerjs
+
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
+
+---------
+npm i @angular/animations
+
+
+npm i @ng-select/ng-select
+
+npm i ngx-bootstrap
+
+--test code coverage in angular
+ng test --code-coverage
+
+Template Driven
+https://stackblitz.com/angular/yjjxekxexrnj?file=src%2Fapp%2Fapp.module.ts
+
+
+Drag and drop 
+https://wiki.almworks.com/download/attachments/32223146/Drag%20and%20Drop%20Handle.png?version=1&modificationDate=1540503624000&api=v2
+https://sindu12jun.github.io/table-dragger/
+https://bootsnipp.com/snippets/P2pn5
+
+https://appdividend.com/2018/12/22/angular-7-drag-and-drop-tutorial-example/
+
+https://www.npmjs.com/package/ngx-drag-drop
+
+--jquery
+
+https://medium.com/better-programming/how-to-include-and-use-jquery-in-angular-cli-project-592e0fe63176
+
+https://github.com/SwarnaKishore/jQuery_with_AngularCLI/blob/master/src/app/app.component.html
+
+npm i bootstrap
+
+npm install jquery-ui-dist
+
+
+
+HTML Editor
+https://froala.com/wysiwyg-editor/
+https://github.com/kolkov/angular-editor
+https://www.npmjs.com/package/@kolkov/angular-editor
+https://stackblitz.com/edit/angular-editor-wysiwyg?file=src%2Fapp%2Fapp.component.html
+
+https://ckeditor.com/ckeditor-4/
+
+npm install --save @angular/material @angular/animations @angular/cdk
+
+npm install --save @angular/animations @angular/cdk
+
+npm install --save hammerjs
+
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
+
+---------
+npm i @angular/animations
+
+
+npm i @ng-select/ng-select
+
+npm i ngx-bootstrap
+
+
+
+Drag and drop 
+https://wiki.almworks.com/download/attachments/32223146/Drag%20and%20Drop%20Handle.png?version=1&modificationDate=1540503624000&api=v2
+https://sindu12jun.github.io/table-dragger/
+https://bootsnipp.com/snippets/P2pn5
+
+https://appdividend.com/2018/12/22/angular-7-drag-and-drop-tutorial-example/
+
+https://www.npmjs.com/package/ngx-drag-drop
+
+--jquery
+
+https://medium.com/better-programming/how-to-include-and-use-jquery-in-angular-cli-project-592e0fe63176
+
+https://github.com/SwarnaKishore/jQuery_with_AngularCLI/blob/master/src/app/app.component.html
+
+npm i bootstrap
+
+npm install jquery-ui-dist
+
+
+
+HTML Editor
+https://froala.com/wysiwyg-editor/
+
+Loader
+https://www.freakyjolly.com/http-global-loader-progress-bar-using-angular-interceptors/#.XrZOtWgza5s
+
+Pagination Server side
+
+https://stackblitz.com/edit/angular-e1f9hq
+npm i ngx-pagination
+https://www.npmjs.com/package/ngx-pagination#quick-start
+https://stackoverflow.com/questions/55413736/how-to-do-server-side-pagination-on-angular-with-entity-framework-core --final
+
+https://www.c-sharpcorner.com/article/searching-and-pagination-using-angular-7/ --- searching
+
+https://code-maze.com/paging-aspnet-core-webapi/
+https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application
+https://www.codingame.com/playgrounds/5363/paging-with-entity-framework-core
+https://www.c-sharpcorner.com/article/paging-in-asp-net-core-2-0-web-api/
+https://www.c-sharpcorner.com/article/implement-crud-operations-with-sorting-searching-and-paging-using-ef-core-in-as/  ---new
+https://dzone.com/articles/server-side-pagination-using-aspnet-core-and-angul
+https://stackblitz.com/edit/ngx-pagination-server-side
+
+Back Button Management
+https://stackblitz.com/edit/t67-router-canactivate-candeactivate-simple?file=src%2Fapp%2Fapp.module.ts
+https://angular.io/api/router/CanActivate#canactivate-1
+
+--form validation
+https://stackblitz.com/edit/angular-8-registration-login-example?file=app%2F_helpers%2Fauth.guard.ts
+
+--dialog box
+https://stackblitz.com/edit/angular-9n2zck?file=app%2Fservice-component.ts
+http://effita.com/confirmation-modal-based-on-ngx-bootstrap-modal 
+
+--roadmap doc
+https://promactinfotech1.sharepoint.com/:x:/r/sites/KPMG_IATool/_layouts/15/Doc.aspx?sourcedoc=%7BB9D8CF69-E867-4C70-86EE-D5657CC4B827%7D&file=KPMG-IA-Tool%20-%20Roadmap_Promact.xlsx&action=default&mobileredirect=true&cid=8630ef91-6256-4cd9-8ef4-db351f12a5e8
+
+
+--toaster
+https://www.npmjs.com/package/ngx-toastr
+https://stackblitz.com/edit/ngx-toastr-angular2?file=src%2Fstyles.css
+npm i ngx-toastr
+"angular-toastr": "^2.1.1",
+
+
+
+private readonly IHttpContextAccessor _httpContextAccessor;
+        public RatingController(EntityUserMappingRepository ratingRepository, IHttpContextAccessor httpContextAccessor,
+            )
+        {
+            _ratingRepository = ratingRepository;
+            _httpContextAccessor = httpContextAccessor;
+
+        }
+		
+//var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = _httpContextAccessor.HttpContext.User.Identity.Name;
+			
+Confirmation dialog			
+http://effita.com/confirmation-modal-based-on-ngx-bootstrap-modal
+
+String template
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+https://stackoverflow.com/questions/47057696/how-to-use-es6-template-literal-as-angular-component-input
+
+Exception handling
+https://developers.rebrandly.com/docs/403-already-exists-errors
+
+Convert Enum to list
+https://bytutorial.com/blogs/aspnet/convert-enum-to-list-of-key-pairs-value-in-aspnet
+
+Export to Excel- OpenXML
+https://www.codeproject.com/Articles/692121/Csharp-Export-data-to-Excel-using-OpenXML-librarie#:~:text=Adding%20the%20library%20to%20your%20ASP.NET%20Core%202%2B%20application&text=Next%2C%20you%20need%20to%20open,to%20call%20the%20StreamExcelDocument%20function.
+
+https://www.codeproject.com/Articles/692092/A-free-Export-to-Excel-Csharp-class-using-OpenXML
+https://stackoverflow.com/questions/11811143/export-datatable-to-excel-with-open-xml-sdk-in-c-sharp
+https://www.c-sharpcorner.com/article/creating-excel-file-using-openxml/ -- demo
+
+File upload download
+https://dzone.com/articles/import-and-export-excel-file-in-asp-net-core-31-ra
+
+Bulk Upload
+http://server12:8085/tfs/PromactProjectCollection/_git/Trappist?path=%2FQuesty%2Fsrc%2FPromact.Questy.Core%2FControllers%2FTestController.cs&version=GBold-master
+ama close test ni methods joso to madse
+https://github.com/borisdj/EFCore.BulkExtensions
+
+open new tab
+https://stackoverflow.com/questions/54483451/angular-6-routerlink-on-a-new-tab/54483619
+
+Group by data in type script and show in html
+https://stackblitz.com/edit/angular-zuizne?file=app%2Fapp.component.html
+
+tab pagination
+https://valor-software.com/ngx-bootstrap/#/pagination
+
+//set active tab
+https://www.codingexercises.com/guides/working-with-ngx-bootstrap-tabs-in-angular-8
+
+Input out put parameter
+https://stackblitz.com/edit/angular-fo4gyh?file=src%2Fapp%2Fparent%2Fparent.component.ts-- done
+https://stackblitz.com/edit/angular-simple-input-output?file=app%2Fhello.component.ts
+https://medium.com/@foolishneo/understanding-input-output-and-eventemitter-in-angular-c1aeb9fff594
+
+--dynamic dictionary
+http://reyrahadian.com/2012/02/01/creating-a-dynamic-dictionary-with-c-4-dynamic/
+
+https://stackoverflow.com/questions/10089850/c-sharp-dictionary-how-to-add-multiple-values-for-single-key#:~:text=Add(%22foo%22%2C%20list,%3E%3E()%3B%20if%20(!
+
+---Generate Excel
+https://www.c-sharpcorner.com/article/creating-excel-file-using-openxml/
+https://www.codeproject.com/Articles/692121/Csharp-Export-data-to-Excel-using-OpenXML-librarie
+
+https://www.codeproject.com/Articles/790013/Dynamically-Creating-Excel-File-from-a-Generic-Lis  -dynamic data 
+
+https://stackoverflow.com/questions/43136185/asp-net-core-return-excel-file-xlsx-directly-in-one-call-to-the-server-on-the -- download file
+
+https://www.aspdotnet-suresh.com/2017/02/get-list-object-properties-values-using-reflection-in-csharp-vbnet.html --dynamic property
+
+
+https://stackoverflow.com/questions/25537198/transfer-from-c-sharp-to-excel-with-multiple-sheets
+
+https://dotscrapbook.wordpress.com/2012/03/23/openxml-spreadsheets-with-multiple-worksheets-using-net-sdk/
+
+http://aspdotnetcsharppost.blogspot.com/
+
+
+generic dictionary
+https://stackoverflow.com/questions/41944755/c-sharp-dictionary-of-generic-classes
+
+https://stackoverflow.com/questions/4105361/how-do-i-create-a-dictionary-that-holds-different-types-in-c-sharp
+
+https://www.c-sharpcorner.com/UploadFile/rahul4_saxena/how-to-export-multiple-data-tables-to-multiple-worksheets-in/
+
+http://www.azurelad.com/2010/09/26/creating-excel-files-from-dataset-using-openxml-20-c-sharp/
+
+
+multiple table data export
+https://stackoverflow.com/questions/9120544/openxml-multiple-sheets
+
+https://social.msdn.microsoft.com/Forums/lync/en-US/9c4cd1d3-0fbe-4668-bf88-52daf1355bad/how-to-create-multiple-sheets-in-excel-workbook-using-openxml-c-net?forum=oxmlsdk
+
+
+Excel Structure
+SpreadsheetDocument
+	WorkbookPart 
+		Workbook
+			Sheets	
+				sheet1
+				sheet2
+				sheet3
+					SheetData
+	WorksheetPart
+		WorkSheet (SheetData)
+		
+Bulk upload excel Template client side
+https://www.npmjs.com/package/exceljs	
+
+
+File saver
+https://www.npmjs.com/package/file-saver
+
+on outside click dialog
+https://www.eduforbetterment.com/events-fire-when-modal-open-using-ngx-bootstrap-in-angular/
+
+Import export in angular
+https://stackblitz.com/edit/angular-excel-read-table
+
+Contant root path
+https://mariusschulz.com/blog/getting-the-web-root-path-and-the-content-root-path-in-asp-net-core
+
+convert memory stream to formresult
+https://stackoverflow.com/questions/44165510/how-to-convert-filestreamresult-to-iformfile
+
+Mere ppt to into one ppt
+https://www.codeproject.com/Tips/710055/Merge-PowerPoint-Presentations-PPTX-save-as-PDF
+
+Azure file
+https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-explorer-blobs#:~:text=button%20on%20the%20right%20side,(s)%20will%20be%20uploaded.
+
+https://www.c-sharpcorner.com/article/azure-storage-account-create-block-blob-programmatically-using-c-sharp-net/
+
+https://www.c-sharpcorner.com/article/upload-download-and-delete-blob-files-in-azure-storage/
+
+https://stackoverflow.com/questions/34727829/how-to-delete-a-folder-within-an-azure-blob-container#:~:text=To%20delete%20other%20folders%2C%20you,%22your%20folder%20name%22).&text=There%20is%20also%20a%20desktop,effectively%20deleting%20all%20sub%20blobs.
+
+https://stackoverflow.com/questions/5620324/mailto-link-with-html-
+
+
+https://stackoverflow.com/questions/247245/is-it-possible-to-add-an-html-link-in-the-body-of-a-mailto-link
+
+
+Retrospective
+https://dev.azure.com/kpmggrcs/Internal%20Audit%20-%20IA/_apps/hub/ms-devlabs.team-retrospectives.home
+
+Menu
+https://stackblitz.com/edit/dynamic-sidenav-multi-level-menu?file=app%2Fapp.component.ts
+
+
+https://drive.google.com/file/d/1ZFY_VoBhpKIAhTFPGI_xk8qbOHYQfZy6/view?ts=5e96e8c7
+
+https://app.diagrams.net/#G1ZFY_VoBhpKIAhTFPGI_xk8qbOHYQfZy6
+
+ER diagram create link
+https://www.lucidchart.com/documents/edit/8b95ac6a-0132-41b1-acd2-a7f0c8bc83f7/0_0?shared=true&docId=8b95ac6a-0132-41b1-acd2-a7f0c8bc83f7
+
+Old Module wise list
+https://promactinfotech1.sharepoint.com/:x:/s/KPMG_IATool/EUPRDvx09G5Cv_nyvuKYgLIBsXQaFuKk4qoIRSk_qLEDVg?e=RqPymG
+
+New Module wise list
+https://promactinfotech1.sharepoint.com/:x:/r/sites/KPMG_IATool/_layouts/15/doc2.aspx?sourcedoc=%7B4B2C417B-A5B8-48C0-9235-15280F7EFC79%7D&file=Module_Wise_Fieldlist.xlsx&action=default&mobileredirect=true&cId=6d86f00d-be56-48a9-a1c6-2265aef00d0f
+
+C:\Program Files (x86)\Microsoft Visual Studio 10.0\Visual Studio Tools for Office\PIA\Office12\Microsoft.Office.Interop.Word.dll
+
+
+https://stackoverflow.com/questions/45565810/get-headers-and-footers-of-slIdes-using-powerpoint-interop

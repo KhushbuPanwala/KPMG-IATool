@@ -1,0 +1,12 @@
+- Create Project Structure (In the structure of Web, DomainModel, Core, Repository, Util, Repository.Test)
+- Setup Authorization with Active Directory
+- Setup Serilog for Logging
+- Setup SonarCube
+- Setup CSRF/XSRF configuration
+- Setup Action Filter for Audit Trail of Login Attempts/Failures
+- Setup Unit Tests
+- Setup Angular Project (modular structure with list/add/edit/delete and a shared module)
+- Create generic httpService
+- Setup unit testing for angular
+- Setup Linting
+- R&D task for unifying Validations on client/server/database server

@@ -1,0 +1,26 @@
+<!--observation management main page with tabs title and components-->
+<div class="observation-page">
+  <div class="top-contents mb-15 ml-20">
+    <h4 class="page-title">{{observationManagementTitle}}</h4>
+
+    <div class="right-contents download-options">
+      <button type="button"
+              class="btn btn-icon  ml-10  btn-outline-primary back-btn p-0" tooltip="{{backToolTip}}" (click)="onBackClick()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <!--observation tabs components-->
+  <tabset class="page-tabs observation-tabs">
+    <tab heading="{{observationTabTitle}}" id="tab1" (selectTab)="onSelect($event)">
+      <div *ngIf="isShowObservationTab">
+        <app-observation-tab (addedObservationId)="onAddObservation($event)"></app-observation-tab>
+      </div>
+    </tab>
+    <tab heading="{{managementCommentsTitle}}" id="tab2" (selectTab)="onSelect($event)">
+      <div *ngIf="isShowManagementTab">
+        <app-management-comments></app-management-comments>
+      </div>
+    </tab>
+  </tabset>
+</div>

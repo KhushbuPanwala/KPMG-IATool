@@ -1,0 +1,13 @@
+Word File
+https://docs.microsoft.com/en-us/previous-versions/office/troubleshoot/office-developer/automate-word-create-file-using-visual-c
+https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.word?view=word-pia
+https://dottutorials.net/programmatically-generate-word-files-using-interop-in-net-core/
+
+Excel File
+https://www.c-sharpcorner.com/UploadFile/bd6c67/how-to-create-excel-file-using-C-Sharp/
+
+
+PPT File
+https://forums.asp.net/t/2039265.aspx?PPT+creation+using+C
+
+https://www.c-sharpcorner.com/UploadFile/muralidharan.d/how-to-create-word-document-using-C-Sharp/

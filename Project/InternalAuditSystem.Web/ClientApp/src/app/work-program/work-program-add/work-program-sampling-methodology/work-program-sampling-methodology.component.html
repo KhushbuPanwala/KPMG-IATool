@@ -1,0 +1,75 @@
+<!-- Work program sampling methodology -->
+<div class="sector-list-page sampling-main" *ngIf="!isShowFinance">
+  <h4 class="page-title">{{samplingMethodology}}</h4>
+  <div class="page-container">
+    <div class="top-contents mb-10">
+      <div class="search-box">
+        <input class="form-control search-control pl-30" placeholder="{{searchText}}" [(ngModel)]="sampleSearchValue"
+               (keydown.Tab)="searchSampling($event)"
+               (keypress)="searchSampling($event)">
+        <i class="zmdi zmdi-search"></i>
+      </div>
+    </div>
+    <!--Table contents-->
+    <div class="table-container table-responsive">
+      <table class="table table-striped survey-lists">
+        <thead>
+          <tr>
+            <th class="w-30">{{titleText}}</th>
+            <th class="w-20">{{dateOfCreation}}</th>
+            <th class="w-10">{{questions}}</th>
+            <th class="w-20">{{statusTitle}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="samplingList.length===0">
+            <td colspan="4"><p class="no-record">{{showNoDataText}}</p></td>
+          </tr>
+          <tr *ngFor="let sample of samplingList | paginate: { itemsPerPage: selectedPageItem, currentPage: pageNumber, totalItems:totalRecords}; let i = index;" class="survey-radio">
+            <td class="w-30">
+              <input type="radio" (change)="onSampleSelection(sample.id)" name="options" class="mr-10" id="{{i}}" [value]="sample.surveyTitle" [checked]="sample.id==samplingRcmDetail.strategicAnalysisId"><label for="{{i}}"><p class="desc-text mb-0 ml-25" title="{{sample.surveyTitle}}">{{sample.surveyTitle}}</p></label>
+            </td>
+            <td class="w-20">
+              <p class="desc-text mb-0" title="{{createdDateTimeList[i]}}">{{createdDateTimeList[i]}}</p>
+            </td>
+            <td class="w-10"><p class="status">{{sample.questionsCount}}</p></td>
+            <td class="w-20">
+              <div>
+                <p class="status" *ngIf="sample.status !== 2">Draft</p>
+                <p class="status" *ngIf="sample.status === 2">Completed</p>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+      <!--Table footer contens-->
+      <div class="table-footer row clearfix" *ngIf="samplingList.length>0">
+        <div class="col-sm-7">
+          <pagination-controls [responsive]="responsive"
+                               [previousLabel]="labels.previousLabel"
+                               [nextLabel]="labels.nextLabel"
+                               (pageChange)="onPageChange($event)"></pagination-controls>
+        </div>
+        <div class="right-contents col-sm-5 text-right">
+          <div class="d-inline-block selectbox-content">
+            <ng-select #select [items]="pageItems" [searchable]="false" [(ngModel)]="selectedPageItem"
+                       (change)="onPageItemChange()"
+                       bindLabel="item" bindValue="noOfItems">
+            </ng-select>
+          </div>
+          <div class="d-inline-block ml-10">
+            <p class="mb-0 showing-results-text mt-5 align-middle">{{showingResults}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-contents mt-40">
+        <button class="btn form-btn mb-20 mr-20" (click)="openSurvey()"> {{nextButton}} </button>
+        <button class="btn mb-20 cancel-outline" (click)="previousEdit()"> {{previousButton}} </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-work-program-survey *ngIf="isShowFinance" (isShowSamplingList)="isShowSamplingList($event)" [riskControlMatrixDetail]="samplingRcmDetail"></app-work-program-survey>

@@ -1,0 +1,74 @@
+<!--Comment history page-->
+<div class="comment-history-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">
+      {{commentHistoryTitle}}
+    </h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" tooltip="{{backToolTip}}" (click)="onBackClick()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container p-30">
+    <div class="form-area">
+      <div class="form-group">
+        <label class="form-label">{{reportTitleText}}</label>
+        <textarea class="form-control small-txt-area" [(ngModel)]="reportTitle" name="reportName" #reportName="ngModel" disabled></textarea>
+      </div>
+      <div *ngFor="let reportComment of commentList">
+        <div class="form-group">
+          <label class="form-label">{{commentsTitle}}</label>
+          <div class="comment-box mb-20 hide-editor-header comment-editor">
+                <angular-editor class="mb-20 comments-text"
+                                [(ngModel)]="reportComment.comment" [config]="config"
+                                name="comment" #comment="ngModel">
+                </angular-editor>
+              <p class="author-name d-inline-block mb-0">
+                {{reportComment.name}}
+              </p>
+              <span class="d-inline-block ml-10 mr-10">-</span>
+              <p class="d-inline-block author-date mb-0 mr-10">
+                {{reportComment.createdDateTime | date:'dd-MM-yyyy'}}
+              </p>
+              <p class="d-inline-block author-time mb-0">
+                {{reportComment.createdDateTime | date:'shortTime'}}
+              </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-area">
+      <div *ngFor="let observationComment of observationCommentList">
+        <div *ngFor="let reportObservation of observationComment">
+          <div class="form-group">
+            <label class="form-label">{{observationTitleText}}</label>
+            <textarea class="form-control small-txt-area" [(ngModel)]="reportObservation.name" name="observationName" #observationName="ngModel" disabled></textarea>
+          </div>
+          <div *ngFor="let observationComment of reportObservation.values">
+            <div class="form-group">
+              <label class="form-label">{{commentsTitle}}</label>
+              <div class="comment-box mb-20 hide-editor-header comment-editor">
+                    <angular-editor class="mb-20 comments-text"
+                                    [(ngModel)]="observationComment.comment" [config]="config"
+                                    name="comment" #comment="ngModel">
+                    </angular-editor>
+                    <p class="author-name d-inline-block mb-0">
+                      {{observationComment.name}}
+                    </p>
+                    <span class="d-inline-block ml-10 mr-10">-</span>
+                    <p class="d-inline-block author-date mb-0 mr-10">
+                      {{observationComment.createdDateTime | date:'dd-MM-yyyy'}}
+                    </p>
+                    <p class="d-inline-block author-time mb-0">
+                      {{observationComment.createdDateTime | date:'shortTime'}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

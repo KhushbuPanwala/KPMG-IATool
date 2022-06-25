@@ -1,0 +1,53 @@
+<!--Auditable entity detail page elements-->
+<div class="overview-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">{{detailsTitle}}</h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" tooltip="{{backToolTip}}" (click)="onBackClick()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <form #auditableEntityAddForm="ngForm">
+    <div class="page-container">
+      <div class="row clearfix">
+        <div class="form-group col-lg-6 mb-20">
+          <label class="form-label required">{{nameLabel}}</label>
+          <input type="text" class="form-control" [(ngModel)]="auditableEntityDetails.name" name="entityName" #entityName="ngModel" required appValidateMaxLength="256" appValidateCommnInput />
+          <p *ngIf="entityName.touched && !entityName.valid && entityName.errors.required" class="invalid-feedback">{{requiredMessage}}</p>
+          <p *ngIf="entityName.touched && !entityName.valid && !entityName.errors.required && entityName.errors.appValidateCommnInput" class="invalid-feedback">{{invalidMessage}}</p>
+          <p appValidateMaxLength *ngIf="entityName.touched && !entityName.valid && !entityName.errors.required && !entityName.errors.appValidateCommnInput" class="invalid-feedback" >{{maxLengthExceedMessage}}</p>
+        </div>
+        <div class="form-group mb-20 col-lg-6">
+          <div class="d-inline-block w-38">
+            <label class="form-label">{{statusTitle}}</label>
+            <input type="text" class="form-control" name="status" #status="ngModel" [(ngModel)]="auditableEntityDetails.statusString" disabled />
+          </div>
+
+          <div class="w-10 d-inline-block  ml-10">
+            <button class="btn form-btn w-104" (click)="changeAuditableEntityStatus()" [disabled]="isStatusChanged">{{statusButtonText}}</button>
+          </div>
+        </div>
+        <div class="form-group mb-20 col-lg-6">
+          <label class="form-label required">{{descriptionTitle}}</label>
+          <textarea class="form-control page-txt-area" name="description" #description="ngModel" [(ngModel)]="auditableEntityDetails.description" required appValidateMaxLength="256"></textarea>
+          <p *ngIf="description.errors && description.touched && !description.valid && description.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+          <p class="invalid-feedback mb-0" appValidateMaxLength *ngIf="description.errors && description.touched && !description.errors.required">{{maxLengthExceedMessage}}</p>
+        </div>
+        <div class="form-group mb-20 col-lg-6">
+          <div class="w-38">
+            <label class="form-label">{{versionTitle}}</label>
+            <input type="text" class="form-control" name="version" #version="ngModel" [(ngModel)]="auditableEntityDetails.version" disabled />
+          </div>
+        </div>
+      </div>
+      <div class="mt-40">
+        <button class="btn form-btn d-inline-block" (click)="saveAuditableEntity()" [disabled]="auditableEntityAddForm.invalid">
+          <img src="../../assets/images/save.png" alt="{{saveNextButtonText}}" class="align-top" />
+          {{saveNextButtonText}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<app-loader></app-loader>

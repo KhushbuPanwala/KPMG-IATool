@@ -1,0 +1,12 @@
+<!--Delete confirmation modal contents-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right modal-close" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body text-center">
+  <p class="confirmation-message">{{confirmationMessage}}</p>
+  <button type="button" class="btn small-btn btn-default confirm-btn" (click)="confirm()">{{yes}}</button>
+  <button type="button" class="btn small-btn decline-btn" (click)="close()">{{no}}</button>
+</div>

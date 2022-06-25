@@ -1,0 +1,25 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Auditable entity region type add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{observationCategoryText}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="audit-team-form modal-form" #observationCategoryAddEditForm="ngForm">
+    <div class="form-group  mb-15">
+      <label class="form-label required mb-10">{{observationCategoryText}}</label>
+      <input type="text" class="form-control" [(ngModel)]="observationCategoryObject.categoryName" name="categoryName" #categoryName="ngModel" required appValidateMaxLength="256" />
+      <div class="feedback-box" *ngIf="categoryName.errors  && observationCategoryObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="categoryName.touched && !categoryName.valid && categoryName.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="categoryName.touched && !categoryName.errors.required">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <button class="btn form-btn mt-20" (click)="saveObservationCategory()" [disabled]="observationCategoryAddEditForm.invalid">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>

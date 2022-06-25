@@ -1,0 +1,56 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Audit plan general page elements-->
+<div class="overview-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">{{overviewTitle}}</h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" tooltip="{{backToolTipMsg}}" (click)="backToListPage()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container">
+    <form #overviewAddEditForm="ngForm">
+      <div class="form-area small-from-area">
+        <!--Overview and background-->
+        <div class="form-group mb-20">
+          <label class="form-label required">{{overviewAndBackgroundLabel}}</label>
+          <textarea class="form-control page-txt-area" [(ngModel)]="auditPlanObj.overviewBackground" name="auditPlanOverview" #auditPlanOverview="ngModel" required appValidateMaxLength="256"></textarea>
+          <div class="" *ngIf="auditPlanOverview.errors  && auditPlanObj !== undefined">
+            <p class="mb-0 invalid-feedback" *ngIf="auditPlanOverview.touched && !auditPlanOverview.valid && auditPlanOverview.errors.required">{{requiredMessage}}</p>
+            <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="auditPlanOverview.touched && !auditPlanOverview.errors.required">{{maxLengthExceedMessage}}</p>
+          </div>
+        </div>
+        <!--Budgeted hours-->
+        <div class="form-group mb-20">
+          <label class="form-label bold d-block">{{budgetLabel}}</label>
+          <label class="form-label">{{totalBudgetHoursLabel}}</label>
+          <input type="text" class="form-control" [(ngModel)]="auditPlanObj.totalBudgetedHours" name="budgetedHours" #budgetedHours="ngModel" appValidateDecimalNumber appValidateMaxLength="256"/>
+          <p class="mb-0 invalid-feedback" *ngIf="budgetedHours.touched && !budgetedHours.valid && budgetedHours.errors.appValidateDecimalNumber">{{invalidMessage}}</p>
+          <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="budgetedHours.touched && !budgetedHours.valid && !budgetedHours.errors.appValidateDecimalNumber && budgetedHours.errors.appValidateMaxLength">{{maxLengthExceedMessage}}</p>
+        </div>
+        <!--Financial year-->
+        <div class="form-group mb-20">
+          <label class="form-label required">{{financialYearLabel}}</label>
+          <input type="text" class="form-control" [(ngModel)]="auditPlanObj.financialYear" name="financialYear" #financialYear="ngModel" required (keyup)="validateFinancialYear()" appValidateNaturalNumber/>
+          <div class="">
+            <p class="mb-0 invalid-feedback" *ngIf="financialYear.touched && !financialYear.valid && financialYear.errors.required">{{requiredMessage}}</p>
+            <p class="mb-0 invalid-feedback" *ngIf="financialYear.touched && financialYear.valid && isMinLenth">{{minLengthRequiredMessage}}</p>
+            <p class="mb-0 invalid-feedback" *ngIf="financialYear.touched && financialYear.valid && inMaxLength">{{maxLengthExceedMessage}}</p>
+            <p class="mb-0 invalid-feedback" *ngIf="financialYear.touched && !financialYear.valid && financialYear.errors.appValidateNaturalNumber">{{invalidMessage}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-40">
+        <button class="btn form-btn d-inline-block" [disabled]="overviewAddEditForm.invalid || !isFinalcialYearValid" (click)="saveDataAndRediectToPlanProcesses()">
+          <img src="../../assets/images/save.png" alt="{{saveNextButtonText}}" class="align-top" />
+          {{saveNextButtonText}}
+        </button>
+        <button class="btn form-btn border-form-btn d-inline-block ml-20" (click)="redirectToPreviousPage()">
+          {{previousButton}}
+        </button>
+      </div>
+      </form>
+  </div>
+</div>

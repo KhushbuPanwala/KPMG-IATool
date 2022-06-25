@@ -1,0 +1,197 @@
+<!--Obesrvation management observation tab contents-->
+<div class="observation-tab-contents clearfix">
+  <form #observationTabForm="ngForm" *ngIf="observationAC !== undefined">
+    <!--Tab left side contents-->
+    <div class="tab-left-contents">
+      <div class="observation-controls">
+        <label class="d-inline-block align-top mr-20 w-15 text-right form-label required">{{headingLabel}}</label>
+        <div class="form-group d-inline-block align-top w-82 mb-30">
+          <input class="form-control" type="text" [(ngModel)]="observationAC.heading"
+                 name="heading" #heading="ngModel" appValidateMaxLength="256" required />
+          <div *ngIf="heading.errors" class="feedback-box">
+            <p *ngIf="heading.touched && !heading.valid && heading.errors.required" class="invalid-feedback">{{headingRequiredMessage}}</p>
+            <p class="invalid-feedback mb-0" appValidateMaxLength *ngIf="heading.touched && !heading.errors.required">{{maxLengthExceedMessage}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="observation-controls">
+        <label class="d-inline-block align-top w-15 mr-20 text-right form-label required">{{backgroundLabel}}</label>
+        <div class="form-group d-inline-block align-top w-82 mb-30 textarea-group hide-editor-header">
+          <angular-editor class="background-txt-area divided-txt-area h-120"
+                          [(ngModel)]="observationAC.background" [config]="config"
+                          name="background" #background="ngModel" required>
+          </angular-editor>
+          <a class="view-more-button" (click)="openBackgroundModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+          <div *ngIf="background.errors" class="feedback-box">
+            <p *ngIf="background.touched && !background.valid && background.errors.required" class="invalid-feedback">{{backgroundRequiredMessage}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="observation-controls">
+        <label class="d-inline-block align-top w-15 mr-20 text-right form-label required">{{observationTabTitle}}</label>
+        <div class="form-group d-inline-block align-top w-82 textarea-group hide-editor-header">
+          <angular-editor class="background-txt-area divided-txt-area h-120 mb-30"
+                          [(ngModel)]="observationAC.observations" [config]="config"
+                          name="observation" #observation="ngModel" required>
+          </angular-editor>
+          <a class="view-more-button" (click)="openObservationsModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+          <div *ngIf="observation.errors" class="feedback-box">
+            <p *ngIf="observation.touched && !observation.valid && observation.errors.required" class="invalid-feedback">{{observationRequiredMessage}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="observation-controls">
+        <div class="w-50 d-inline-block rootcase-section align-top'">
+          <div class="divided-section">
+            <label class="text-right mr-20 w-30 d-inline-block form-label required">{{rootCauseLabel}}</label>
+            <div class="d-inline-block align-top w-59 textarea-group hide-editor-header">
+              <div class="form-group">
+                <angular-editor class="background-txt-area divided-txt-area h-95"
+                                [(ngModel)]="observationAC.rootCause" [config]="config" name="rootCause" #rootCause="ngModel" required>
+                </angular-editor>
+                <a class="view-more-button" (click)="openRootCauseModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+                <div *ngIf="rootCause.errors" class="feedback-box">
+                  <p *ngIf="rootCause.touched && !rootCause.valid && rootCause.errors.required" class="invalid-feedback">{{rootCauseRequiredMessage}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="divided-section">
+            <label class="mr-20 w-15 w-30 text-right form-label required">{{implicationTitle}}</label>
+            <div class="textarea-group d-inline-block align-top w-59 hide-editor-header">
+              <div class="form-group mb-30">
+                <angular-editor class="background-txt-area divided-txt-area h-95"
+                                [(ngModel)]="observationAC.implication"
+                                [config]="config" name="implication" #implication="ngModel" required>
+                </angular-editor>
+                <a class="view-more-button" (click)="openImplicationModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+                <div *ngIf="implication.errors" class="feedback-box">
+                  <p *ngIf="implication.touched && !implication.valid && implication.errors.required" class="invalid-feedback">{{implicationRequiredMessage}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-50 d-inline-block control-mains recommendation-section align-top">
+          <label class="text-right form-label required">{{recommendationTitle}}</label>
+          <div class="textarea-group hide-editor-header">
+            <angular-editor class="background-txt-area divided-txt-area h-179"
+                            [(ngModel)]="observationAC.recommendation"
+                            [config]="config" name="recommendation" #recommendation="ngModel" required>
+            </angular-editor>
+            <a class="view-more-button" (click)="openRecommendationModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+            <div *ngIf="recommendation.errors" class="feedback-box">
+              <p *ngIf="recommendation.touched && !recommendation.valid && recommendation.errors.required" class="invalid-feedback">{{recommendationRequiredMessage}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Tab right side contents-->
+    <div class="tab-right-contents">
+      <div class="form-group mb-10">
+        <label class="form-label required">
+          {{auditPlanLabel}}
+        </label>
+        <ng-select #selectAuditPlan class="page-select" [items]="auditPlanList" [searchable]="false" (change)="onAuditPlanChange(observationAC.auditPlanId)" [placeholder]="processDropdownDefaultValue"
+                   name="auditplan" #auditPlan="ngModel" [(ngModel)]="observationAC.auditPlanId" bindLabel="title" bindValue="id" [disabled]="rcmId!=undefined" required>
+          <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+            <p class="mb-0">{{item.title}}</p>
+            <span class="version-no">{{auditPlanVersion}}{{item.version}}</span>
+          </ng-template>
+          <ng-template ng-header-tmp>
+            <input type="text" class="w-100" (input)="selectAuditPlan.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="form-group mb-10">
+        <label class="form-label required">
+          {{processLabel}}
+        </label>
+        <ng-select #selectProcess class="page-select" [items]="processList" name="process" #process="ngModel" (change)="onProcessChange(observationAC.parentProcessId)" [searchable]="false" [placeholder]="processDropdownDefaultValue"
+                   [(ngModel)]="observationAC.parentProcessId" bindLabel="name" bindValue="id" [disabled]="rcmId!=undefined" required>
+          <ng-template ng-header-tmp>
+            <input type="text" class="w-100" (input)="selectProcess.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="form-group mb-10">
+        <label class="form-label required">
+          {{subProcessLabel}}
+        </label>
+
+        <ng-select #selectSubProcess [items]="subProcessList" class="page-select" [searchable]="false"
+                   [placeholder]="processDropdownDefaultValue" [(ngModel)]="observationAC.processId"
+                   bindLabel="processName" bindValue="processId" name="subProcess" #subProcess="ngModel" [disabled]="rcmId!=undefined" required>
+          <ng-template ng-header-tmp>
+            <input type="text" class="w-100" (input)="selectSubProcess.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="form-group mb-10">
+        <label class="form-label">
+          {{typeLabel}}
+        </label>
+        <ng-select #selectType [items]="observationType" class="page-select" [searchable]="false" [placeholder]="processDropdownDefaultValue"
+                   [(ngModel)]="observationAC.observationType" bindLabel="label" bindValue="value" name="type" #name="ngModel">
+        </ng-select>
+      </div>
+      <div class="form-group mb-10">
+        <label class="form-label">
+          {{categoryLabel}}
+        </label>
+        <ng-select #selectCategory [items]="observationAC.observationCategoryList" class="page-select" [searchable]="false" [placeholder]="processDropdownDefaultValue" [(ngModel)]="observationAC.observationCategoryId" name="observationCategory" #observationCategory="ngModel" bindLabel="categoryName" bindValue="id">
+        </ng-select>
+      </div>
+      <div class="form-group mb-20">
+        <label class="form-label">
+          {{repeatObservationLabel}}
+        </label>
+        <div class="form-check-inline">
+          <label class="form-check-label pl-15">
+            <input type="radio" class="form-check-input" name="optradio" [value]="true"
+                   [(ngModel)]="observationAC.isRepeatObservation" [checked]="observationAC.isRepeatObservation===true">{{yes}}
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <div class="form-check-inline">
+          <label class="form-check-label pl-15">
+            <input type="radio" class="form-check-input" name="optradio" [value]="false" [(ngModel)]="observationAC.isRepeatObservation" [checked]="observationAC.isRepeatObservation===false">{{no}}
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+      <!--This code is commented for designer's reference, as this add table functionality is moved to management-list.component.ts-->
+      <!--<div class="added-table-count mb-10 clearfix">
+        <div class="add-content">
+          <i class="zmdi zmdi-grid d-inline-block align-middle "></i>
+          <a class="count-add-button d-inline-block align-middle  ml-6" (click)="openAddTableDialog(observationAC.id)">
+            <i class="zmdi zmdi-plus-circle"></i>
+            <label class="mb-0 ml-5">{{addToolTip}}</label>
+          </a>
+        </div>
+        <!--Note: This count is not implemented yet-->
+        <!--<div class="added-count ml-15">
+            <span class="count-num d-inline-block align-top mr-10">2</span><p class="d-inline-block align-top mb-0">{{addedLabel}}</p>
+           </div>-->
+      </div>
+      <div class="added-table-count mb-10 clearfix">
+        <div class="add-content">
+          <i class="zmdi zmdi-file d-inline-block align-middle"></i>
+          <a class="count-add-button d-inline-block align-middle ml-6" (click)="openUploadModal()">
+            <i class="zmdi zmdi-plus-circle"></i>
+            <label class="d-inline-block mb-0 ml-5">{{addToolTip}}</label>
+          </a>
+        </div>
+        <div *ngIf="observationFiles !== undefined" class="added-count ml-15">
+          <span class="count-num d-inline-block align-top mr-10">
+            <p class="d-inline-block align-top mb-0" *ngIf="observationAC.observationDocuments === null || observationAC.observationDocuments === undefined">{{observationFiles.length}}{{filesAdded}}</p>
+            <p class="d-inline-block align-top mb-0" *ngIf="observationAC.observationDocuments !== null && observationAC.observationDocuments !== undefined">{{observationFiles.length+observationAC.observationDocuments.length}}{{filesAdded}}</p>
+          </span>
+        </div>
+      </div>
+    </form>
+</div>
+
+<!--Loader component-->
+<app-loader></app-loader>

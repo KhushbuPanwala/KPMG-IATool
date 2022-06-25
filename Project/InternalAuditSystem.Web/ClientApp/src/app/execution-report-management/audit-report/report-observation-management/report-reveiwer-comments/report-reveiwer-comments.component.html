@@ -1,0 +1,46 @@
+<div class="observation-comments-page observation-tab-contents clearfix">
+  <!--Tab left side contents-->
+  <form #reviewerTabForm="ngForm">
+    <div class="tab-left-contents">
+      <div class="observation-controls">
+        <label class="form-label  d-inline-block align-top w-15 mr-20 text-right">{{selectReviewerTitle}}</label>
+        <div class="mb-20 top-name-selection w-82 d-inline-block">
+          <ng-select #select class="page-select w-40 d-inline-block align-middle" [items]="reportReviewerList"
+                     name="reviewerMember" #reviewerMember="ngModel"
+                     [placeholder]="dropdownDefaultValue"
+                     [searchable]="false" [(ngModel)]="selectedReviewer" bindLabel="name" bindValue="userId"
+                     [disabled]="isViewObservation" (change)="showReviewerComment(selectedReviewer)">
+            <ng-template ng-header-tmp>
+              <input type="text" class="w-100" (input)="select.filter($event.target.value)" />
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+      <div class="observation-controls">
+        <label class="form-label  d-inline-block align-top w-15 mr-20 text-right">{{commentsTitle}}</label>
+        <div class="form-group d-inline-block align-top w-82 textarea-group  hide-editor-header">
+          <angular-editor class="background-txt-area divided-txt-area h-300"
+                          [config]="config" [(ngModel)]="reportObservationsReviewer.comment"
+                          name="obsComment" #obsComment="ngModel">
+          </angular-editor>
+          <a class="view-more-button" *ngIf="!isViewObservation" (click)="openObservationCommentModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+        </div>
+      </div>
+
+      <div class="w-15 d-inline-block mr-20"></div>
+      <div class="w-82 d-inline-block">
+        <button class="btn form-btn mt-60 mr-20" [disabled]="isViewObservation"
+                *ngIf="isShowSaveNext" (click)="saveNextObservation()">
+          <img src="../assets/images/save.png" class="align-top" />
+          {{saveNextButtonText}}
+        </button>
+        <button class="btn form-btn mt-60" [disabled]="isViewObservation" (click)="saveCloseObservation()">
+          <img src="../assets/images/save.png" class="align-top" />
+          {{saveCloseButtonText}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<!--Loader component-->
+<app-loader></app-loader>

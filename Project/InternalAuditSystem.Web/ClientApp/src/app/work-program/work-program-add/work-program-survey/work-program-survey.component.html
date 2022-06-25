@@ -1,0 +1,302 @@
+<!-- Create survey second page content -->
+<app-loader></app-loader>
+<div class="sector-list-page">
+  <div class="row">
+    <div class="col-xl-9 col-lg-9 col-md-8">
+      <h4 class="page-title mb-25 title-trim" tooltip="{{strategicAnalysis.surveyTitle}}">{{strategicAnalysis.surveyTitle}}</h4>
+    </div>
+  </div>
+
+
+  <div class="row survey-container">
+    <div class="col-md-12 survey-lists user-survey-create sampling-survey">
+      <form class="survey-form">
+        <div class="sampling-no-data" *ngIf="(strategicAnalysis.questions !== undefined && strategicAnalysis.questions.length === 0 )">
+          <p class="no-record">{{noQuestionAvailable}}</p>
+        </div>
+        <div *ngFor=" let qx = index;let question of strategicAnalysis.questions" class="box mb-30">
+
+          <!--Required asterisk for question-->
+          <label class="mb-20"><p class="mb-0"><span tooltip="{{question.questionText}}" class="form-label" [ngClass]="{'required': question.isRequired === true}">{{question.questionText}}</span></p></label>
+          <!--Implementation of information popover-->
+          <!--Information popover for subjective question-->
+          <div *ngIf="(question.type === 3) && (question.subjectiveQuestion !== null) && (question.subjectiveQuestion.guidance !== '')">
+            <span class="information-popover">
+              <!--*ngIf="(question.type === 3 || question.type === 4) && question.subjectiveQuestion !== null">-->
+              <i class="zmdi zmdi-info-outline" [popover]="popTemplate" #pop2="bs-popover" [outsideClick]="true" placement="left"></i>
+            </span>
+            <ng-template #popTemplate class="guidance-popover">
+              <div class="guidance-popover">
+                <button type="button" (click)='pop2.hide()' class="close" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                {{question.subjectiveQuestion.guidance}}
+              </div>
+            </ng-template>
+          </div>
+          <!--Information popover for textbox question-->
+          <div *ngIf="(question.type === 4) && (question.textboxQuestion !== null) && (question.textboxQuestion.guidance !== '')">
+            <span class="information-popover">
+              <i class="zmdi zmdi-info-outline" [popover]="popTemplate" #pop2="bs-popover" [outsideClick]="true" placement="left"></i>
+            </span>
+            <ng-template #popTemplate class="guidance-popover">
+              <div class="guidance-popover">
+                <button type="button" (click)='pop2.hide()' class="close" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                {{question.textboxQuestion.guidance}}
+              </div>
+            </ng-template>
+          </div>
+          <!--Information popover for fileupload question-->
+          <div *ngIf="(question.type === 5) && (question.fileUploadQuestion !== null) && (question.fileUploadQuestion.guidance !== '')">
+            <span class="information-popover">
+              <i class="zmdi zmdi-info-outline" [popover]="popTemplate" #pop2="bs-popover" [outsideClick]="true" placement="left"></i>
+            </span>
+            <ng-template #popTemplate class="guidance-popover">
+              <div class="guidance-popover">
+                <button type="button" (click)='pop2.hide()' class="close" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                {{question.fileUploadQuestion.guidance}}
+              </div>
+            </ng-template>
+          </div>
+
+          <!--For dropdown-->
+          <div *ngIf="question.type === 1">
+
+            <ng-select #select [items]="question.options" [searchable]="false" placeholder="{{choose}}"
+                       (keyup)="onOptionClick(question.id, question.userResponse.selectedDropdownOption, question.type)"
+                       name="dropdownOptions{{question.id}}" class="col-xl-4 col-md-8" bindLabel="item" bindValue="item"
+                       #dropdownOptions{{question.id}}="ngModel" [(ngModel)]="question.userResponse.selectedDropdownOption">
+            </ng-select>
+            <div *ngIf="question.userResponse.selectedDropdownOption === undefined">
+              <p class="mb-0 mt-10 warn-text" *ngIf="question.userResponse.selectedDropdownOption === undefined &&
+                 question.isRequired === true">{{stringConstants.requiredUserResponse}}</p>
+            </div>
+          </div>
+
+          <!--For MCQ-->
+          <div *ngIf="question.type === 0" class="square-text">
+            <!--Added class-->
+            <div *ngFor="let i = index;let opt of question.options">
+              <div class="form-group survey-radio">
+                <input type="radio" name="mcqOptions{{question.id}}" class="mr-10" id="{{question.id}}{{i}}" value="opt"
+                       (click)="onOptionClick(question.id, opt, question.type)" [checked]="checkIfSelectedOption(question, opt)">
+                <label for="{{question.id}}{{i}}" class="mb-20"><span tooltip="{{opt}}">{{opt}}</span></label>
+              </div>
+              <div class="form-group survey-radio" *ngIf="(i === (question.options.length - 1))">
+                <input *ngIf="question.multipleChoiceQuestion.isOtherToBeShown && (i === (question.options.length - 1))"
+                       (click)="removeSelectedOptions(question.id)"
+                       type="radio" name="mcqOptions{{question.id}}" class="mr-10" id="other{{question.id}}"
+                       [checked]="checkIfOtherExists(question,question.userResponse.other)">
+                <label *ngIf="question.multipleChoiceQuestion.isOtherToBeShown && (i === (question.options.length - 1))"
+                       for="other{{question.id}}">{{question.multipleChoiceQuestion.fieldLabel}}</label>
+                <input *ngIf="question.multipleChoiceQuestion.isOtherToBeShown && (i === (question.options.length - 1))"
+                       type="text" class="mt-10 mb-0" name="mcqOther{{question.id}}" #mcqOther{{question.id}}="ngModel" [(ngModel)]="question.userResponse.other" appValidateMaxLength="256" />
+              </div>
+            </div>
+            <div *ngIf="(!checkIfOtherExists(question,question.userResponse.other) || checkIfOptionsEmpty(question)) && question.isRequired === true">
+              <div *ngIf="checkIfOptionsEmpty(question) && !checkIfOtherExists(question,question.userResponse.other)">
+                <p class="mb-0 mt-10 warn-text">{{stringConstants.requiredUserResponse}}</p>
+              </div>
+              <div *ngIf="question.userResponse.other !== undefined && question.userResponse.other !== null">
+                <p *ngIf="question.userResponse.other.length > 256" appValidateMaxLength>{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+          </div>
+
+          <!--For Rating Scale Question-->
+          <div *ngIf="question.type === 2">
+            <div *ngFor="let smiley of question.ratingScaleQuestion.resultSmileyList; let j = index;" class="parent-smiley">
+              <div id="smileys" *ngFor="let smiley of smileyValues; let i = index">
+                <input *ngIf="smileyValues[i].number === question.ratingScaleQuestion.resultSmileyList[j] && (question.ratingScaleQuestion.resultSmileyList[j] === 1)" type="radio"
+                       name="smiley" (click)="onSmileySelection(question.id, smileyValues[i].number, smileyValues[i].value)"
+                       [ngClass]="{'selected-smiley': question.userResponse.representationNumber === smileyValues[i].number}"
+                       value="{{smileyValues[i].value}}" class="{{smileyValues[i].class}}" tooltip="{{question.ratingScaleQuestion.startLabel}}">
+                <input *ngIf="smileyValues[i].number === question.ratingScaleQuestion.resultSmileyList[j] && (question.ratingScaleQuestion.resultSmileyList[j] !== 1) && (question.ratingScaleQuestion.resultSmileyList[j] !== 5)" type="radio"
+                       name="smiley" (click)="onSmileySelection(question.id, smileyValues[i].number, smileyValues[i].value)"
+                       [ngClass]="{'selected-smiley': question.userResponse.representationNumber === smileyValues[i].number}"
+                       value="{{smileyValues[i].value}}" class="{{smileyValues[i].class}}">
+                <input *ngIf="smileyValues[i].number === question.ratingScaleQuestion.resultSmileyList[j] && (question.ratingScaleQuestion.resultSmileyList[j] === 5)" type="radio"
+                       name="smiley" (click)="onSmileySelection(question.id, smileyValues[i].number, smileyValues[i].value)"
+                       [ngClass]="{'selected-smiley': question.userResponse.representationNumber === smileyValues[i].number}"
+                       value="{{smileyValues[i].value}}" class="{{smileyValues[i].class}}" tooltip="{{question.ratingScaleQuestion.endLabel}}">
+              </div>
+            </div>
+            <div *ngIf="question.userResponse.representationNumber === undefined && question.isRequired === true">
+              <p class="mb-0 mt-10 warn-text">{{stringConstants.requiredUserResponse}}</p>
+            </div>
+          </div>
+
+          <!--For Subjective Question-->
+          <div *ngIf="question.type === 3">
+            <input type="text" class="col-md-8" name="subjectiveAns{{question.id}}" #subjectiveAns{{question.id}}="ngModel"
+                   [(ngModel)]="question.userResponse.answerText" />
+            <div class="error-text mt-10" *ngIf="question.userResponse.answerText.length > 0 && (question.userResponse.answerText.length > question.subjectiveQuestion.characterUpperLimit || question.userResponse.answerText.length < question.subjectiveQuestion.characterLowerLimit)">
+              <p class="mb-0" *ngIf="question.userResponse.answerText.length > 0 && (question.userResponse.answerText.length > question.subjectiveQuestion.characterUpperLimit)">Maximum character limit is {{question.subjectiveQuestion.characterUpperLimit}}</p>
+              <p class="mb-0" *ngIf="question.userResponse.answerText.length > 0 && (question.userResponse.answerText.length < question.subjectiveQuestion.characterLowerLimit)">Minumum character limit is {{question.subjectiveQuestion.characterLowerLimit}}</p>
+            </div>
+            <div *ngIf="question.userResponse.answerText.length === 0 && question.isRequired === true">
+              <p class="mb-0 mt-10 warn-text">{{stringConstants.requiredUserResponse}}</p>
+            </div>
+          </div>
+          <!--For FileUpload Question-->
+          <div class="file-upload-section" *ngIf="question.type === 5">
+            <input style="display: none" type="file" #hiddenfileinput multiple (change)="fileChange($event, question)" />
+            <button (click)="hiddenfileinput.click()" class="btn upload-btn"> {{chooseFileText}} <i class="zmdi zmdi-upload ml-10"></i></button>
+            <ul class="uploaded-files-list" *ngIf="(question.userResponseDocumentACs?.length !== 0 || question.files?.length !== 0)">
+              <li class="clearfix" *ngFor="let index = index;let file of question.userResponseDocumentACs">
+                <button class="btn btn-icon download-btn d-inline-block align-middle">
+                  <!--Word icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.path,wordType)">
+                    <img class="download-opt-img" src="../../../../assets/images/word.png" alt="" />
+                  </ng-template>
+                  <!--Pdf icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.path,pdfType)">
+                    <img class="download-opt-img" src="../../../../assets/images/pdf.png" alt="" />
+                  </ng-template>
+                  <!--Ppx icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.path,ppxType)">
+                    <img class="download-opt-img" src="../../../../assets/images/powerpoint.png" alt="" />
+                  </ng-template>
+                  <!--PNG icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.path,pngType)">
+                    <img class="download-opt-img" src="../../../../assets/images/png.png" alt="" />
+                  </ng-template>
+                  <!--GIF icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.path,gifType)">
+                    <img class="download-opt-img" src="../../../../assets/images/gif.png" alt="" />
+                  </ng-template>
+                  <!--JPG icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.path,jpgType)">
+                    <img class="download-opt-img" src="../../../../assets/images/jpg.png" alt="" />
+                  </ng-template>
+                  <!--other icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.path,otherFileType)">
+                    <img class="download-opt-img" src="../../../../assets/images/default-file.png" alt="" />
+                  </ng-template>
+                </button>
+                <p class="d-inline-block align-middle file-name" title="{{file.fileName}}">{{file.fileName}}</p>
+                <div class="pull-right">
+                  <a class="upload-file-action d-inline-block align-middle" (click)="openDocument(file.path)">
+                    <i class="zmdi zmdi-eye" tooltip="{{viewFilesToolTip}}"></i>
+                  </a>
+                  <a class="upload-file-action d-inline-block align-middle" (click)="downloadDocument(file.id)">
+                    <i class="zmdi zmdi-download" tooltip="{{downloadToolTip}}"></i>
+                  </a>
+                </div>
+              </li>
+              <li class="clearfix" *ngFor="let file of question.files; let index = index">
+                <button class="btn btn-icon download-btn d-inline-block align-middle">
+                  <!--Word icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.name,wordType)">
+                    <img class="download-opt-img" src="../assets/images/word.png" alt="" />
+                  </ng-template>
+                  <!--Pdf icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.name,pdfType)">
+                    <img class="download-opt-img" src="../assets/images/pdf.png" alt="" />
+                  </ng-template>
+                  <!--Ppx icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.name,ppxType)">
+                    <img class="download-opt-img" src="../assets/images/powerpoint.png" alt="" />
+                  </ng-template>
+                  <!--PNG icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.name,pngType)">
+                    <img class="download-opt-img" src="../assets/images/png.png" alt="" />
+                  </ng-template>
+                  <!--GIF icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.name,gifType)">
+                    <img class="download-opt-img" src="../assets/images/gif.png" alt="" />
+                  </ng-template>
+                  <!--JPG icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.name,jpgType)">
+                    <img class="download-opt-img" src="../assets/images/jpg.png" alt="" />
+                  </ng-template>
+                  <!--other icon-->
+                  <ng-template [ngIf]="checkFileExtentionForFileUploadQuestionType(file.name,otherFileType)">
+                    <img class="download-opt-img" src="../assets/images/default-file.png" alt="" />
+                  </ng-template>
+                </button>
+                <p class="d-inline-block align-middle file-name" title="{{file.name}}">{{file.name}}</p>
+                <div class="pull-right">
+                  <a class="upload-file-action d-inline-block align-middle" (click)="openDeleteModal(index, undefined, question.id)">
+                    <i class="zmdi zmdi-delete" tooltip="{{deleteToolTip}}"></i>
+                  </a>
+                </div>
+              </li>
+            </ul>
+            <!--Added message alert-->
+            <p class="mb-0 mt-10 warn-text">
+              <span>{{allowedFileTypesText}}</span>
+              <span *ngIf="question.fileUploadQuestion.isDocAllowed">{{wordType}},</span>
+              <span *ngIf="question.fileUploadQuestion.isGifAllowed">{{gifType}},</span>
+              <span *ngIf="question.fileUploadQuestion.isJpegAllowed"> {{jpgType}} / {{jpegType}},</span>
+              <span *ngIf="question.fileUploadQuestion.isPdfAllowed">{{pdfType}},</span>
+              <span *ngIf="question.fileUploadQuestion.isPpxAllowed">{{ppxType}},</span>
+              <span *ngIf="question.fileUploadQuestion.isPngAllowed">{{pngType}},</span>
+            </p>
+            <div *ngIf="question.isRequired === true && question.userResponseDocumentACs?.length === 0">
+              <p class="mb-0 mt-10 warn-text" *ngIf="question.files.length === 0">{{stringConstants.requiredUserResponse}}</p>
+            </div>
+          </div>
+          <!--For Textbox Question-->
+          <div *ngIf="question.type === 4">
+            <input type="text" class="col-md-8" name="textboxAns{{question.id}}" #textboxAns{{question.id}}="ngModel" [(ngModel)]="question.userResponse.answerText" />
+            <div class="error-text mt-10" *ngIf="question.userResponse.answerText.length > 0 && (question.userResponse.answerText.length > question.textboxQuestion.characterUpperLimit || question.userResponse.answerText.length < question.textboxQuestion.characterLowerLimit)">
+              <p class="mb-0" *ngIf="question.userResponse.answerText.length > 0 && (question.userResponse.answerText.length > question.textboxQuestion.characterUpperLimit)">Maximum character limit is {{question.textboxQuestion.characterUpperLimit}}</p>
+              <p class="mb-0" *ngIf="question.userResponse.answerText.length > 0 && (question.userResponse.answerText.length < question.textboxQuestion.characterLowerLimit)">Minumum character limit is {{question.textboxQuestion.characterLowerLimit}}</p>
+            </div>
+            <div *ngIf="question.userResponse.answerText.length === 0 && question.isRequired === true">
+              <p class="mb-0 mt-10 warn-text">{{stringConstants.requiredUserResponse}}</p>
+            </div>
+          </div>
+          <!--For Checkbox Question-->
+          <div *ngIf="question.type === 6" class="square-text">
+            <div *ngFor=" let j = index;let checkop of question.options">
+              <div class="checkbox-section">
+                <input type="checkbox" name="checkBoxOptions{{question.id}}" class="mr-10 styled-checkbox" id="{{question.id}}{{j}}" value="{{checkop}}"
+                       (click)="onOptionClick(question.id, checkop, question.type)"
+                       [checked]="checkIfSelectedOption(question, checkop)">
+                <label for="{{question.id}}{{j}}" class="mb-20">
+                  <p class="mb-0"><span tooltip="{{checkop}}">{{checkop}}</span></p>
+                </label>
+              </div>
+              <div class="checkbox-section" *ngIf="question.checkboxQuestion.isOtherToBeShown && (j === (question.options.length - 1))">
+                <input type="checkbox" class="mr-10 styled-checkbox" name="checkBoxOptions{{question.id}}"
+                       id="otherCheckbox{{question.id}}" [checked]="checkIfOtherExists(question,question.userResponse.other)" (click)="removeOtherTextOfCheckbox(question.id)" />
+                <label for="otherCheckbox{{question.id}}">Other</label>
+                <input type="text" class="mt-10 mb-0" name="checkboxOther{{question.id}}" #checkboxOther{{question.id}}="ngModel" [(ngModel)]="question.userResponse.other" appValidateMaxLength="256" />
+              </div>
+            </div>
+            <div *ngIf="question.isRequired === true">
+              <div *ngIf="checkIfOptionsEmpty(question) && !checkIfOtherExists(question,question.userResponse.other)">
+                <p class="mb-0 mt-10 warn-text">{{stringConstants.requiredUserResponse}}</p>
+              </div>
+              <div *ngIf="question.userResponse.other !== undefined && question.userResponse.other !== null">
+                <p *ngIf="question.userResponse.other.length > 256" appValidateMaxLength>{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="strategicAnalysis.questions !== null && strategicAnalysis.questions !== undefined">
+          <div *ngIf="strategicAnalysis.questions[0] !== undefined">
+            <div class="right-contents mt-40">
+              <button *ngIf="strategicAnalysis.questions[0].userResponse.userResponseStatus !== 1 && strategicAnalysis.questions[0].userResponse.userResponseStatus !== 2" class="btn form-btn mb-20 mr-20" (click)="submitUserResponse()"> {{save}} </button>
+              <button class="btn mb-20 cancel-outline" (click)="onPreviousClick()"> {{previousButton}} </button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="(strategicAnalysis.questions !== undefined && strategicAnalysis.questions.length === 0)">
+          <div>
+            <div class="right-contents mt-10">
+              <button class="btn cancel-outline" (click)="onPreviousClick()"> {{previousButton}} </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

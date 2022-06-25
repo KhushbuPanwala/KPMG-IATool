@@ -1,0 +1,14 @@
+/*Imported common style to get common elements styles*/
+@import '../../../styles.scss';
+
+/*Mom datalist page design*/
+.mom-list-page {
+  .table {
+    .action-icon { transition: 0.5s; cursor: pointer;
+      i { color: $text-color; font-size: $regular-large-font; }
+      &:hover {
+        i { color: $light-theme-color; transition: 0.5s; }
+      }
+    }
+  }
+}

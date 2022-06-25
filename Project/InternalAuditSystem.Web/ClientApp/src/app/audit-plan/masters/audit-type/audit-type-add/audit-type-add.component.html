@@ -1,0 +1,29 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Audit plan type add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{auditTypeModalTitle}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="audit-team-form modal-form" #auditTypeAddEditForm="ngForm" *ngIf="auditTypeObject !== undefined">
+    <div class="form-group  mb-15">
+      <label class="form-label required mb-10">{{typeLabel}}</label>
+      <input type="text" class="form-control" [(ngModel)]="auditTypeObject.name" name="auditTypeName" #auditTypeName="ngModel" required appValidateMaxLength="256" />
+      <div class="feedback-box" *ngIf="auditTypeName.errors  && auditTypeObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="auditTypeName.touched && !auditTypeName.valid && auditTypeName.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="auditTypeName.touched && !auditTypeName.errors.required">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <button class="btn form-btn mt-20" (click)="saveAuditType()" [disabled]="auditTypeAddEditForm.invalid">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>
+
+
+
+

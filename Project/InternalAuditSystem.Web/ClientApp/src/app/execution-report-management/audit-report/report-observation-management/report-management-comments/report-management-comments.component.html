@@ -1,0 +1,137 @@
+  <!--Observation management comments contents-->
+<div class="observation-comments-page report-observations observation-tab-contents clearfix">
+  <!--Tab left side contents-->
+  <div class="tab-left-contents">
+    <form #managementTabForm="ngForm">
+      <div class="observation-controls">
+        <label class="form-label  d-inline-block align-top w-15 mr-20 text-right">{{managementResponseTitle}}</label>
+        <div class="form-group d-inline-block align-top w-82 textarea-group hide-editor-header">
+          <angular-editor class="background-txt-area divided-txt-area  h-120"
+                          [config]="config" [(ngModel)]="reportObservation.managementResponse"
+                          name="managementResponse" #managementResponse="ngModel">
+          </angular-editor>
+          <a class="view-more-button" *ngIf="!isViewObservation" (click)="openManagementResponseModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+        </div>
+      </div>
+      <div class="observation-controls">
+        <label class="form-label  d-inline-block align-top w-15 mr-20 text-right">{{conclusionTitle}}</label>
+        <div class="form-group d-inline-block align-top w-82 textarea-group hide-editor-header">
+          <angular-editor class="background-txt-area divided-txt-area h-120"
+                          [config]="config" [(ngModel)]="reportObservation.conclusion"
+                          name="conclusion" #conclusion="ngModel">
+          </angular-editor>
+          <a class="view-more-button" *ngIf="!isViewObservation" (click)="openConclusionModal()">
+            <i class="zmdi zmdi-crop-free"></i>
+          </a>
+        </div>
+      </div>
+    </form>
+    <div class="observation-controls clearfix">
+      <label class="form-label  d-inline-block align-top w-15 mr-20 text-right">{{personResponsibleLabel}}</label>
+      <div class="mb-20 top-name-selection w-82 d-inline-block">
+        <ng-select #select [items]="responsiblePersonList" class="page-select w-40 d-inline-block align-middle" [searchable]="false"
+                   [disabled]="isViewObservation" name="responsiblePerson" #responsiblePerson="ngModel"
+                   [(ngModel)]="selectedResponsiblePerson" bindLabel="name" bindValue="userId">
+        </ng-select>
+        <a class="action-btn d-inline-block w-10 text-center" tooltip="{{addToolTip}}"
+           (click)="addPersonResponsible(selectedResponsiblePerson)">
+          <i class="zmdi zmdi-plus-circle"></i>
+        </a>
+      </div>
+      <div class="team-divider-section team-section w-82 pull-right">
+        <table class="table form-table">
+          <thead>
+            <tr>
+              <th class="w-30">
+                {{nameLabel}}
+              </th>
+              <th class="w-30">
+                {{emailLabel}}
+              </th>
+              <th class="w-40">{{designationTitle}}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="reportObservation.personResponsibleList.length===0">
+              <td colspan="4"><p class="no-record">{{showNoDataText}}</p></td>
+            </tr>
+            <tr *ngFor="let resoponsiblePerson of reportObservation.personResponsibleList; let index = index;">
+              <td class="w-30">
+                <input type="text" class="form-control" disabled [(ngModel)]="resoponsiblePerson.name" />
+              </td>
+              <td class="w-30">
+                <input type="text" class="form-control" disabled [(ngModel)]="resoponsiblePerson.emailId" />
+              </td>
+              <td class="w-30">
+                <input type="text" class="form-control" disabled [(ngModel)]="resoponsiblePerson.designation" />
+              </td>
+              <td class="text-center w-5">
+                <a class="action-btn mt-3 d-block" tooltip="{{removeToolTip}}" (click)="deletePersonResponsible(resoponsiblePerson.userId)">
+                  <i class="zmdi zmdi-delete"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!--Tab right side contents-->
+  <div class="tab-right-contents">
+    <div class="form-group mb-20  date-picker" [ngClass]=" {'has-error-picker': targetDate.errors}">
+      <label class="form-label  required">
+        {{targetDateTitle}}
+      </label>
+      <div class="form-icon-group">
+        <input type="text" placeholder="Datepicker" class="form-control" required
+               bsDatepicker name="targetDate" #targetDate="ngModel"
+               [disabled]="isViewObservation" [(ngModel)]="reportObservation.targetDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }">
+        <i class="zmdi zmdi-calendar"></i>
+      </div>
+      <div class="invalid-feedback" *ngIf="targetDate.errors">
+        <p *ngIf="targetDate.touched && !targetDate.valid && targetDate.errors.required"
+           class="invalid-feedback mb-0">{{requiredMessage}}</p>
+      </div>
+    </div>
+    <div class="form-group mb-20">
+      <label class="form-label ">
+        {{linkedObservationTitle}}
+      </label>
+      <ng-select #select [items]="linkedObservations" class="page-select" [searchable]="false"
+                 name="linkedObs" #linkedObs="ngModel"
+                 [placeholder]="dropdownDefaultValue"
+                 [disabled]="isViewObservation" [(ngModel)]="reportObservation.linkedObservation" bindLabel="heading" bindValue="id">
+      </ng-select>
+    </div>
+    <div class="form-group mb-20">
+      <label class="form-label  required">
+        {{statusTitle}}
+      </label>
+      <ng-select #select [items]="observationStatusList" class="page-select" [searchable]="false"
+                 [disabled]="isViewObservation" [(ngModel)]="reportObservation.observationStatus"
+                 name="obsStatus" #obsStatus="ngModel" bindLabel="value" bindValue="key">
+      </ng-select>
+    </div>
+    <div class="form-group mb-20">
+      <label class="form-label  required">
+        {{dispositionTitle}}
+      </label>
+      <ng-select #select [items]="dispositionList" class="page-select" [searchable]="false" [(ngModel)]="reportObservation.disposition"
+                 [disabled]="isViewObservation" name="disposition" #disposition="ngModel" bindLabel="value" bindValue="key">
+      </ng-select>
+    </div>
+    <div class="form-group mb-20">
+      <label class="form-label ">
+        {{auditorTitle}}
+      </label>
+      <ng-select [items]="auditorList" class="page-select" [searchable]="false"
+                 [disabled]="isViewObservation" name="auditor" #auditor="ngModel"
+                 [placeholder]="dropdownDefaultValue"
+                 [(ngModel)]="reportObservation.auditorId" bindLabel="name" bindValue="userId">
+      </ng-select>
+    </div>
+  </div>
+</div>
+<!--Loader component-->
+<app-loader></app-loader>

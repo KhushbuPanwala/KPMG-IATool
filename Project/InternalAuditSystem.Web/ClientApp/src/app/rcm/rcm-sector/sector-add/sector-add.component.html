@@ -1,0 +1,39 @@
+<!--Loader component-->
+<app-loader></app-loader>
+
+<!--RCM add page elements-->
+<div class="rcm-add-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">
+      {{rcmSectorTitle}}
+    </h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" tooltip="{{backToolTip}}" (click)="onBackClick()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container fixed-height-container p-35">
+    <form #rcmSectorAddForm="ngForm">
+      <div class="sector-form">
+        <div class="mb-20">
+          <div class="d-inline-block align-middle w-40 mb-20 form-group mr-20">
+            <label class="form-label required">
+              {{rcmSectorTitle}}
+            </label>
+            <textarea class="form-control small-txt-area" [(ngModel)]="rcmSector.sector" name="sector" #sectors="ngModel" required appValidateAlphanumeric appValidateMaxLength="24"></textarea>
+            <div *ngIf="sectors.errors" class="feedback-box">
+              <p *ngIf="sectors.touched && !sectors.valid && sectors.errors.required" class="invalid-feedback">{{requiredMessage}}</p>
+              <p *ngIf="sectors.touched && !sectors.valid && sectors.errors.appValidateAlphanumeric" class="invalid-feedback">{{invalidMessage}}</p>
+              <p *ngIf="sectors.touched && !sectors.errors.required && !sectors.errors.appValidateAlphanumeric" class="invalid-feedback" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+            </div>
+          </div>
+        </div>
+        <button class="btn form-btn mt-20" (click)="saveRcmSector()" [disabled]="rcmSectorAddForm.invalid">
+          <img src="../assets/images/save.png" class="align-top" />
+          {{saveButtonText}}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

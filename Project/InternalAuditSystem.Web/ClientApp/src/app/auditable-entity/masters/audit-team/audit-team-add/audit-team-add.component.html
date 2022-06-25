@@ -1,0 +1,56 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Audit team add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{auditTeamModalTitle}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="audit-team-form modal-form" #auditTeamForm="ngForm">
+    <!--Name-->
+    <div class="form-group mb-15">
+      <label class="form-label required mb-10">{{nameLabel}}</label>
+      <div class="team-name-section">
+        <input class="form-control" name="teamMemberName" #teamMemberName="ngModel" [(ngModel)]="teamUserObject.name"
+               (keyup)="passValueOnEnterEvent($event, teamUserObject.name)" required />
+        <i class="zmdi zmdi-rotate-right zmdi-hc-spin" *ngIf="isLoading"></i>
+        <ul class="audit-name-list" [ngClass]="{'hide-list': isToHideList}">
+          <li id="user.emailId" *ngFor="let user of dropdownList | async">
+            <a (click)="populateSelectedUserDetails(user.emailId)">
+              <p class="mb-0">{{user.name}}</p>
+              <span class="d-block info-email">{{user.emailId}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="teamUserObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="teamMemberName.touched && !teamMemberName.valid && teamMemberName.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" *ngIf="isNoRecordMatched">{{noRecordFound}}</p>
+      </div>
+    </div>
+    <!--Designation-->
+    <div class="form-group  mb-15">
+      <label class="form-label  mb-10">{{designationLabel}}</label>
+      <input type="text" class="form-control" [(ngModel)]="teamUserObject.designation" name="designation" #designation="ngModel" readonly />
+    </div>
+    <!--Email Id-->
+    <div class="form-group  mb-15">
+      <label class="form-label mb-10">{{emailLabel}}</label>
+      <input type="text" class="form-control" [(ngModel)]="teamUserObject.emailId" name="emailId" #emailId="ngModel" readonly />
+    </div>
+    <!--Department-->
+    <div class="form-group  mb-15">
+      <label class="form-label  mb-10">{{departmentLabel}}</label>
+      <input type="text" class="form-control" [(ngModel)]="teamUserObject.department" name="department" #department="ngModel" readonly />
+    </div>
+    <button type="button" class="btn form-btn mt-20" (click)="saveAuditTeamMember()" [disabled]="auditTeamForm.invalid || isNoRecordMatched || !isDataPopulated">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>
+
+
+

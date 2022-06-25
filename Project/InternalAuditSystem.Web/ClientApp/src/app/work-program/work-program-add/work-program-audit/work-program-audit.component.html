@@ -1,0 +1,377 @@
+<!--Work prgram audit tab contents-->
+<div class="audit-add-page">
+  <form #workProgramAddForm="ngForm">
+    <div class="form-area ">
+      <div class="row clearfix">
+        <div class="form-group mb-10 col-lg-6 mb-20">
+          <label class="form-label d-block mb-10 required">{{workProgramName}}</label>
+          <input type="text" class="form-control" name="name" [(ngModel)]="workProgramDetails.name" #name="ngModel" required appValidateMaxLength="256" />
+          <p *ngIf="name.errors && name.touched && !name.valid && name.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+          <p class="invalid-feedback mb-0" appValidateMaxLength *ngIf="name.errors && name.touched && !name.errors.required">{{maxLengthExceedMessage}}</p>
+        </div>
+        <div class="col-lg-6 mb-10 form-group mb-20">
+          <label class="form-label d-block mb-10 required">{{auditPlanBreadCrumbTitle}}</label>
+          <ng-select #selectPlan class="page-select" [items]="auditPlanList" [searchable]="false" (change)="onAuditPlanChange(workProgramDetails.auditPlanId)" [placeholder]="dropdownDefaultValue"
+                     name="auditplan" [(ngModel)]="workProgramDetails.auditPlanId" bindLabel="title" bindValue="id" #auditPlan="ngModel" required>
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+              <p class="mb-0">{{item.title}}</p>
+              <span class="version-no">{{auditPlanVersion}}{{item.version}}</span>
+            </ng-template>
+            <ng-template ng-header-tmp>
+              <input type="text" class="w-100" (input)="selectPlan.filter($event.target.value)" />
+            </ng-template>
+          </ng-select>
+          <p *ngIf="auditPlan.errors && auditPlan.touched && !auditPlan.valid && auditPlan.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+        </div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-lg-6 mb-10 form-group mb-20">
+          <label class="form-label d-block mb-10 required">{{processLabel}}</label>
+          <ng-select #selectProcess class="page-select" [items]="processList" name="process" (change)="onProcessChange(workProgramDetails.parentProcessId)" #process="ngModel" required [searchable]="false" [placeholder]="dropdownDefaultValue"
+                     [(ngModel)]="workProgramDetails.parentProcessId" bindLabel="name" bindValue="id">
+            <ng-template ng-header-tmp>
+              <input type="text" class="w-100" (input)="selectProcess.filter($event.target.value)" />
+            </ng-template>
+          </ng-select>
+          <p *ngIf="!(auditPlan.errors && auditPlan.touched && !auditPlan.valid && auditPlan.errors.required) && auditPlan.touched && process.errors && process.touched && !process.valid && process.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+        </div>
+
+        <div class="col-lg-6  mb-10 form-group mb-20">
+          <label class="form-label d-block mb-10 required">{{subProcessLabel}}</label>
+          <ng-select #selectSubProcess [items]="subProcessList" class="page-select" [searchable]="false"
+                     [placeholder]="dropdownDefaultValue" [(ngModel)]="workProgramDetails.processId"
+                     bindLabel="processName" bindValue="processId" name="subProcess" #subProcess="ngModel" required>
+            <ng-template ng-header-tmp>
+              <input type="text" class="w-100" (input)="selectSubProcess.filter($event.target.value)" />
+            </ng-template>
+          </ng-select>
+          <p *ngIf="subProcess.errors && subProcess.touched && !subProcess.valid && subProcess.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+        </div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-lg-6  mb-10 form-group mb-20">
+          <label class="form-label d-block mb-10 required">{{auditTitleText}}</label>
+          <input type="text" class="form-control" name="audit" [(ngModel)]="workProgramDetails.auditTitle" #audit="ngModel" required appValidateMaxLength="256" />
+          <p *ngIf="audit.errors && audit.touched && !audit.valid && audit.errors.required" class="invalid-feedback mb-0">{{requiredMessage}}</p>
+          <p class="invalid-feedback mb-0" appValidateMaxLength *ngIf="audit.errors && audit.touched && !audit.errors.required">{{maxLengthExceedMessage}}</p>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="d-inline-block align-middle form-group mb-20 date-picker w-45">
+            <label class="form-label">{{dateLabel}}</label>
+            <div class="form-icon-group">
+              <input type="text"
+                     [placeholder]="startDate"
+                     class="form-control"
+                     bsDatepicker
+                     name="startDate" [(ngModel)]="workProgramDetails.auditPeriodStartDate"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' ,adaptivePosition: true}">
+              <i class="zmdi zmdi-calendar calender-icn"></i>
+            </div>
+          </div>
+          <div class="to-text mt-10 d-inline-block align-middle width-30 text-center">
+            <span>{{toText}}</span>
+          </div>
+          <div class="d-inline-block align-middle form-group mb-20 date-picker w-45">
+            <label class="form-label hidden-label">{{dateLabel}}</label>
+            <div class="form-icon-group">
+              <input type="text"
+                     [placeholder]="endDate"
+                     class="form-control"
+                     bsDatepicker
+                     name="endDate" [(ngModel)]="workProgramDetails.auditPeriodEndDate"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' ,adaptivePosition: true}">
+              <i class="zmdi zmdi-calendar calender-icn"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-lg-6 form-group mb-20">
+          <label class="form-label">{{planScopeTitle}}</label>
+          <input type="text" class="form-control" name="scope" [(ngModel)]="workProgramDetails.scope" #scope="ngModel" appValidateMaxLength="256" />
+          <p class="invalid-feedback mb-0" appValidateMaxLength *ngIf="scope.errors && scope.touched">{{maxLengthExceedMessage}}</p>
+        </div>
+        <div class="col-lg-3 mb-20 form-group">
+          <label class="form-label" required>{{statusTitle}}</label>
+          <input type="text" class="form-control" name="status" [(ngModel)]="workProgramDetails.statusString" disabled />
+        </div>
+        <div class="col-lg-3 mb-20 form-group">
+          <button class="btn form-btn mt-25" (click)="changeWorkProgramStatus()" *ngIf="!isAddPage" [disabled]="isStatusChanged">
+            {{statusButtonText}}
+          </button>
+        </div>
+      </div>
+      <div class="team-section">
+        <div class="mb-20 team-divider-section">
+          <label class="form-label required">
+            {{teamLabel}}
+          </label>
+          <table class="table form-table">
+            <thead>
+              <tr>
+                <th class="w-50">
+                  {{nameLabel}}
+                </th>
+                <th class="w-50">
+                  {{designationLabel}}
+                </th>
+                <th class="w-5"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let internalUser of selectedInternalUsers; let index = index; ">
+                <td class="w-50">
+                  <ng-select #select class="page-select" [items]="internalUserList" disabled
+                             [name]="selectedInternalUsers[index].name" [searchable]="false"
+                             [(ngModel)]="selectedInternalUsers[index].userId" bindLabel="name" bindValue="id">
+                    <ng-template ng-header-tmp>
+                      <input type="text" (input)="select.filter($event.target.value)" class="w-100" />
+                    </ng-template>
+                  </ng-select>
+                </td>
+                <td class="w-50 designation-input">
+                  <input class="form-control" type="text" (input)="select.filter($event.target.value)" disabled
+                         [name]="internalUser.userId" [(ngModel)]="internalUser.designation" />
+                </td>
+                <td class="text-center w-5">
+                  <a class="action-btn mt-3 d-block" tooltip="{{removeToolTip}}"
+                     (click)="removeInternalUser(internalUser.userId)">
+                    <i class="zmdi zmdi-delete"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td class="w-50">
+                  <ng-select #selectInternalUser class="page-select" [items]="internalUserAddList" [placeholder]="dropdownDefaultValue"
+                             name="internaluser" (change)="onInternalUserSelection($event)" #internaluser="ngModel"
+                             [searchable]="false" [(ngModel)]="selectedInternalUser" bindLabel="name" bindValue="id">
+                    <ng-template ng-header-tmp>
+                      <input type="text" (input)="selectInternalUser.filter($event.target.value)" class="w-100" />
+                    </ng-template>
+                  </ng-select>
+                </td>
+                <td class="w-50">
+                  <input class="form-control" type="text" (input)="selectInternalUser.filter($event.target.value)" disabled
+                         [(ngModel)]="selectedInternalUserDesignation" name="designation add" />
+                </td>
+                <td class="w-5 text-center">
+                  <a class="action-btn mt-3 d-block" (click)="addInternalUser()" tooltip="{{addToolTip}}">
+                    <i class="zmdi zmdi-plus-circle"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="invalid-feedback mb-0" *ngIf="isAllInternalUsersDeleted">{{requiredMessage}}</p>
+        </div>
+        <div class="team-divider-section">
+          <label class="form-label">
+            {{clientParticipantsText}}
+          </label>
+          <table class="table form-table">
+            <thead>
+              <tr>
+                <th class="w-50">
+                  {{nameLabel}}
+                </th>
+                <th class="w-50">
+                  {{designationLabel}}
+                </th>
+                <th class="w-5"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let externalUser of selectedExternalUsers; let index = index; ">
+                <td class="w-50">
+                  <ng-select #select class="page-select" [items]="externalUserList" disabled
+                             [name]="selectedExternalUsers[index].name" [searchable]="false"
+                             [(ngModel)]="selectedExternalUsers[index].userId" bindLabel="name" bindValue="id">
+                    <ng-template ng-header-tmp>
+                      <input type="text" (input)="select.filter($event.target.value)" class="w-100" />
+                    </ng-template>
+                  </ng-select>
+                </td>
+                <td class="w-50 designation-input">
+                  <input class="form-control" type="text" (input)="select.filter($event.target.value)" disabled
+                         [name]="externalUser.userId" [(ngModel)]="externalUser.designation" />
+                </td>
+                <td class="text-center w-5">
+                  <a class="action-btn  mt-3 d-block" (click)="removeExternalUser(externalUser.userId)" tooltip="{{removeToolTip}}">
+                    <i class="zmdi zmdi-delete"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td class="w-50">
+                  <ng-select #selectExternalUser class="page-select" [items]="externalUserAddList" [placeholder]="dropdownDefaultValue"
+                             name="externalUser" (change)="onExternalUserSelection($event)"
+                             [searchable]="false" [(ngModel)]="selectedExternalUser" bindLabel="name" bindValue="id">
+                    <ng-template ng-header-tmp>
+                      <input type="text" (input)="selectExternalUser.filter($event.target.value)" class="w-100" />
+                    </ng-template>
+                  </ng-select>
+                </td>
+                <td class="w-50">
+                  <input class="form-control" type="text" disabled (input)="selectExternalUser.filter($event.target.value)" [(ngModel)]="selectedExternalUserDesignation" name="external designation" />
+                </td>
+                <td class="w-5 text-center">
+                  <a class="action-btn  mt-3 d-block" (click)="addExternalUser()" tooltip="{{addToolTip}}">
+                    <i class="zmdi zmdi-plus-circle"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-lg-6">
+          <label class="form-label">{{workPapers}}</label>
+          <div class="file-upload-section">
+            <input type="text" class="form-control placeholde-input" placeholder="{{noFileChosen}}" />
+            <input type="file" class="form-control file-upload-input" multiple (change)="fileChange($event)" />
+            <button class="btn file-upload-button">{{chooseFileText}}</button>
+            <ul class="uploaded-files-list" *ngIf="(workProgramDetails.workPaperACList !== undefined && workProgramDetails.workPaperACList.length > 0 )|| (workPaperFilesList !== undefined && workPaperFilesList.length>0)">
+              <li class="clearfix" *ngFor="let file of workPaperFilesList; let index = index">
+                <button class="btn btn-icon download-btn d-inline-block align-middle">
+                  <!--Word icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,wordType)">
+                    <img class="download-opt-img" src="../assets/images/word.png" alt="{{wordToolTip}}" />
+                  </ng-template>
+                  <!--Pdf icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,pdfType)">
+                    <img class="download-opt-img" src="../assets/images/pdf.png" alt="{{pdfToolTip}}" />
+                  </ng-template>
+                  <!--Ppt icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,pptType)">
+                    <img class="download-opt-img" src="../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+                  </ng-template>
+                  <!--Excel icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,excelType)">
+                    <img class="download-opt-img" src="../assets/images/excel.png" alt="" />
+                  </ng-template>
+                  <!--JPG icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,jpgType)">
+                    <img class="download-opt-img" src="../assets/images/jpg.png" alt="" />
+                  </ng-template>
+                  <!--PNG icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,pngType)">
+                    <img class="download-opt-img" src="../assets/images/png.png" alt="" />
+                  </ng-template>
+                  <!--GIF icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,gifType)">
+                    <img class="download-opt-img" src="../assets/images/gif.png" alt="" />
+                  </ng-template>
+                  <!--Zip icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,zipType)">
+                    <img class="download-opt-img" src="../assets/images/zip.png" alt="" />
+                  </ng-template>
+                  <!--MP3 icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,mp3Type)">
+                    <img class="download-opt-img" src="../assets/images/mp3.png" alt="" />
+                  </ng-template>
+                  <!--MP4 icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,mp4Type)">
+                    <img class="download-opt-img" src="../assets/images/mp4.png" alt="" />
+                  </ng-template>
+                  <!--SVG icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,svgType)">
+                    <img class="download-opt-img" src="../assets/images/svg.png" alt="" />
+                  </ng-template>
+                  <!--CSV icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,csvType)">
+                    <img class="download-opt-img" src="../assets/images/csv.png" alt="" />
+                  </ng-template>
+                  <!--other icon-->
+                  <ng-template [ngIf]="checkFileExtention(file.name,otherFileType)">
+                    <img class="download-opt-img" src="../assets/images/default-file.png" alt="" />
+                  </ng-template>
+                </button>
+                <p class="d-inline-block align-middle file-name" title="{{file.name}}">{{file.name}}</p>
+                <div class="pull-right">
+                  <a class="upload-file-action d-inline-block align-middle" (click)="openDeleteModal(index,'')">
+                    <i class="zmdi zmdi-delete"></i>
+                  </a>
+                </div>
+              </li>
+              <li class="clearfix" *ngFor="let workPaper of workProgramDetails.workPaperACList; let index = index">
+                <button class="btn btn-icon download-btn d-inline-block align-middle">
+                  <!--Word icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,wordType)">
+                    <img class="download-opt-img" src="../assets/images/word.png" alt="{{wordToolTip}}" />
+                  </ng-template>
+                  <!--Pdf icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,pdfType)">
+                    <img class="download-opt-img" src="../assets/images/pdf.png" alt="{{pdfToolTip}}" />
+                  </ng-template>
+                  <!--Ppt icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,pptType)">
+                    <img class="download-opt-img" src="../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+                  </ng-template>
+                  <!--Excel icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,excelType)">
+                    <img class="download-opt-img" src="../assets/images/excel.png" alt="" />
+                  </ng-template>
+                  <!--JPG icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,jpgType)">
+                    <img class="download-opt-img" src="../assets/images/jpg.png" alt="" />
+                  </ng-template>
+                  <!--PNG icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,pngType)">
+                    <img class="download-opt-img" src="../assets/images/png.png" alt="" />
+                  </ng-template>
+                  <!--GIF icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,gifType)">
+                    <img class="download-opt-img" src="../assets/images/gif.png" alt="" />
+                  </ng-template>
+                  <!--Zip icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,zipType)">
+                    <img class="download-opt-img" src="../assets/images/zip.png" alt="" />
+                  </ng-template>
+                  <!--MP3 icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,mp3Type)">
+                    <img class="download-opt-img" src="../assets/images/mp3.png" alt="" />
+                  </ng-template>
+                  <!--MP4 icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,mp4Type)">
+                    <img class="download-opt-img" src="../assets/images/mp4.png" alt="" />
+                  </ng-template>
+                  <!--SVG icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,svgType)">
+                    <img class="download-opt-img" src="../assets/images/svg.png" alt="" />
+                  </ng-template>
+                  <!--CSV icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,csvType)">
+                    <img class="download-opt-img" src="../assets/images/csv.png" alt="" />
+                  </ng-template>
+                  <!--other icon-->
+                  <ng-template [ngIf]="checkFileExtention(workPaper.documentPath,otherFileType)">
+                    <img class="download-opt-img" src="../assets/images/default-file.png" alt="" />
+                  </ng-template>
+                </button>
+                <p class="d-inline-block align-middle file-name" title="{{workPaper.fileName}}">{{workPaper.fileName}}</p>
+                <div class="pull-right">
+                  <a class="upload-file-action d-inline-block align-middle" (click)="openDocument(workPaper.documentPath)">
+                    <i class="zmdi zmdi-eye"></i>
+                  </a>
+                  <a class="upload-file-action d-inline-block align-middle" (click)="downloadWorkPaper(workPaper.id)">
+                    <i class="zmdi zmdi-download"></i>
+                  </a>
+                  <a class="upload-file-action d-inline-block align-middle" (click)="openDeleteModal(index,workPaper.id)">
+                    <i class="zmdi zmdi-delete"></i>
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <button class="btn form-btn mt-30" (click)="saveWorkProgram()" [disabled]="workProgramAddForm.invalid || selectedInternalUsers.length===0">
+        <img src="../assets/images/save.png" class="align-top" />
+        {{saveButtonText}}
+      </button>
+    </div>
+  </form>
+</div>
+<app-loader></app-loader>

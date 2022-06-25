@@ -1,0 +1,211 @@
+<!--Audit advisory page contents-->
+<div class="audit-advisory-page">
+  <h4 class="page-title mb-25 ml-20">{{auditAdvisoryTitle}}</h4>
+  <div class="page-container mb-20">
+    <div class="row clearfix">
+      <div class="col-lg-9">
+        <div class="row clearfix">
+          <div class="col-lg-5 form-group">
+            <label class="form-label">{{selectAreaTitle}}</label>
+            <ng-select #select [items]="areaList" class="page-select" [searchable]="false" [(ngModel)]="selectedAreaList" (change)="onAreaChange(selectedAreaList)"
+                       bindLabel="item" bindValue="item">
+            </ng-select>
+          </div>
+          <div class="col-lg-6 form-group">
+            <div class="w-80 d-inline-block">
+              <label class="form-label">{{yearTitle}}</label>
+              <ng-select #select [items]="yearItems" class="page-select" [searchable]="false" [(ngModel)]="selectedYearItems" (change)="onYearChange(selectedYearItems)" bindLabel="item" bindValue="item">
+              </ng-select>
+            </div>
+            <div class="w-10 d-inline-block mt-10 ml-10">
+              <a class="action-btn " tooltip="{{addToolTip}}" (click)="showData(selectedAreaList,selectedYear)">
+                <i class="zmdi zmdi-plus-circle"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Note: Please hide show ACM list section div-->
+  <div class="acm-list-section" *ngIf="isAcm">
+    <div class="page-container">
+      <label class="form-label bold">{{acmTitle}}</label>
+      <div class="top-contents mb-10">
+        <div class="search-box">
+          <input class="form-control search-control pl-30" placeholder="{{searchText}}" [(ngModel)]="searchValue"
+               (keydown.Tab)="searchData($event,null, selectedPageItem, searchValue,isAcm,isReportManagement,isObservation)"
+               (keypress)="searchData($event,null, selectedPageItem, searchValue,isAcm,isReportManagement,isObservation)">
+          <i class="zmdi zmdi-search"></i>
+        </div>
+      </div>
+      <!--Table contents-->
+      <div class="table-container table-responsive">
+        <table class="table table-striped audit-list">
+          <thead>
+            <tr>
+              <th class="w-15">{{headingLabel}}</th>
+              <th class="w-10">{{ratingLabel}}</th>
+              <th class="w-20">{{implicationTitle}}</th>
+              <th class="w-10" colspan="2">{{statusTitle}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="acmList.length===0">
+              <td colspan="7"><p class="no-record">{{showNoDataText}}</p></td>
+            </tr>
+            <tr *ngFor="let item of acmList| paginate: { itemsPerPage: selectedPageItem, currentPage: pageNumber, totalItems:totalRecords}">
+              <td class="w-20" title="{{item.heading}}"><p class="desc-text mb-0">{{item.heading}}</p></td>
+              <td class="w-10">{{item.ratingString}}</td>
+              <td class="w-20" title="{{item.implication}}"><p class="desc-text mb-0">{{item.implication}}</p></td>
+              <td class="w-10">{{item.statusString}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+        <!--Table footer contens-->
+        <div class="table-footer row clearfix" *ngIf="acmList.length>0">
+          <div class="col-sm-7">
+            <pagination-controls [responsive]="responsive"
+                                 [previousLabel]="labels.previousLabel"
+                                 [nextLabel]="labels.nextLabel"
+                                 (pageChange)="onPageChange($event,isAcm,isReportManagement,isObservation)"></pagination-controls>
+          </div>
+          <div class="right-contents col-sm-5 text-right">
+            <div class="d-inline-block">
+              <ng-select #select [items]="pageItems" [searchable]="false" [(ngModel)]="selectedPageItem"
+                         (change)="onPageItemChange(isAcm,isReportManagement,isObservation)"
+                         bindLabel="item" bindValue="noOfItems">
+              </ng-select>
+            </div>
+            <div class="d-inline-block ml-10">
+              <p class="mb-0 showing-results-text mt-5 align-middle">{{showingResults}}</p>
+            </div>
+          </div>
+        </div>
+      
+    </div>
+  </div>
+  <!--Note: Please hide show observation list section div-->
+  <div class="observation-list-section" *ngIf="isReportManagement">
+    <div class="page-container">
+
+      <label class="form-label bold">{{reportTitle}}</label>
+      <div class="top-contents mb-10">
+        <div class="search-box">
+          <input class="form-control search-control pl-30" placeholder="{{searchText}}" [(ngModel)]="searchValue"
+               (keydown.Tab)="searchData($event,null, selectedPageItem, searchValue,isAcm,isReportManagement,isObservation)"
+               (keypress)="searchData($event,null, selectedPageItem, searchValue,isAcm,isReportManagement,isObservation)">
+          <i class="zmdi zmdi-search"></i>
+        </div>
+      </div>
+      <div class="table-container table-responsive">
+        <table class="table table-striped audit-list">
+          <thead>
+            <tr>
+              <th class="w-30">{{reportTitle}}</th>
+              <th class="w-10">{{noOfObservationTitle}}</th>
+              <th class="w-10">{{ratingLabel}}</th>
+              <th class="w-10">{{statusTitle}}</th>
+              <th class="w-10">{{stageTitle}}</th>
+              <th class="w-20">{{periodTitle}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="reportList.length===0">
+              <td colspan="6"><p class="no-record">{{showNoDataText}}</p></td>
+            </tr>
+            <tr *ngFor="let report of reportList| paginate: { itemsPerPage: selectedPageItem, currentPage: pageNumber, totalItems:totalRecords}">
+              <td class="w-30" title="{{report.ReportTitle}}"><p class="desc-text mb-0">{{report.reportTitle}}</p></td>
+              <td class="w-10 text-center" (click)="openObservationList(report.id)"><span class="observation-num">{{report.noOfObservation}}</span></td>
+              <td class="w-10" title="{{report.Rating}}"><p class="desc-text mb-0">{{report.ratings}}</p></td>
+              <td class="w-10" title="{{report.Status}}"><p class="desc-text mb-0">{{report.status}}</p></td>
+              <td class="w-10" title="{{report.Stage}}"><p class="desc-text mb-0">{{report.stageName}}</p></td>
+              <td class="w-20" title="{{report.Period}}"><p class="desc-text mb-0">{{report.auditPeriodStartDate| date:'MMM yyyy'}} - {{report.auditPeriodEndDate | date:'MMM yyyy'}}</p></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+        <!--Table footer contens-->
+        <div class="table-footer row clearfix" *ngIf="reportList.length>0">
+          <div class="col-sm-7">
+            <pagination-controls [responsive]="responsive"
+                                 [previousLabel]="labels.previousLabel"
+                                 [nextLabel]="labels.nextLabel"
+                                 (pageChange)="onPageChange($event,isAcm,isReportManagement,isObservation)"></pagination-controls>
+          </div>
+          <div class="right-contents col-sm-5 text-right">
+            <div class="d-inline-block">
+              <ng-select #select [items]="pageItems" [searchable]="false" [(ngModel)]="selectedPageItem"
+                         (change)="onPageItemChange(isAcm,isReportManagement,isObservation)"
+                         bindLabel="item" bindValue="noOfItems">
+              </ng-select>
+            </div>
+            <div class="d-inline-block ml-10">
+              <p class="mb-0 showing-results-text mt-5 align-middle">{{showingResults}}</p>
+            </div>
+          </div>
+        </div>
+      
+    </div>
+  </div>
+  <!--Note: Please hide show report list section div-->
+  <div class="report-list-section" *ngIf="isObservation">
+    <div class="page-container">
+      {{observationTabTitle}}
+      <div class="top-contents mb-10">
+        <div class="search-box">
+          <input class="form-control search-control pl-30" placeholder="{{searchText}}" [(ngModel)]="searchValue"
+               (keydown.Tab)="searchData($event,null, selectedPageItem, searchValue,isAcm,isReportManagement,isObservation)"
+               (keypress)="searchData($event,null, selectedPageItem, searchValue,isAcm,isReportManagement,isObservation)">
+          <i class="zmdi zmdi-search"></i>
+        </div>
+      </div>
+      <div class="table-container table-responsive">
+        <table class="table table-striped audit-list">
+          <thead>
+            <tr>
+              <th class="w-30">{{headingLabel}}</th>
+              <th class="w-10">{{processLabel}}</th>
+              <th class="w-10">{{statusTitle}}</th>
+              <th class="w-30">{{personResponsibleLabel}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="observationList.length===0">
+              <td colspan="4"><p class="no-record">{{showNoDataText}}</p></td>
+            </tr>
+            <tr *ngFor="let item of observationList| paginate: { itemsPerPage: selectedPageItem, currentPage: pageNumber, totalItems:totalRecords}">
+              <td class="w-30" title="{{item.Heading}}"><p class="desc-text mb-0">{{item.heading}}</p></td>
+              <td class="w-10" title="{{item.Process}}"><p class="desc-text mb-0">{{item.processName}}</p></td>
+              <td class="w-10" title="{{item.Status}}"><p class="desc-text mb-0">{{item.observationStatusToString}}</p></td>
+              <td class="w-30" title="{{item.userAC!=null?item.userAC.name:''}}">{{item.userAC!=null?item.userAC.name:''}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+        <!--Table footer contens-->
+        <div class="table-footer row clearfix" *ngIf="observationList.length>0">
+          <div class="col-sm-7">
+            <pagination-controls [responsive]="responsive"
+                                 [previousLabel]="labels.previousLabel"
+                                 [nextLabel]="labels.nextLabel"
+                                 (pageChange)="onPageChange($event,isAcm,isReportManagement,isObservation)"></pagination-controls>
+          </div>
+          <div class="right-contents col-sm-5 text-right">
+            <div class="d-inline-block">
+              <ng-select #select [items]="pageItems" [searchable]="false" [(ngModel)]="selectedPageItem"
+                         (change)="onPageItemChange(isAcm,isReportManagement,isObservation)"
+                         bindLabel="item" bindValue="noOfItems">
+              </ng-select>
+            </div>
+            <div class="d-inline-block ml-10">
+              <p class="mb-0 showing-results-text mt-5 align-middle">{{showingResults}}</p>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!--Loader component-->
+<app-loader></app-loader>

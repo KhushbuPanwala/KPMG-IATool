@@ -1,0 +1,729 @@
+<!--Create Survey modalpopup page-->
+<!--Strategic Analysis add page elements-->
+<div class="container" id="modalContainer">
+  <!--Modal popup for dropdown-->
+  <div class="multiple-choice" *ngIf="showPopUpType === 'dropdown'">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{dropDown}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <i class="zmdi zmdi-close"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form #dropdownQuestionAddForm="ngForm" class="strategic-analysis-modal modal-form">
+        <div class="row mb-50">
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{question}}</label>
+              <textarea class="form-control" aria-label="With textarea" name="dropdownQuestion" #dropdownQuestion="ngModel" [(ngModel)]="questionAC.questionText" required appValidateMaxLength="256"></textarea>
+              <div *ngIf="dropdownQuestion.errors" class="invalid-feedback question-error">
+                <p *ngIf="dropdownQuestion.touched && !dropdownQuestion.valid && dropdownQuestion.errors.required" class="invalid-feedback mb-0">{{stringConstants.questionRequiredMessage}}</p>
+                <p *ngIf="!dropdownQuestion.errors.required" class="invalid-feedback mb-0" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+            <div class="form-group mb-0">
+              <label class="form-label mr-10 align-middle">{{requiredMessage}}</label>
+              <label class="switch align-middle">
+                <input type="checkbox" name="isRequiredDropdown" #isRequiredDropdown="ngModel" [(ngModel)]="questionAC.isRequired">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 answers-box">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{answerChoice}}</label>
+              <table>
+                <tr>
+                  <td>
+                    <input class="form-control mb-10" type="text" name="inputOption" #inputOption="ngModel"
+                           [(ngModel)]="optionDropdown" appValidateMaxLength="256" />
+                    <div class="invalid-feedback" *ngIf="inputOption.errors  || options.length < 1">
+                      <p *ngIf="inputOption.touched && options.length < 1" class="invalid-feedback mb-0">{{stringConstants.optionRequiredMessage}}</p>
+                      <p *ngIf="inputOption.errors" class="invalid-feedback mb-0" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+                    </div>
+                   
+                  </td>
+                  <td class="slign-top">
+                    <button class="btn btn-icon dark-bg-btn p-0 ml-15 mb-10" tooltip="{{addToolTip}}" (click)="enterOptions(optionDropdown)">
+                      <i class="zmdi zmdi-plus-circle"></i>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+              <table>
+                <tbody class="scroll-content">
+                  <tr *ngFor="let opt of options; let i=index;trackBy:trackByIndex;">
+                    <td>
+                      <input class="form-control mb-10" type="text" name="option" value="{{options[i]}}" readonly />
+                    </td>
+                    <td>
+                      <button class="btn btn-icon dark-bg-btn p-0 ml-15 mb-10" tooltip="{{deleteToolTip}}" (click)="deleteOptions(options[i], i)">
+                        <i class="zmdi zmdi-delete"></i>
+                      </button>
+                    </td>
+                  <tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group">
+              <label class="mb-10">{{relatedAnswers}}</label>
+              <ng-select #select [items]="relatedAnswersArray" [searchable]="false" name="related" [(ngModel)]="selectedRelatedAnswer" bindLabel="item" bindValue="item" (change)="addRelatedAnswerOptions()">
+              </ng-select>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="right-contents">
+          <button class="btn form-btn" (click)="saveQuestion()" [disabled]="!dropdownQuestionAddForm.valid || options.length < 1">
+            <img src="../../assets/images/save.png" class="align-top mr-10" alt="{{saveButtonText}}">{{saveButtonText}}
+          </button>
+          <button class="btn cancel-outline ml-20" (click)="bsModalRef.hide()">
+            {{cancelButtonText}}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!--Modal popup for multiple choice-->
+  <div class="multiple-choice" *ngIf="showPopUpType === 'multiplechoice'">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{multipleChoice}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <i class="zmdi zmdi-close"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form #mcqQuestionAddForm="ngForm" class="strategic-analysis-modal modal-form">
+        <div class="row mb-50">
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{question}}</label>
+              <textarea class="form-control" aria-label="With textarea" name="mcqQuestion" #mcqQuestion="ngModel" [(ngModel)]="questionAC.questionText" required appValidateMaxLength="256">></textarea>
+              <div *ngIf="mcqQuestion.errors" class="invalid-feedback question-error">
+                <p *ngIf="mcqQuestion.touched && !mcqQuestion.valid && mcqQuestion.errors.required" class="invalid-feedback mb-0">{{stringConstants.questionRequiredMessage}}</p>
+                <p *ngIf="!mcqQuestion.errors.required" class="invalid-feedback mb-0" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+            <div class="form-group mb-0">
+              <label class="form-label mr-10 align-middle">{{requiredMessage}}</label>
+              <label class="switch align-middle">
+                <input type="checkbox" name="isMCQRequiredDropdown" #isMCQRequiredDropdown="ngModel" [(ngModel)]="questionAC.isRequired">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 answers-box">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{answerChoice}}</label>
+              <table>
+                <tr>
+                  <td>
+                    <input class="form-control mb-10" type="text" name="inputMCQOption" #inputMCQOption="ngModel"
+                           [(ngModel)]="optionMultiple" appValidateMaxLength="256" />
+                    <div class="invalid-feedback" *ngIf="inputMCQOption.errors  || options.length < 1">
+                      <p *ngIf="inputMCQOption.touched && options.length < 1" class="invalid-feedback mb-0">{{stringConstants.optionRequiredMessage}}</p>
+                      <p *ngIf="inputMCQOption.errors" class="invalid-feedback mb-0" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+
+                    </div>
+                   
+                  </td>
+                  <td class="slign-top">
+                    <button class="btn btn-icon dark-bg-btn p-0 ml-15 mb-10" tooltip="{{addToolTip}}" (click)="enterOptions(optionMultiple)">
+                      <i class="zmdi zmdi-plus-circle"></i>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+
+
+              <table>
+                <tbody class="scroll-content">
+                  <tr *ngFor="let opt of options; let i=index;trackBy:trackByIndex;">
+                    <td>
+                      <input class="form-control mb-10" type="text" name="option" value="{{options[i]}}" readonly />
+                    </td>
+                    <td>
+                      <button class="btn btn-icon dark-bg-btn p-0 ml-15 mb-10" tooltip="{{deleteToolTip}}" (click)="deleteOptions(options[i], i)">
+                        <i class="zmdi zmdi-delete"></i>
+                      </button>
+                    </td>
+                  <tr>
+                </tbody>
+              </table>
+
+            </div>
+            <div class="form-group mb-0 add-other">
+              <input class="styled-checkbox" id="other-field" type="checkbox" name="isMCQOther" #isMCQOther="ngModel" [(ngModel)]="isOtherToBeShown" (click)="onOtherClick(stringConstants.multipleChoice)">
+              <label for="other-field">{{addOther}}</label>
+            </div>
+            <div *ngIf="questionAC.multipleChoiceQuestion.isOtherToBeShown" class="form-group">
+              <input id="field-label" type="text" name="fieldLabelMultipleChoice" #fieldLabelMultipleChoice="ngModel" [(ngModel)]="questionAC.multipleChoiceQuestion.fieldLabel"
+                     (keydown.Tab)="addFieldLabel(stringConstants.multipleChoice, questionAC.multipleChoiceQuestion.fieldLabel)"
+                     (keypress)="addFieldLabel(stringConstants.multipleChoice, questionAC.multipleChoiceQuestion.fieldLabel)" appValidateMaxLength="256" class="form-control mb-10 col-md-7"/>
+              <div *ngIf="fieldLabelMultipleChoice.errors" class="feedback-box">
+                <p class="invalid-feedback" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group">
+              <label class="mb-10">{{relatedAnswers}}</label>
+              <ng-select #select [items]="relatedAnswersArray" [searchable]="false" name="related" [(ngModel)]="selectedRelatedAnswer" bindLabel="item" bindValue="item" (change)="addRelatedAnswerOptions()">
+              </ng-select>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="right-contents">
+          <button class="btn form-btn" (click)="saveQuestion()" [disabled]="!mcqQuestionAddForm.valid || options.length < 1">
+            <img src="../../assets/images/save.png" class="align-top mr-10" alt="{{saveButtonText}}">{{saveButtonText}}
+          </button>
+          <button class="btn cancel-outline ml-20" (click)="bsModalRef.hide()">
+            {{cancelButtonText}}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!--Modal popup for Rating scale-->
+  <div class="multiple-choice" *ngIf="showPopUpType === 'ratingscale'">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{ratingScale}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <i class="zmdi zmdi-close"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form #ratingQuestionAddForm="ngForm" class="strategic-analysis-modal modal-form">
+        <div class="row mb-50">
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{question}}</label>
+              <textarea class="form-control" aria-label="With textarea"
+                        name="ratingQuestion" #ratingQuestion="ngModel" [(ngModel)]="questionAC.questionText" required appValidateMaxLength="256">></textarea>
+              <div *ngIf="ratingQuestion.errors" class="invalid-feedback question-error">
+                <p *ngIf="ratingQuestion.touched && !ratingQuestion.valid && ratingQuestion.errors.required" class="invalid-feedback mb-0">{{stringConstants.questionRequiredMessage}}</p>
+                <p *ngIf="!ratingQuestion.errors.required" class="invalid-feedback mb-0" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+            <div class="form-group mb-0">
+              <label class="form-label mr-10 align-middle">{{requiredMessage}}</label>
+              <label class="switch align-middle">
+                <input type="checkbox" name="isRequiredRating" #isRequiredRating="ngModel" [(ngModel)]="questionAC.isRequired">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{representation}}</label>
+              <table>
+                <tr>
+                  <td style="width: 90%" class="align-top">
+                    <ng-select #select class="mb-10" [items]="representDropDown" [searchable]="false"
+                               name="representation" (change)="selectedOption()" [(ngModel)]="questionAC.ratingScaleQuestion.representation" bindLabel="item" bindValue="item">
+                    </ng-select>
+                  </td>
+                  <td *ngIf="isIconShow">
+                    <button class="btn btn-icon dark-bg-btn p-0 ml-15 mb-20">
+                      <img src="../../../assets/images/smiley.png" alt="smileyAlt" />
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label class="form-label mb-10 required">{{scale}}</label>
+                    <table class="scale-section">
+
+                      <tr>
+                        <td style="width: 40%;">
+                          <ng-select #select [items]="scaleDropDownStart" [searchable]="false" name="scaleStart" [(ngModel)]="questionAC.ratingScaleQuestion.scaleStart" bindLabel="item" bindValue="item">
+                          </ng-select>
+                        </td>
+                        <td><p class="marlr lowercase align-middle mb-0">{{toText}}</p></td>
+                        <td>
+                        <td style="width: 40%;">
+                          <ng-select #select [items]="scaleDropDownEnd" [searchable]="false" name="scaleEnd" [(ngModel)]="questionAC.ratingScaleQuestion.scaleEnd" bindLabel="item" bindValue="item">
+                          </ng-select>
+                        </td>
+                      </tr>
+
+                    </table>
+                  </td>
+                  <td>&nbsp;</td>
+                </tr>
+              </table>
+
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group">
+              <label class="mb-10">{{labels}}</label>
+              <div class="input-group prefix mb-10">
+                <div class="first-group">
+                  <span class="input-group-addon">{{questionAC.ratingScaleQuestion.scaleStart}}</span>
+                  <input type="text" class="form-control" name="startLabel" #startLabel="ngModel" [(ngModel)]="questionAC.ratingScaleQuestion.startLabel" appValidateMaxLength="30" />
+                </div>
+                  <div *ngIf="startLabel.errors" class="invalid-feedback tr-class">
+                  <p class="invalid-feedback td-class" appValidateMaxLength="12">{{stringConstants.maxLengthExceedMessage}}</p>
+                </div>
+              </div>
+              <div class="input-group prefix">
+                <span class="input-group-addon">{{questionAC.ratingScaleQuestion.scaleEnd}}</span>
+                <input type="text" class="form-control" name="endLabel" #endLabel="ngModel" [(ngModel)]="questionAC.ratingScaleQuestion.endLabel" appValidateMaxLength="30" />
+                <div *ngIf="endLabel.errors" class="feedback-box">
+                  <p class="invalid-feedback" appValidateMaxLength="12">{{stringConstants.maxLengthExceedMessage}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="right-contents">
+          <button class="btn form-btn" (click)="saveQuestion()" [disabled]="!ratingQuestionAddForm.valid">
+            <img src="../../assets/images/save.png" class="align-top mr-10" alt="{{saveButtonText}}">{{saveButtonText}}
+          </button>
+          <button class="btn cancel-outline ml-20" (click)="bsModalRef.hide()">
+            {{cancelButtonText}}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!--Modal popup for Subjective-->
+  <div class="multiple-choice" *ngIf="showPopUpType === 'subjective'">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{subjective}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <i class="zmdi zmdi-close"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form #subjectiveQuestionAddForm="ngForm" class="strategic-analysis-modal modal-form">
+        <div class="row mb-50">
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{question}}</label>
+              <textarea class="form-control" aria-label="With textarea" name="subjectiveQuestion" #subjectiveQuestion="ngModel" [(ngModel)]="questionAC.questionText" required appValidateMaxLength="256">></textarea>
+              <div *ngIf="subjectiveQuestion.errors" class="invalid-feedback question-error">
+                <p *ngIf="subjectiveQuestion.touched && !subjectiveQuestion.valid && subjectiveQuestion.errors.required" class="invalid-feedback mb-0">{{stringConstants.questionRequiredMessage}}</p>
+                <p *ngIf="subjectiveQuestion.touched && !subjectiveQuestion.errors.required" class="invalid-feedback mb-0" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+            <div class="form-group mb-0">
+              <label class="form-label mr-10 align-middle">{{requiredMessage}}</label>
+              <label class="switch align-middle">
+                <input type="checkbox" name="isRequiredSubjective" #isRequiredSubjective="ngModel" [(ngModel)]="questionAC.isRequired">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{characterLimit}}</label>
+              <table class="scale-section">
+                <tr>
+                  <td style="width: 40%;">
+                    <div class="form-group mb-0">
+                      <input type="text" class="form-control"
+                             name="lowLimit" #lowLimit="ngModel" [(ngModel)]="questionAC.subjectiveQuestion.characterLowerLimit" required appValidateNaturalNumber/>
+                      <div *ngIf="lowLimit.errors && questionAC !== undefined" class="feedback-box">
+                        <p *ngIf="lowLimit.touched && !lowLimit.valid && lowLimit.errors.required" class="invalid-feedback">{{stringConstants.characterLimitRequired}}</p>
+                        <p *ngIf="lowLimit.touched && !lowLimit.valid && !lowLimit.errors.required
+                           && lowLimit.errors.appValidateNaturalNumber" class="invalid-feedback" appValidateNaturalNumber>{{stringConstants.invalidMessage}}</p>
+
+                      </div>
+                    </div>
+                  </td>
+                  <td><p class="marlr lowercase mb-0">{{toText}}</p></td>
+                  <td>
+                  <td style="width: 40%;">
+                    <div class="form-group mb-0">
+                      <input type="text" class="form-control" name="upperLimit" #upperLimit="ngModel" [(ngModel)]="questionAC.subjectiveQuestion.characterUpperLimit" required appValidateNaturalNumber/>
+                      <div *ngIf="upperLimit.errors && questionAC !== undefined" class="feedback-box">
+                        <p *ngIf="upperLimit.touched && !upperLimit.valid && upperLimit.errors.required" class="invalid-feedback">{{stringConstants.characterLimitRequired}}</p>
+                        <p *ngIf="upperLimit.touched && !upperLimit.valid && !upperLimit.errors.required
+                           && upperLimit.errors.appValidateNaturalNumber" class="invalid-feedback" appValidateNaturalNumber>{{stringConstants.invalidMessage}}</p>
+
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="ml-10">{{characterText}}</p>
+                  </td>
+                </tr>
+
+              </table>
+              <p class="limit-text mt-20">{{maxLimit}}</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10">{{guidanceText}}</label>
+              <textarea class="form-control" aria-label="With textarea" 
+                        name="subjectiveGuidanceText" #subjectiveGuidanceText="ngModel" [(ngModel)]="questionAC.subjectiveQuestion.guidance" appValidateMaxLength="256"></textarea>
+              <div *ngIf="subjectiveGuidanceText.errors" class="feedback-box">
+                <p class="invalid-feedback" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="right-contents">
+          <button class="btn form-btn" (click)="saveQuestion()" [disabled]="!subjectiveQuestionAddForm.valid">
+            <img src="../../assets/images/save.png" class="align-top mr-10" alt="{{saveButtonText}}">{{saveButtonText}}
+          </button>
+          <button class="btn cancel-outline ml-20" (click)="bsModalRef.hide()">
+            {{cancelButtonText}}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!--Modal popup for Text field-->
+  <div class="multiple-choice" *ngIf="showPopUpType === 'textfield'">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{textField}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <i class="zmdi zmdi-close"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form #textboxQuestionAddForm="ngForm" class="strategic-analysis-modal modal-form">
+        <div class="row mb-50">
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{question}}</label>
+              <textarea class="form-control" aria-label="With textarea" 
+                        name="textboxQuestion" #textboxQuestion="ngModel" [(ngModel)]="questionAC.questionText" required appValidateMaxLength="256">></textarea>
+              <div *ngIf="textboxQuestion.errors" class="invalid-feedback question-error">
+                <p *ngIf="textboxQuestion.touched && !textboxQuestion.valid && textboxQuestion.errors.required" class="invalid-feedback mb-0">{{stringConstants.questionRequiredMessage}}</p>
+                <p *ngIf="textboxQuestion.touched && !textboxQuestion.errors.required" class="invalid-feedback mb-0" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+            <div class="form-group mb-0">
+              <label class="form-label mr-10 align-middle">{{requiredMessage}}</label>
+              <label class="switch align-middle">
+                <input type="checkbox" name="isRequiredTextboxQuestion" #isRequiredTextboxQuestion="ngModel" [(ngModel)]="questionAC.isRequired">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{characterLimit}}</label>
+
+
+              <table class="scale-section">
+
+                <tr>
+                  <td style="width: 40%;">
+                    <div class="form-group mb-0">
+                      <input type="text" class="form-control" name="characterLowerLimitInput"
+                             #characterLowerLimitInput="ngModel" [(ngModel)]="questionAC.textboxQuestion.characterLowerLimit"  required appValidateNaturalNumber/>
+                      <div *ngIf="characterLowerLimitInput.errors && questionAC !== undefined" class="feedback-box">
+                        <p *ngIf="characterLowerLimitInput.touched && !characterLowerLimitInput.valid && characterLowerLimitInput.errors.required
+                           && !characterLowerLimitInput.errors.appValidateNaturalNumber" class="invalid-feedback">{{stringConstants.characterLimitRequired}}</p>
+                        <p *ngIf="characterLowerLimitInput.touched && !characterLowerLimitInput.valid && !characterLowerLimitInput.errors.required
+                           && characterLowerLimitInput.errors.appValidateNaturalNumber" class="invalid-feedback" appValidateNaturalNumber>{{stringConstants.invalidMessage}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td><p class="marlr lowercase mb-0">{{toText}}</p></td>
+                  <td>
+                  <td style="width: 40%;">
+                    <div class="form-group mb-0">
+                      <input type="text" class="form-control" name="characterUpperLimitInput"
+                             #characterUpperLimitInput="ngModel" [(ngModel)]="questionAC.textboxQuestion.characterUpperLimit" required appValidateNaturalNumber/>
+                      <div *ngIf="characterUpperLimitInput.errors && questionAC !== undefined" class="feedback-box">
+                        <p *ngIf="characterUpperLimitInput.touched && !characterUpperLimitInput.valid && characterUpperLimitInput.errors.required" class="invalid-feedback">{{stringConstants.characterLimitRequired}}</p>
+                        <p *ngIf="characterUpperLimitInput.touched && !characterUpperLimitInput.valid && !characterUpperLimitInput.errors.required
+                           && characterUpperLimitInput.errors.appValidateNaturalNumber" class="invalid-feedback" appValidateNaturalNumber>{{stringConstants.invalidMessage}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="ml-10">{{characterText}}</p>
+                  </td>
+                </tr>
+
+              </table>
+              <p class="limit-text mt-20">{{maxLimitText}}</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10">{{guidanceText}}</label>
+              <textarea class="form-control" aria-label="With textarea"
+                        name="textboxQuestionGuidance" #textboxQuestionGuidance="ngModel" [(ngModel)]="questionAC.textboxQuestion.guidance" appValidateMaxLength="256"></textarea>
+              <div *ngIf="textboxQuestionGuidance.errors" class="feedback-box">
+                <p class="invalid-feedback" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="right-contents">
+          <button class="btn form-btn" (click)="saveQuestion()" [disabled]="!textboxQuestionAddForm.valid">
+            <img src="../../assets/images/save.png" class="align-top mr-10" alt="{{saveButtonText}}">{{saveButtonText}}
+          </button>
+          <button class="btn cancel-outline ml-20" (click)="bsModalRef.hide()">
+            {{cancelButtonText}}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!--Modal popup for Upload file-->
+  <div class="multiple-choice file-upload-modal" *ngIf="showPopUpType === 'fileupload'">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{fileUpload}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <i class="zmdi zmdi-close"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form #uploadQuestionAddForm="ngForm" class="strategic-analysis-modal modal-form">
+        <div class="row mb-50">
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{question}}</label>
+              <textarea class="form-control" aria-label="With textarea" 
+                        name="uploadFileQuestion" #uploadFileQuestion="ngModel" [(ngModel)]="questionAC.questionText" required appValidateMaxLength="256">></textarea>
+              <div *ngIf="uploadFileQuestion.errors" class="invalid-feedback question-error">
+                <p *ngIf="uploadFileQuestion.touched && !uploadFileQuestion.valid && uploadFileQuestion.errors.required" class="invalid-feedback mb-0">{{stringConstants.questionRequiredMessage}}</p>
+                <p *ngIf="uploadFileQuestion.touched && !uploadFileQuestion.errors.required" class="invalid-feedback mb-0" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+            <div class="form-group mb-0">
+              <label class="form-label mr-10 align-middle">{{requiredMessage}}</label>
+              <label class="switch align-middle">
+                <input type="checkbox" name="isRequiredFileQuestion" #isRequiredFileQuestion="ngModel"
+                       [(ngModel)]="questionAC.isRequired">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+
+              <label class="form-label mb-10">{{allowedFile}}</label>
+              <div class="row all-checkbox">
+                <div class="col-xl-3 col-lg-4 col-md-4">
+
+                  <input *ngIf="questionAC.fileUploadQuestion.isDocAllowed" class="styled-checkbox" id="{{docText}}" type="checkbox"
+                         value="{{questionAC.fileUploadQuestion.isDocAllowed}}" (click)="fileRequiredType(stringConstants.docText)" checked>
+
+                  <input *ngIf="!questionAC.fileUploadQuestion.isDocAllowed" class="styled-checkbox" id="{{docText}}" type="checkbox"
+                         value="{{questionAC.fileUploadQuestion.isDocAllowed}}" (click)="fileRequiredType(stringConstants.docText)">
+                  <label for="{{docText}}" class="mb-20">{{docText}}</label>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-4">
+                  <input *ngIf="questionAC.fileUploadQuestion.isPdfAllowed" class="styled-checkbox" id="{{pdfToolTip}}" type="checkbox"
+                         value="{{questionAC.fileUploadQuestion.isPdfAllowed}}" (click)="fileRequiredType(stringConstants.pdfText)" checked>
+
+                  <input *ngIf="!questionAC.fileUploadQuestion.isPdfAllowed" class="styled-checkbox" id="{{pdfToolTip}}" type="checkbox"
+                         value="{{questionAC.fileUploadQuestion.isPdfAllowed}}" (click)="fileRequiredType(stringConstants.pdfText)">
+
+                  <label for="{{pdfToolTip}}" class="mb-20">{{pdfToolTip}}</label>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-4">
+                  <input *ngIf="questionAC.fileUploadQuestion.isPngAllowed" class="styled-checkbox" id="{{pngText}}" type="checkbox"
+                         value="{{questionAC.fileUploadQuestion.isPngAllowed}}" (click)="fileRequiredType(stringConstants.pngText)" checked>
+                  <input *ngIf="!questionAC.fileUploadQuestion.isPngAllowed" class="styled-checkbox" id="{{pngText}}" type="checkbox"
+                         value="{{questionAC.fileUploadQuestion.isPngAllowed}}" (click)="fileRequiredType(stringConstants.pngText)">
+                  <label for="{{pngText}}" class="mb-20">{{pngText}}</label>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-4">
+                  <input *ngIf="questionAC.fileUploadQuestion.isPpxAllowed" class="styled-checkbox hidden-md hidden-sm" id="{{ppxText}}" type="checkbox"
+                         value="{{questionAC.fileUploadQuestion.isPpxAllowed}}" (click)="fileRequiredType(stringConstants.ppxText)" checked>
+                  <input *ngIf="!questionAC.fileUploadQuestion.isPpxAllowed" class="styled-checkbox hidden-md hidden-sm" id="{{ppxText}}" type="checkbox"
+                         value="{{questionAC.fileUploadQuestion.isPpxAllowed}}" (click)="fileRequiredType(stringConstants.ppxText)">
+                  <label for="{{ppxText}}" class="mb-20">{{ppxText}}</label>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-4">
+                  <input *ngIf="questionAC.fileUploadQuestion.isJpegAllowed" class="styled-checkbox" id="{{jpegText}}" type="checkbox"
+                         value="{{questionAC.fileUploadQuestion.isJpegAllowed}}" (click)="fileRequiredType(stringConstants.jpegText)" checked>
+                  <input *ngIf="!questionAC.fileUploadQuestion.isJpegAllowed" class="styled-checkbox" id="{{jpegText}}" type="checkbox"
+                         value="{{questionAC.fileUploadQuestion.isJpegAllowed}}" (click)="fileRequiredType(stringConstants.jpegText)">
+
+                  <label for="{{jpegText}}" class="mb-10">{{jpegText}}</label>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-4">
+                  <input *ngIf="questionAC.fileUploadQuestion.isGifAllowed" class="styled-checkbox" id="{{gifText}}" type="checkbox"
+                         value="{{questionAC.fileUploadQuestion.isGifAllowed}}" (click)="fileRequiredType(stringConstants.gifText)" checked>
+                  <input *ngIf="!questionAC.fileUploadQuestion.isGifAllowed" class="styled-checkbox" id="{{gifText}}" type="checkbox"
+                         value="{{questionAC.fileUploadQuestion.isGifAllowed}}" (click)="fileRequiredType(stringConstants.gifText)">
+                  <label for="{{gifText}}" class="mb-10">{{gifText}}</label>
+                </div>
+              </div>
+
+              <p class="limit-text">{{docLimit}}</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10">{{guidanceText}}</label>
+              <textarea class="form-control" aria-label="With textarea"
+                        name="fileUploadGuidance" #fileUploadGuidance="ngModel" [(ngModel)]="questionAC.fileUploadQuestion.guidance" appValidateMaxLength="256"></textarea>
+              <div *ngIf="fileUploadGuidance.errors" class="feedback-box">
+                <p class="invalid-feedback" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="right-contents">
+          <button class="btn form-btn" (click)="saveQuestion()" [disabled]="!uploadQuestionAddForm.valid">
+            <img src="../../assets/images/save.png" class="align-top mr-10" alt="{{saveButtonText}}">{{saveButtonText}}
+          </button>
+          <button class="btn cancel-outline ml-20" (click)="bsModalRef.hide()">
+            {{cancelButtonText}}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!--Modal popup for Checkbox-->
+  <div class="multiple-choice" *ngIf="showPopUpType === 'checkbox'">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{checkBox}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <i class="zmdi zmdi-close"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form #checkboxQuestionAddForm="ngForm" class="strategic-analysis-modal modal-form">
+        <div class="row mb-50">
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{question}}</label>
+              <textarea class="form-control" aria-label="With textarea" 
+                        name="checkboxQuestion" #checkboxQuestion="ngModel" [(ngModel)]="questionAC.questionText" required appValidateMaxLength="256">></textarea>
+              <div *ngIf="checkboxQuestion.errors" class="invalid-feedback question-error">
+                <p *ngIf="checkboxQuestion.touched && !checkboxQuestion.valid && checkboxQuestion.errors.required" class="invalid-feedback mb-0">{{stringConstants.questionRequiredMessage}}</p>
+                <p *ngIf="!checkboxQuestion.errors.required" class="invalid-feedback mb-0" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+            <div class="form-group mb-0">
+              <label class="form-label mr-10 align-middle">{{requiredMessage}}</label>
+              <label class="switch align-middle">
+                <input type="checkbox"
+                       name="isRequiredCheckbox" #isRequiredCheckbox="ngModel" [(ngModel)]="questionAC.isRequired">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 answers-box">
+            <div class="form-group mb-20">
+              <label class="form-label mb-10 required">{{answerCheckbox}}</label>
+              <table>
+                <tr>
+                  <td>
+                    <input class="form-control mb-10" type="text" name="inputOption" #inputOption="ngModel"
+                           [(ngModel)]="optionCheckbox" appValidateMaxLength="256" />
+                    <div class="invalid-feedback" *ngIf="inputOption.errors  || options.length < 1">
+                      <p *ngIf="inputOption.touched && options.length < 1" class="invalid-feedback mb-0">{{stringConstants.optionRequiredMessage}}</p>
+                      <p *ngIf="inputOption.touched && inputOption.errors" class="invalid-feedback mb-0" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+                    </div>
+                  </td>
+                  <td class="slign-top">
+                    <button class="btn btn-icon dark-bg-btn p-0 ml-15 mb-10" tooltip="{{addToolTip}}" (click)="enterOptions(optionCheckbox)">
+                      <i class="zmdi zmdi-plus-circle"></i>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+
+
+              <table>
+                <tbody class="scroll-content">
+                  <tr *ngFor="let opt of options; let i=index;trackBy:trackByIndex;">
+                    <td>
+                      <input class="form-control mb-10" type="text" name="option" value="{{options[i]}}" readonly />
+                    </td>
+                    <td>
+                      <button class="btn btn-icon dark-bg-btn p-0 ml-15 mb-10" tooltip="{{deleteToolTip}}" (click)="deleteOptions(options[i], i)">
+                        <i class="zmdi zmdi-delete"></i>
+                      </button>
+                    </td>
+                  <tr>
+                </tbody>
+              </table>
+
+            </div>
+            <div class="form-group mb-0 add-other">
+              <input class="styled-checkbox" id="other-field" type="checkbox" name="isCheckboxOther" #isCheckboxOther="ngModel" [(ngModel)]="isOtherToBeShown" (click)="onOtherClick(stringConstants.checkBox)">
+              <label for="other-field">{{addOther}}</label>
+            </div>
+            <div *ngIf="questionAC.checkboxQuestion.isOtherToBeShown" class="form-group">
+              <input id="field-label" type="text" name="fieldLabelCheckbox" #fieldLabelCheckbox="ngModel" [(ngModel)]="questionAC.checkboxQuestion.fieldLabel" 
+                    (keydown.Tab)="addFieldLabel(stringConstants.checkBox, questionAC.checkboxQuestion.fieldLabel)"
+                     (keypress)="addFieldLabel(stringConstants.checkBox, questionAC.checkboxQuestion.fieldLabel)" appValidateMaxLength="256" class="form-control mb-10 col-md-7"/>
+              <div *ngIf="fieldLabelCheckbox.errors" class="feedback-box">
+                <p class="invalid-feedback" appValidateMaxLength="256">{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+
+          </div>
+
+          
+
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="form-group">
+              <label class="mb-10">{{relatedAnswers}}</label>
+              <ng-select #select [items]="relatedAnswersArray" [searchable]="false" bindLabel="item" bindValue="item" placeholder="choose"
+                         name="related" [(ngModel)]="selectedRelatedAnswer" (change)="addRelatedAnswerOptions()">
+              </ng-select>
+            </div>
+          </div>
+
+        </div>
+
+        
+
+        
+        <div class="right-contents">
+          <button class="btn form-btn" (click)="saveQuestion()" [disabled]="!checkboxQuestionAddForm.valid || options.length < 1">
+            <img src="../../assets/images/save.png" class="align-top mr-10" alt="{{saveButtonText}}">{{saveButtonText}}
+          </button>
+          <button class="btn cancel-outline ml-20" (click)="bsModalRef.hide()">
+            {{cancelButtonText}}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

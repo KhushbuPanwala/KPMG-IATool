@@ -1,0 +1,18 @@
+<!--Sidepanel menus with icon and submenus-->
+<a (click)="onItemSelected(item)"
+   [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
+   [ngClass]="{'active': item.route ? router.isActive(item.route, true): false, 'expanded': expanded, 'no-child' : !expanded}"
+   class="menu-list-item" #menu>
+  <div class="main-menus">
+    <i class="zmdi {{item.iconName}}"></i>
+    <span fxFlex class="menu-name" title="{{item.displayName}}">{{item.displayName}}</span>
+    <span fxFlex class="menu-rotate-icon" *ngIf="item.children && item.children.length">
+      <i class="zmdi zmdi-chevron-down" [@indicatorRotate]="expanded ? 'expanded': 'collapsed'"></i>
+    </span>
+  </div>
+</a>
+<!--dynamically appended submenus-->
+<div *ngIf="expanded" class="submenu-items">
+  <app-sidemenu-items class="list-items-parent" *ngFor="let child of item.children; let i=index" [item]="child"  [class.active]="selectedItem == i"  (click)="selectedItem=i" [depth]="depth+1">
+  </app-sidemenu-items>
+</div>

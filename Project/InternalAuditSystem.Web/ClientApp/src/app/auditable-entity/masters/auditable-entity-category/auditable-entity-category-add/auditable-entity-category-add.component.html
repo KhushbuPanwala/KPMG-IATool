@@ -1,0 +1,29 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Auditable entity category add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{entityCategoryLabel}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="audit-team-form modal-form" #entityCategoryAddEditForm="ngForm" *ngIf="entityCategoryObject !== undefined">
+    <div class="form-group  mb-15">
+      <label class="form-label required mb-10">{{categoryTitle}}</label>
+      <input type="text" class="form-control" [(ngModel)]="entityCategoryObject.categoryName" name="entityCategoryName" #entityCategoryName="ngModel" required appValidateMaxLength="256" />
+      <div class="feedback-box" *ngIf="entityCategoryName.errors  && entityCategoryObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="entityCategoryName.touched && !entityCategoryName.valid && entityCategoryName.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="entityCategoryName.touched && !entityCategoryName.errors.required">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <button class="btn form-btn mt-20" (click)="saveEntityCategory()" [disabled]="entityCategoryAddEditForm.invalid">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>
+
+
+
+

@@ -1,0 +1,29 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Auditable entity location add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{locationModalTitle}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="audit-team-form modal-form" #locationAddEditForm="ngForm" *ngIf="locationObject !== undefined">
+    <div class="form-group  mb-15">
+      <label class="form-label required mb-10">{{locationModalTitle}}</label>
+      <input type="text" class="form-control" [(ngModel)]="locationObject.name" name="locationName" #locationName="ngModel" required appValidateMaxLength="256"  />
+      <div class="feedback-box" *ngIf="locationName.errors  && locationObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="locationName.touched && !locationName.valid && locationName.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="locationName.touched && !locationName.errors.required">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <button class="btn form-btn mt-20" (click)="saveLocation()" [disabled]="locationAddEditForm.invalid">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>
+
+
+
+

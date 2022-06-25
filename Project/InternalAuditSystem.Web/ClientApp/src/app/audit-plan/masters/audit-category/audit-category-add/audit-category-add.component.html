@@ -1,0 +1,29 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Audit plan category add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{auditCategoryModalTitle}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="audit-team-form modal-form"  #auditCategoryAddEditForm="ngForm" *ngIf="auditCategoryObject !== undefined">
+    <div class="form-group  mb-15">
+      <label class="form-label required mb-10">{{categoryLabel}}</label>
+      <input type="text" class="form-control" [(ngModel)]="auditCategoryObject.name" name="auditCategoryName" #auditCategoryName="ngModel" required appValidateMaxLength="256" />
+      <div class="feedback-box" *ngIf="auditCategoryName.errors  && auditCategoryObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="auditCategoryName.touched && !auditCategoryName.valid && auditCategoryName.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="auditCategoryName.touched && !auditCategoryName.errors.required">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <button class="btn form-btn mt-20" (click)="saveAuditCategory()" [disabled]="auditCategoryAddEditForm.invalid">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top" />
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>
+
+
+
+

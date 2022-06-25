@@ -1,0 +1,18 @@
+@import '../../../../styles.scss';
+
+.ag-grid-action {
+  cursor: pointer;
+  transition: 0.5s;
+  cursor: pointer;
+
+  i {
+    color: $text-color;
+    font-size: $regular-large-font;
+
+    &.zmdi-download {
+      font-size: $regular-medium-font;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}

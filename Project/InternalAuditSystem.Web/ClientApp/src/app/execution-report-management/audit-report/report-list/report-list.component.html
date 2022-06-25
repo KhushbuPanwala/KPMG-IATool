@@ -1,0 +1,122 @@
+<!-- Report list page contents -->
+<div class="sector-list-page">
+  <h4 class="page-title mb-25 ml-20">{{reports}}</h4>
+  <div class="page-container">
+    <div class="top-contents mb-10">
+      <div class="search-box">
+        <input class="form-control search-control pl-30" placeholder="{{searchText}}"
+               (keydown.Tab)="searchReport($event,null, selectedPageItem, searchValue)"
+               [(ngModel)]="searchValue" (keypress)="searchReport($event,null, selectedPageItem, searchValue)">
+        <i class="zmdi zmdi-search"></i>
+      </div>
+      <div class="right-contents">
+        <button class="btn btn-icon  p-0" tooltip="{{excelToolTip}}" (click)="exportReport()">
+          <img src="../assets/images/excel.png" alt="{{excelToolTip}}" />
+        </button>
+        <button class="btn btn-icon dark-bg-btn p-0 ml-10" tooltip="{{addToolTip}}" (click)="openAddReport()">
+          <i class="zmdi zmdi-plus-circle"></i>
+        </button>
+      </div>
+    </div>
+    <!--Table contents-->
+    <div class="table-container table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="w-25">{{reportTitle}}</th>
+            <th class="w-5">{{noOfObservationTitle}}</th>
+            <th class="w-10">{{ratingTitle}}</th>
+            <th class="w-10">{{statusTitle}}</th>
+            <th class="w-5">{{stageTitle}}</th>
+            <th class="w-45" colspan="3">{{periodTitle}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="reportList.length===0">
+            <td colspan="8"><p class="no-record">{{showNoDataText}}</p></td>
+          </tr>
+          <tr *ngFor="let report of reportList | paginate: { itemsPerPage: selectedPageItem, currentPage: pageNumber, totalItems:totalRecords}">
+            <td class="w-25" title="{{report.reportTitle}}"><p class="desc-text mb-0">{{report.reportTitle}}</p></td>
+            <td class="w-5 text-center" (click)="openObservationList(report.id)">
+              <span class="observation-num">{{report.noOfObservation}}</span>
+            </td>
+            <td class="w-20" title="{{report.ratings}}">
+              <p class="desc-text mb-0">{{report.ratings}}</p>
+            </td>
+            <td class="w-10" title="{{report.status}}">
+              <p class="desc-text mb-0">{{report.status}}</p>
+            </td>
+            <td class="w-5"><p class="desc-text mb-0">{{report.stageName}}</p></td>
+            <td class="w-15 no-wrap">{{report.auditPeriodStartDate | date:'MMM yyyy'}} - {{report.auditPeriodEndDate | date:'MMM yyyy'}}</td>
+
+            <td class="w-15 no-wrap">
+              <div class="table-action-btn d-inline-block">
+                <a class="d-inline-block align-middle mr-10 action-icon" (click)="openCommentHistory(report.id)" tooltip="{{commentHistoryTooltip}}">
+                  <i class="zmdi zmdi-comment-text"></i>
+                </a>
+                <a class="d-inline-block align-middle mr-10 action-icon" [popover]="sendMailTemplate" [outsideClick]="true" placement="bottom">
+                  <i class="zmdi zmdi-mail-send"></i>
+                </a>
+                <ng-template #sendMailTemplate>
+                  <button class="send-mail-text text-center mb-0" (click)="openOutlook(report.id)">{{sendForReview}}</button>
+                </ng-template>
+                <a class="d-inline-block align-middle mr-10 action-icon" [outsideClick]="true" [popover]="viewOptionsTemplate"
+                   placement="bottom">
+                  <i class="zmdi zmdi-eye"></i>
+                </a>
+                <ng-template #viewOptionsTemplate>
+                  <button class="btn btn-icon btn-download d-inline-block p-0" (click)="viewPPTReport(report.id)">
+                    <img class="download-opt-img" src="../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+                  </button>
+                </ng-template>
+              </div>
+              <div class="table-action-btn d-inline-block">
+                <a class="d-inline-block align-middle mr-10 action-icon" tooltip="{{editToolTip}}" (click)="editReport(report.id)">
+                  <i class="zmdi zmdi-edit"></i>
+                </a>
+                <a class="d-inline-block align-middle mr-10 action-icon" tooltip="{{deleteToolTip}}" (click)="deleteReport(report.id)">
+                  <i class="zmdi zmdi-delete"></i>
+                </a>
+                <a class="d-inline-block align-middle action-icon" [outsideClick]="true"
+                   [popover]="downloadOptionsTemplate" placement="bottom">
+                  <i class="zmdi zmdi-download"></i>
+                </a>
+                <ng-template #downloadOptionsTemplate>
+                  <button class="btn btn-icon btn-download d-inline-block p-0" (click)="createPPTReport(report.id)">
+                    <img class="download-opt-img" src="../assets/images/powerpoint.png" alt="{{powerPointToolTip}}" />
+                  </button>
+                </ng-template>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--Table footer contens-->
+    <div class="table-footer row clearfix" *ngIf="reportList.length!==0">
+      <div class="col-sm-7">
+        <pagination-controls [responsive]="responsive"
+                             [previousLabel]="labels.previousLabel"
+                             [nextLabel]="labels.nextLabel"
+                             (pageChange)="onPageChange($event)"></pagination-controls>
+      </div>
+      <div class="right-contents col-sm-5 text-right">
+
+        <div class="d-inline-block">
+          <ng-select #select [items]="pageItems" [searchable]="false" [(ngModel)]="selectedPageItem"
+                     (change)="onPageItemChange()"
+                     bindLabel="item" bindValue="noOfItems">
+          </ng-select>
+        </div>
+        <div class="d-inline-block ml-10">
+          <p class="mb-0 showing-results-text mt-5 align-middle">{{showingResults}}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Loader component-->
+<app-loader></app-loader>

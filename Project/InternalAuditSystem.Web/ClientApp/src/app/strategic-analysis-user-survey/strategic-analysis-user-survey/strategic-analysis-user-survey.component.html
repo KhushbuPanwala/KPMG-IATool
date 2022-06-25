@@ -1,0 +1,114 @@
+<!-- Create Survey contents -->
+<app-loader></app-loader>
+<div class="sector-list-page survey-list-page survey-user-create">
+  <div class="row">
+    <div class="col-xl-9 col-lg-9 col-md-8">
+      <h4 class="page-title mb-25 ml-20 title-trim" tooltip="{{strategicAnalysis.surveyTitle}}">
+        {{strategicAnalysis.surveyTitle}}
+      </h4>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-4">
+      <div class="right-contents text-right mb-35">
+        <button class="btn btn-icon btn-outline-primary back-btn p-0 ml-10" (click)="onBackClick()" tooltip="{{backToolTip}}"><i class="zmdi zmdi-long-arrow-left"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="page-container">
+    <div class="top-contents mb-0">
+      <form #strategicAnalysisDetailsForm="ngForm" class="w-100">
+        <div class="col-lg-6 form-group">
+          <label class="form-label required">{{selectSurveyLabel}}</label>
+          <input class="form-control" *ngIf="passedStrategicAnalysisId!=='0'" disabled type="text" [(ngModel)]="strategicAnalysis.surveyTitle" name="survayTitle" #survayTitle="ngModel" required appValidateMaxLength="256" appValidateCommnInput />
+          <ng-select *ngIf="passedStrategicAnalysisId==='0'" #select [items]="activeStrategicAnalysisList" class="page-select" required
+                     name="analysis" #surveyTitle="ngModel"
+                     [placeholder]="dropdownDefaultValue"
+                     (change)="onChangeSurvey()"
+                     [searchable]="false" [(ngModel)]="strategicAnalysisId" bindLabel="surveyTitle" bindValue="id">
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+              <p style="margin-bottom: 0;">{{item.surveyTitle}}</p>
+              <span class="version-no">{{version}}:{{item.version}}</span>
+            </ng-template>
+            <ng-template ng-header-tmp>
+              <input type="text" class="w-100" (input)="select.filter($event.target.value)" />
+            </ng-template>
+          </ng-select>
+        </div>
+        <div class="col-xs-12 col-12 col-sm-6 form-group mb-20">
+          <label class="form-label  mb-10 required">{{auditableEntityTitle}}</label>
+          <input class="form-control" type="text" [(ngModel)]="strategicAnalysis.auditableEntityName"
+                 name="auditableEntityName" #auditableEntityName="ngModel" required
+                 appValidateMaxLength="256" appValidateCommnInput />
+          <div *ngIf="auditableEntityName.errors">
+            <p *ngIf="auditableEntityName.touched && !auditableEntityName.valid && auditableEntityName.errors.required" class="invalid-feedback mb-0">{{surveyEntityRequiredMessage}}</p>
+            <p *ngIf="auditableEntityName.touched && !auditableEntityName.valid && !auditableEntityName.errors.required  && auditableEntityName.errors.appValidateCommnInput" class="invalid-feedback mb-0">{{stringConstants.invalidMessage}}</p>
+            <p appValidateMaxLength *ngIf="auditableEntityName.touched && !auditableEntityName.valid && !auditableEntityName.errors.required && !auditableEntityName.errors.appValidateCommnInput" class="invalid-feedback mb-0">{{maxLengthExceedMessage}}</p>
+          </div>
+        </div>
+        <div class="team-section">
+          <div class="mb-20 team-divider-section">
+            <label class="form-label required">
+              {{teamLabel}}
+            </label>
+            <table class="table form-table">
+              <thead>
+                <tr>
+                  <th class="w-30">
+                    {{nameLabel}}
+                  </th>
+                  <th class="w-30">
+                    {{designationLabel}}
+                  </th>
+                  <th class="w-30">
+                    {{emailLabel}}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let internalUser of strategicAnalysis.internalUserList; let index = index; ">
+                  <td class="w-30">
+                    <input class="form-control" value="{{internalUser.name}}" readonly />
+                  </td>
+                  <td class="w-30 designation-input">
+                    <input type="text" class="form-control" value="{{internalUser.designation}}" readonly />
+                  </td>
+                  <td class="w-30 designation-input">
+                    <input type="text" class="form-control" value="{{internalUser.emailId}}" readonly />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label  mb-10">{{detailsOportunity}}</label>
+              <input class="form-control" type="text" name="detailsOfOpportunity" #detailsOfOpportunity="ngModel"
+                     [(ngModel)]="strategicAnalysis.userResponseForDetailsOfOppAndEstimatedValue.detailsOfOpportunity" appValidateMaxLength="256" />
+              <div *ngIf="detailsOfOpportunity.errors" class="feedback-box">
+                <p *ngIf="!detailsOfOpportunity.valid" class="invalid-feedback" appValidateMaxLength>{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label  mb-10">{{stringConstants.estimatedValue}}</label>
+              <input class="form-control" type="text" name="estimatedValue" #estimatedValue="ngModel"
+                     [(ngModel)]="strategicAnalysis.userResponseForDetailsOfOppAndEstimatedValue.estimatedValueOfOpportunity" appValidateMaxLength="256" />
+              <div *ngIf="estimatedValue.errors" class="feedback-box">
+                <p *ngIf="!estimatedValue.valid" class="invalid-feedback" appValidateMaxLength>{{stringConstants.maxLengthExceedMessage}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="save-next">
+          <button class="btn form-btn mt-25 save-create" (click)="saveStrategicAnalysisDetails()" [disabled]="!strategicAnalysisDetailsForm.valid">
+            <img src="../../assets/images/save.png" class="align-top" alt="Save"> {{saveNextButtonText}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+</div>
+

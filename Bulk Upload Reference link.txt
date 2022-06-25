@@ -1,0 +1,28 @@
+--Bulk Upload reference links
+https://github.com/borisdj/EFCore.BulkExtensions
+https://www.c-sharpcorner.com/UploadFile/kbpatel/how-to-create-a-dropdown-list-to-an-excel-using-C-Sharp/ 
+https://stackoverflow.com/questions/25659888/add-dropdown-list-in-the-excel-sheet-using-c-sharp  --main 2
+https://www.codeproject.com/Articles/1193482/Creating-ExcelSheet-with-pre-populated-dropdown-li --main
+https://c-sharpcodedestination.blogspot.com/2018/05/add-more-than-one-dropdown-list-in.html
+https://www.easyxls.com/manual/tips-and-tricks/excel-drop-down-list.html
+
+--data validation
+https://www.iditect.com/tutorial/excel-data-validation/ -
+https://xlsxwriter.readthedocs.io/example_data_validate.html
+https://www.codeproject.com/Articles/1089368/Apply-Data-Validation-to-Excel-Cells-in-Csharp
+
+--Import and Export
+https://www.talkingdotnet.com/import-export-excel-asp-net-core-2-razor-pages/
+
+
+https://stackoverflow.com/questions/31020850/create-all-the-rows-of-a-column-as-a-dropdownlist-in-excel-using-c-sharp
+https://stackoverflow.com/questions/39977352/how-to-create-dropdownlist-in-excel-using-openxml-in-c-sharp
+
+
+No data is available for encoding 1252
+https://www.nuget.org/packages/System.Text.Encoding.CodePages/
+
+https://gunnarpeipman.com/no-data-is-available-for-encoding/
+
+https://www.c-sharpcorner.com/UploadFile/ee01e6/different-way-to-convert-datatable-to-list/
+https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3

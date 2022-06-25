@@ -1,0 +1,179 @@
+<!--Obesrvation management observation tab contents-->
+<div class="observation-tab-contents clearfix">
+  <form #observationTabForm="ngForm">
+    <!--Tab left side contents-->
+    <div class="tab-left-contents">
+      <div class="observation-controls">
+        <label class="form-label d-inline-block align-top mr-20 w-15 text-right required">{{headingLabel}}</label>
+        <div class="form-group d-inline-block align-top w-82">
+          <textarea class="form-control small-txt-area" [(ngModel)]="reportObservation.heading" name="obsTitle" #obsTitle="ngModel"
+                    required [disabled]="isViewObservation"
+                    appValidateMaxLength="256"></textarea>
+          <div *ngIf="obsTitle.errors" class="feedback-box">
+            <p *ngIf="obsTitle.touched && !obsTitle.valid && obsTitle.errors.required" class="invalid-feedback">{{requiredMessage}}</p>
+            <p *ngIf="obsTitle.touched && !obsTitle.errors.required" class="invalid-feedback" appValidateMaxLength>{{maxLengthExceedMessage}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="observation-controls">
+        <label class="form-label  d-inline-block align-top w-15 mr-20 text-right">{{backgroundLabel}}</label>
+        <div class="form-group d-inline-block align-top w-82 textarea-group">
+          <div class="form-group textarea-group hide-editor-header">
+            <angular-editor class="background-txt-area divided-txt-area h-120"
+                            [(ngModel)]="reportObservation.background" [config]="config"
+                            name="background" #background="ngModel">
+            </angular-editor>
+            <a class="view-more-button" *ngIf="!isViewObservation" (click)="openBackgroundModal()">
+              <i class="zmdi zmdi-crop-free"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="observation-controls">
+        <label class="form-label  d-inline-block align-top w-15 mr-20 text-right">{{observationTabTitle}}</label>
+        <div class="form-group d-inline-block align-top w-82 textarea-group">
+          <div class="form-group textarea-group hide-editor-header">
+            <angular-editor class="background-txt-area divided-txt-area h-120"
+                            [(ngModel)]="reportObservation.observations" [config]="config"
+                            name="observations" #observations="ngModel">
+            </angular-editor>
+            <a class="view-more-button" *ngIf="!isViewObservation" (click)="openObservationsModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="observation-controls">
+        <div class="w-50 d-inline-block rootcase-section align-top'">
+          <div class="divided-section">
+            <label class="form-label text-right mr-20 w-30 d-inline-block">{{rootCauseLabel}}</label>
+            <div class="d-inline-block align-top w-59 textarea-group">
+              <div class="form-group textarea-group hide-editor-header">
+                <angular-editor class="background-txt-area divided-txt-area h-95"
+                                [(ngModel)]="reportObservation.rootCause" [config]="config" name="rootCause" #rootCause="ngModel">
+                </angular-editor>
+                <a class="view-more-button" *ngIf="!isViewObservation" (click)="openRootCauseModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="divided-section">
+            <label class="form-label  mr-20 w-15 w-30 text-right">{{implicationTitle}}</label>
+            <div class="textarea-group d-inline-block align-top w-59">
+              <div class="form-group textarea-group hide-editor-header">
+                <angular-editor class="background-txt-area divided-txt-area h-95"
+                                [(ngModel)]="reportObservation.implication"
+                                [config]="config" name="implication" #implication="ngModel">
+                </angular-editor>
+                <a class="view-more-button" *ngIf="!isViewObservation" (click)="openImplicationModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-50 d-inline-block control-mains recommendation-section align-top">
+          <label class="form-label   text-right">{{recommendationTitle}}</label>
+          <div class="textarea-group">
+            <div class="form-group textarea-group hide-editor-header">
+              <angular-editor class="background-txt-area divided-txt-area h-179"
+                              [(ngModel)]="reportObservation.recommendation"
+                              [config]="config" name="recommendation" #recommendation="ngModel">
+              </angular-editor>
+              <a class="view-more-button" *ngIf="!isViewObservation" (click)="openRecommendationModal()"> <i class="zmdi zmdi-crop-free"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Tab right side contents-->
+    <div class="tab-right-contents">
+      <div class="form-group mb-20">
+        <label class="form-label required">
+          {{ratingLabel}}
+        </label>
+        <ng-select [items]="ratingList" name="ratings" #ratings="ngModel" [(ngModel)]="reportObservation.ratingId"
+                   [placeholder]="dropdownDefaultValue" required
+                   [disabled]="isViewObservation" bindLabel="ratings" bindValue="id">
+          <ng-template ng-label-tmp let-item="item">
+            <span [ngClass]="{
+          'rating-red': item.legend=== redColor,
+          'rating-yellow': item.legend === yellowColor,
+          'rating-green': item.legend === greenColor
+          }" class="legand-tag"></span>
+            {{item.ratings}}
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="form-group mb-20">
+        <label class="form-label  required">
+          {{typeLabel}}
+        </label>
+        <ng-select [items]="observationTypeList" class="page-select" [searchable]="false"
+                   [disabled]="isViewObservation" name="obsType" #obsType="ngModel"
+                   [(ngModel)]="reportObservation.observationType" bindLabel="value" bindValue="key">
+        </ng-select>
+      </div>
+      <div class="form-group mb-20">
+        <label class="form-label">
+          {{categoryLabel}}
+        </label>
+        <ng-select [items]="observationCategoryList" class="page-select" [searchable]="false"
+                   [disabled]="isViewObservation" [(ngModel)]="reportObservation.observationCategoryId"
+                   [placeholder]="dropdownDefaultValue"
+                   name="obsCategory" #obsCategory="ngModel" bindLabel="categoryName" bindValue="id">
+        </ng-select>
+      </div>
+      <div class="form-group mb-40">
+        <label class="form-label  required">
+          {{repeatObservationLabel}}
+        </label>
+        <div class="form-check-inline">
+          <label class="form-check-label pl-15">
+            <input class="form-check-input" type="radio" [(ngModel)]="reportObservation.isRepeatObservation"
+                   [disabled]="isViewObservation" name="isRepeatObservationYes" id="1" [value]="true">
+            {{yes}}
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <div class="form-check-inline">
+          <label class="form-check-label pl-15">
+            <input class="form-check-input" type="radio" [(ngModel)]="reportObservation.isRepeatObservation"
+                   [disabled]="isViewObservation" name="isRepeatObservationNo" id="2" [value]="false">
+            {{no}}
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+      <div class="added-table-count mb-20 clearfix">
+        <div class="add-content">
+          <i class="zmdi zmdi-grid d-inline-block align-middle"></i>
+          <a class="count-add-button d-inline-block align-middle  ml-6" [ngClass]="{'disabled': isViewObservation}"
+             (click)="openAddTableDialog()">
+            <i class="zmdi zmdi-plus-circle"></i>
+            <label class="mb-0 ml-5">{{addToolTip}}</label>
+          </a>
+        </div>
+        <div class="added-count ml-15" *ngIf="tableCount!==0">
+          <span class="count-num d-inline-block align-top mr-10">
+            {{tableCount}}
+          </span>
+          <p class="d-inline-block align-top mb-0">
+            {{addedLabel}}
+          </p>
+        </div>
+      </div>
+      <div class="added-table-count mb-20 clearfix">
+        <div class="add-content w-40">
+          <i class="zmdi zmdi-file d-inline-block align-middle"></i>
+          <a class="count-add-button d-inline-block align-middle" [ngClass]="{'disabled': isViewObservation}" (click)="openAddFileDialog()">
+            <i class="zmdi zmdi-plus-circle"></i>
+            <label class="d-inline-block mb-0 ml-5">{{addToolTip}}</label>
+          </a>
+        </div>
+        <div class="added-count ml-10 w-30" *ngIf="fileCount!==0">
+          <span class="count-num d-inline-block align-top mr-10">{{fileCount}}</span>
+          <p class="d-inline-block align-top mb-0 added-text">{{addedLabel}}</p>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!--Loader component-->
+<app-loader></app-loader>
+

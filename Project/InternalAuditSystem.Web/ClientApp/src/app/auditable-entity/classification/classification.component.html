@@ -1,0 +1,43 @@
+<!--Auditable entity classification page elements-->
+<div class="overview-page">
+  <div class="top-contents mb-25 ml-20">
+    <h4 class="page-title">{{classification}}</h4>
+    <div class="right-contents">
+      <button class="btn btn-icon  btn-outline-primary back-btn p-0 ml-10" tooltip="{{backToolTip}}" (click)="onBackClick()">
+        <i class="zmdi zmdi-long-arrow-left"></i>
+      </button>
+    </div>
+  </div>
+  <div class="page-container">
+    <div class="form-area small-from-area">
+      <div class="form-group mb-20">
+        <label class="form-label">{{categoryLabel}}</label>
+        <ng-select #select [items]="categoryList" class="page-select" [searchable]="false" [(ngModel)]="auditableEntityDetails.selectedCategoryId" bindValue="id" bindLabel="categoryName"  [placeholder]="dropdownDefaultValue">
+          <ng-template ng-header-tmp>
+            <input class="w-100" type="text" (input)="select.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="form-group mb-20">
+        <label class="form-label">{{typeLabel}}</label>
+        <ng-select #selectType [items]="typeList" class="page-select" [searchable]="false" [(ngModel)]="auditableEntityDetails.selectedTypeId" bindValue="id" bindLabel="typeName" [placeholder]="dropdownDefaultValue">
+          <ng-template ng-header-tmp>
+            <input  class="w-100"  type="text" (input)="selectType.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+    <div class="mt-40">
+      <button class="btn form-btn d-inline-block" (click)="saveAuditableEntity()">
+        <img src="../../assets/images/save.png" alt="{{saveNextButtonText}}" class="align-top" />
+        {{saveNextButtonText}}
+      </button>
+      <button class="btn form-btn border-form-btn  d-inline-block ml-20" (click)="onPreviousClick()">
+        {{previousButton}}
+      </button>
+    </div>
+  </div>
+</div>
+<app-loader></app-loader>
+
+

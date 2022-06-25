@@ -1,0 +1,47 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--Audit client participants add page elements-->
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{clientParticipantsText}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="audit-team-form modal-form" #clientAddEditForm="ngForm" *ngIf="clientObject !== undefined">
+    <div class="form-group mb-15">
+      <label class="form-label required mb-10">{{nameLabel}}</label>
+      <input type="text" class="form-control" [(ngModel)]="clientObject.name" name="clientName" #clientName="ngModel" required appValidateName appValidateMaxLength="256"/>
+      <div *ngIf="clientName.errors  && clientObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="clientName.touched && !clientName.valid && clientName.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" *ngIf="clientName.touched && !clientName.valid && clientName.errors.appValidateName">{{invalidMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="clientName.touched && !clientName.errors.required && !clientName.errors.appValidateName">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <div class="form-group  mb-15">
+      <label class="form-label required mb-10">{{designationLabel}}</label>
+      <input type="text" class="form-control" [(ngModel)]="clientObject.designation" name="clientDesignation" #clientDesignation="ngModel" required appValidateMaxLength="256"/>
+      <div  *ngIf="clientDesignation.errors  && clientObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="clientDesignation.touched && !clientDesignation.valid && clientDesignation.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="clientDesignation.touched && !clientDesignation.errors.required">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <div class="form-group  mb-15">
+      <label class="form-label required mb-10">{{emailLabel}}</label>
+      <input type="text" class="form-control" [(ngModel)]="clientObject.emailId" name="clientEmailId" #clientEmailId="ngModel" required appValidateEmail appValidateMaxLength="256"/>
+      <div  *ngIf="clientEmailId.errors && clientObject !== undefined">
+        <p class="mb-0 invalid-feedback" *ngIf="clientEmailId.touched && !clientEmailId.valid && clientEmailId.errors.required">{{requiredMessage}}</p>
+        <p class="mb-0 invalid-feedback" *ngIf="clientEmailId.touched && !clientEmailId.valid && clientEmailId.errors.appValidateEmail">{{invalidMessage}}</p>
+        <p class="mb-0 invalid-feedback" appValidateMaxLength *ngIf="clientEmailId.touched && !clientEmailId.errors.required && !clientEmailId.errors.appValidateEmail">{{maxLengthExceedMessage}}</p>
+      </div>
+    </div>
+    <button class="btn form-btn mt-20" (click)="saveClientParticipant()" [disabled]="clientAddEditForm.invalid">
+      <img src="../../assets/images/save.png" alt="{{saveButtonText}}" class="align-top"/>
+      {{saveButtonText}}
+    </button>
+  </form>
+</div>
+
+
+
+

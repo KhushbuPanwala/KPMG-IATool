@@ -1,0 +1,45 @@
+<!--Loader component-->
+<app-loader></app-loader>
+<!--sidebar menu with top header and right side section-->
+<div id="mySidebar" class="sidebar" [class.active]="toggleSideBar">
+  <div class="sidebar-top-section" (click)="openMenuItem()">
+    <img src="../../assets/images/logo.png" alt="app-top-img" />
+  </div>
+  <div class="navigation-section custom-scrollbar scrollable">
+    <app-sidemenu-items class="list-items-parent" *ngFor="let item of finalMenuItem;let itemIndex=index" [item]="item" [class.active]="selectedItem == itemIndex" (click)="selectedItem=itemIndex"></app-sidemenu-items>
+  </div>
+  <div class="sidebar-bottom-section">
+    <p class="copyright-section mb-0">{{copyRightTitle}}</p>
+  </div>
+</div>
+<div id="main" class="main-container" [class.active]="toggleSideBar">
+  <!-- Breadcrumbs and router outlet -->
+  <header class="header">
+    <app-breadcrumb></app-breadcrumb>
+  
+    <div class="right-contents">
+      <!--entity selection-->
+      <div class="loggedin-users d-inline-block mr-10">
+        <label class="form-label bold mb-0">{{loggedInUser}}</label>
+        <p class="mb-0">{{currentUserDetails.emailId}}</p>
+      </div>
+ 
+      <div class="auditable-entity-selection d-inline-block">
+        <label class="form-label selection-label">{{entitySelectionLabel}}</label>
+        <ng-select #selectEntity [items]="auditableEntityList" class="w-100 ng-select" [searchable]="false" name="currentEntity" #currentEntity="ngModel" [(ngModel)]="selectedEntity" bindLabel="name" bindValue="id"
+                   [placeholder]="entitySelectionPlaceHolder" (change)="updateSelectedEntity(selectedEntity)">
+          <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+            <p style="margin-bottom: 0;" title="{{item.name}}">{{item.name}}</p>
+            <span class="version-no">{{version}} : {{item.version}}</span>
+          </ng-template>
+          <ng-template ng-header-tmp>
+            <input style="width: 100%; line-height: 24px" type="text" (input)="selectEntity.filter($event.target.value)" />
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+  </header>
+  <router-outlet></router-outlet>
+
+</div>
+

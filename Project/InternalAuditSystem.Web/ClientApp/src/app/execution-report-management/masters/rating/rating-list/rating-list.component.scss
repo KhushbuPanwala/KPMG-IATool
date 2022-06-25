@@ -1,0 +1,18 @@
+/* Imported common style to get common elements styles */
+@import '../../../../../styles.scss';
+
+/* Rating page scss */
+.rating-list-page {
+  .table {
+    .legend-btn { width: 50px; height: 18px; border-radius: 3px;border: none }
+    .legend-red {
+      .legend-btn { background: $legend-red; }
+    }
+    .legend-green {
+      .legend-btn { background: $legend-green; }
+    }
+    .legend-yellow {
+      .legend-btn { background: $legend-yellow; }
+    }
+  }
+}
